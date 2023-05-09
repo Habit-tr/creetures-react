@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Flex } from "@chakra-ui/react";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
@@ -11,11 +11,13 @@ function App() {
       <React.StrictMode>
         <ChakraProvider>
           <AuthProvider>
-            <Navbar />
-            <Router>
-              <AppRoutes></AppRoutes>
-            </Router>
-            <Footer />
+            <Flex direction="column">
+              <Router>
+                <Navbar />
+                <AppRoutes></AppRoutes>
+                <Footer />
+              </Router>
+            </Flex>
           </AuthProvider>
         </ChakraProvider>
       </React.StrictMode>
