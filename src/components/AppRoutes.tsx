@@ -5,9 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import Account from "./dashboard/account/account";
 import Login from "./loginsystem/login/login";
 const AppRoutes = () => {
-
-
-  const currentUser = useAuth();
+  const { currentUser } = useAuth();
 
   return currentUser ? (
     <div>
@@ -17,7 +15,7 @@ const AppRoutes = () => {
     </div>
   ) : (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
     </Routes>
   );
 };

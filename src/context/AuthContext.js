@@ -8,7 +8,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState("");
   const [loading, setLoading] = useState(true);
 
   //   function signup(email, password) {
@@ -50,23 +50,21 @@ export function AuthProvider({ children }) {
   //   function updatePassword(password) {
   //     return updatePasswordFirebase(currentUser, password);
   //   }
-
   async function getUser() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    return user;
+    setCurrentUser(user);
   }
 
   useEffect(() => {
-    setCurrentUser(getUser());
+    getUser();
     setLoading(false);
   }, []);
 
   const value = {
     currentUser,
     login,
-    getUser,
   };
 
   return (
