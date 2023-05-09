@@ -1,18 +1,19 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import AppRoutes from "./AppRoutes";
-import { supabase } from "../utils/supabaseClient";
-import Auth from "./loginsystem/login/login";
 import { AuthProvider } from "../context/AuthContext";
+import AppRoutes from "./AppRoutes";
 function App() {
   return (
     <>
       <React.StrictMode>
-        <AuthProvider>
-          <Router>
-            <AppRoutes></AppRoutes>
-          </Router>
-        </AuthProvider>
+        <ChakraProvider>
+          <AuthProvider>
+            <Router>
+              <AppRoutes></AppRoutes>
+            </Router>
+          </AuthProvider>
+        </ChakraProvider>
       </React.StrictMode>
     </>
   );
