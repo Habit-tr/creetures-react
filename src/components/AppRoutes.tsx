@@ -6,7 +6,7 @@ import Account from "./dashboard/account/account";
 import Login from "./loginsystem/login/login";
 const AppRoutes = () => {
   const { currentUser } = useAuth();
-
+  console.log(currentUser);
   return currentUser ? (
     <div>
       <Routes>
