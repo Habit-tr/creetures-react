@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import Account from "./dashboard/account/Account";
+import Account from "./dashboard/account/account";
 import AddChallenge from "./dashboard/challenges/AddChallenge";
 import AllChallenges from "./dashboard/challenges/AllChallenges";
 import SingleChallenge from "./dashboard/challenges/SingleChallenge";
