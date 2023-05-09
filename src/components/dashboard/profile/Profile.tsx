@@ -1,14 +1,14 @@
 import { Button, Heading } from "@chakra-ui/react";
 import { useAuth } from "../../../context/AuthContext";
-const Account = () => {
+const Profile = () => {
   const { currentUser } = useAuth();
   return (
     <div>
-      <Heading>Account Details</Heading>
+      <Heading>Profile</Heading>
       Email: {`${currentUser.email}`}
       <Button>Log Out</Button>
     </div>
   );
 };
 
-export default Account;
+export default Profile;
