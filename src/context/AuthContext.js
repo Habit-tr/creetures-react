@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { supabase } from "../utils/supabaseClient";
+import supabase from "../utils/supabaseClient";
 import { SignInWithPasswordCredentials } from "@supabase/supabase-js";
 const AuthContext = React.createContext();
 
