@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
 import { Challenge } from "../../../utils/supabaseTypes";
+import { challenges } from "../../../utils/supabaseTypes";
+
 
 // const FETCH_ALLCHALLENGES_REQUEST = "FETCH_ALLCHALLENGES_REQUEST";
 // const FETCH_USERS_REQUEST = 'FETCH_USERS_REQUEST';
@@ -35,6 +37,10 @@ interface postNewChallengeProps {
   createdBy: string;
 }
 
+interface EditChallengeProps {
+ Challenge: Challenge.update
+}
+
 const initialState: allChallengesState = { value: [] };
 
 export const postNewChallengeAsync: any = createAsyncThunk(
@@ -61,6 +67,23 @@ export const postNewChallengeAsync: any = createAsyncThunk(
     }
   },
 );
+
+export const editNewChallengeAsync : any = createAsyncThunk(
+  "editNewChallenge",
+  async ({
+    challenge,
+  } : EditChallengeProps) => {
+    try {
+      const { data } = await supabase
+      .from("challenges")
+      .update({ challenge : challenge.id})
+      .select();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+)
 
 export const fetchAllChallengesAsync: any = createAsyncThunk(
   "fetchAllChallengesAsync",
@@ -89,6 +112,12 @@ const allChallengesSlice = createSlice({
       postNewChallengeAsync.fulfilled,
       (state, action: PayloadAction<Challenge>) => {
         state.value.push(action.payload);
+      },
+    );
+    builder.addCase(
+      editNewChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Challenge>) => {
+        state.value = action.payload;
       },
     );
   },
