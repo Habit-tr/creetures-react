@@ -11,9 +11,16 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState("");
   const [loading, setLoading] = useState(true);
 
-  //   function signup(email, password) {
-  //     return createUserWithEmailAndPassword(auth, email, password);
-  //   }
+  async function signup(email, password) {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+  }
+
+  async function getSession() { 
+    const { data, error } = await supabase.auth.getSession()
+  }
 
   //   function updateProfilePicture(photoUrl) {
   //     return updateProfile(currentUser, { photoURL: photoUrl });
@@ -35,17 +42,19 @@ export function AuthProvider({ children }) {
     }
   }
 
-  //   function logout() {
-  //     return signOut(auth);
-  //   }
+    async function logout() {
+      const { error } = await supabase.auth.signOut()
+    }
 
-  //   function resetPassword(email) {
-  //     return sendPasswordResetEmail(auth, email);
-  //   }
+    async function resetPassword(email) {
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://localhost:3000/',
+      })
+    }
 
-  //   function updateEmail(email) {
-  //     return updateEmailFirebase(currentUser, email);
-  //   }
+    async function updateEmail(email) {
+      const { data, error } = await supabase.auth.updateUser({email: email})
+    }
 
   //   function updatePassword(password) {
   //     return updatePasswordFirebase(currentUser, password);
@@ -65,7 +74,11 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     login,
-  
+    signup,
+    logout, 
+    getSession, 
+    updateEmail, 
+    resetPassword
   };
 
   return (
