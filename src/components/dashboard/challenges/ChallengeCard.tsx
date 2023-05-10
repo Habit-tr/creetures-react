@@ -8,11 +8,11 @@ interface ChallengeCardProps {
 
 const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
   return (
-    <Card border="1px black solid" w="150px" h="150px">
-      <Link to={`/challenges/${challenge.id}`} key={challenge.id}>
+    <Link to={`/challenges/${challenge.id}`} key={challenge.id}>
+      <Card key={challenge.id} border="1px black solid" w="150px" h="150px">
         <Text>{challenge.name}</Text>
-      </Link>
-    </Card>
+      </Card>
+    </Link>
   );
 };
 export default ChallengeCard;

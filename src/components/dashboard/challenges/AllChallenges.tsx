@@ -1,6 +1,6 @@
 import { Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import AddChallenge from "./AddChallenge";
 import ChallengeCard from "./ChallengeCard";
 import {
@@ -11,14 +11,14 @@ import {
 const AllChallenges = () => {
   // const [challenges, setChallenges] = useState<any[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // const { data } = await supabase.from("challenges").select(); //this is moving to the reducer
     dispatch(fetchAllChallengesAsync());
-  }, []);
+  }, [dispatch]);
 
-  const challenges = useSelector(selectChallenges);
+  const challenges = useAppSelector(selectChallenges);
 
   return (
     <>
