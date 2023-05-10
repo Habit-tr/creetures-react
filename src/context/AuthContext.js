@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import supabase from "../utils/supabaseClient";
-import { SignInWithPasswordCredentials } from "@supabase/supabase-js";
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -22,13 +21,16 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase.auth.getSession()
   }
 
-  //   function updateProfilePicture(photoUrl) {
-  //     return updateProfile(currentUser, { photoURL: photoUrl });
-  //   }
-
-  //   function updateDisplayName(fullName) {
-  //     return updateProfile(auth.currentUser, { displayName: fullName });
-  //   }
+    async function updateProfilePicture(event) {
+      const avatarFile = event.target.files[0]
+      const { data, error } = await supabase
+        .storage
+        .from('avatars')
+        .upload('public/avatar1.png', avatarFile, {
+          cacheControl: '3600',
+          upsert: false
+        })
+    }
 
   async function login(email, password) {
     try {
@@ -56,9 +58,6 @@ export function AuthProvider({ children }) {
       const { data, error } = await supabase.auth.updateUser({email: email})
     }
 
-  //   function updatePassword(password) {
-  //     return updatePasswordFirebase(currentUser, password);
-  //   }
   async function getUser() {
     const {
       data: { user },
@@ -78,7 +77,8 @@ export function AuthProvider({ children }) {
     logout, 
     getSession, 
     updateEmail, 
-    resetPassword
+    resetPassword, 
+    updateProfilePicture
   };
 
   return (
