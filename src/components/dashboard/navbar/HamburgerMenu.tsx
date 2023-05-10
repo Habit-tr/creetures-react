@@ -6,12 +6,14 @@ import {
   RepeatIcon,
 } from "@chakra-ui/icons";
 import {
+  Button,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const HamburgerMenu = () => {
   return (
@@ -25,6 +27,19 @@ const HamburgerMenu = () => {
         bgColor="purple.200"
       />
       <MenuList>
+        <Link to="/challenges">
+          <Button m="5px" bgColor="purple.200">
+            Challenges
+          </Button>
+        </Link>
+        <Link to="/profile">
+          <Button m="5px" bgColor="purple.200">
+            Profile
+          </Button>
+        </Link>
+        <Button m="5px" bgColor="purple.200">
+          Logout
+        </Button>
         <MenuItem icon={<AddIcon />} command="⌘T">
           New Tab
         </MenuItem>
