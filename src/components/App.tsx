@@ -5,8 +5,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import store from "../utils/store";
 import AppRoutes from "./AppRoutes";
-import Footer from "./dashboard/footer/Footer";
-import Navbar from "./dashboard/navbar/Navbar";
 function App() {
   return (
     <>
@@ -16,9 +14,7 @@ function App() {
             <AuthProvider>
               <Flex direction="column">
                 <Router>
-                  <Navbar />
-                  <AppRoutes></AppRoutes>
-                  <Footer />
+                  <AppRoutes />
                 </Router>
               </Flex>
             </AuthProvider>
