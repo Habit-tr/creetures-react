@@ -1,8 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
+import { Challenge } from "../../../utils/supabaseTypes";
 
-const FETCH_ALLCHALLENGES_REQUEST = "FETCH_ALLCHALLENGES_REQUEST";
+// const FETCH_ALLCHALLENGES_REQUEST = "FETCH_ALLCHALLENGES_REQUEST";
 // const FETCH_USERS_REQUEST = 'FETCH_USERS_REQUEST';
 // const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 // const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';
@@ -21,6 +22,14 @@ const FETCH_ALLCHALLENGES_REQUEST = "FETCH_ALLCHALLENGES_REQUEST";
 //   payload: error,
 // });
 
+// https://redux.js.org/usage/usage-with-typescript
+
+interface allChallengesState {
+  value: Challenge[];
+}
+
+const initialState: allChallengesState = { value: [] };
+
 export const fetchAllChallengesAsync: any = createAsyncThunk(
   "fetchAllChallengesAsync",
   async () => {
@@ -35,17 +44,21 @@ export const fetchAllChallengesAsync: any = createAsyncThunk(
 
 const allChallengesSlice = createSlice({
   name: "allChallenges",
-  initialState: [],
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAllChallengesAsync.fulfilled, (state, action: any) => {
-      return action.payload;
-    });
+    builder.addCase(
+      fetchAllChallengesAsync.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.value = action.payload;
+      },
+    );
   },
 });
 
+// export const fetchAllChallengesAsync = allChallengesSlice.actions;
 export const selectChallenges = (state: RootState) => {
-  return state.allChallenges;
+  return state.allChallenges.value;
 };
 
 export default allChallengesSlice.reducer;
