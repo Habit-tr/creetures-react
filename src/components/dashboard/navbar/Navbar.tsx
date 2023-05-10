@@ -1,5 +1,6 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import HamburgerMenu from "./HamburgerMenu";
 
 const Navbar = () => {
   return (
@@ -23,6 +24,7 @@ const Navbar = () => {
       <Button m="5px" bgColor="purple.200">
         Logout
       </Button>
+      <HamburgerMenu />
     </Flex>
   );
 };
