@@ -15,6 +15,7 @@
     "@types/node": "^16.18.27",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
+    "dotenv": "^16.0.3",
     "framer-motion": "^10.12.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
