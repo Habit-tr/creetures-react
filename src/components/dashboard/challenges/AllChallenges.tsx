@@ -1,8 +1,8 @@
-import { Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import AddChallenge from "./AddChallenge";
+import ChallengeCard from "./ChallengeCard";
 import {
   fetchAllChallengesAsync,
   selectChallenges,
@@ -23,13 +23,13 @@ const AllChallenges = () => {
   return (
     <>
       <Heading>All Challenges</Heading>
-      {challenges && challenges.length
-        ? challenges.map((challenge) => (
-            <Link to={`/challenges/${challenge.id}`} key={challenge.id}>
-              <Text>{challenge.name}</Text>
-            </Link>
-          ))
-        : null}
+      {challenges && challenges.length ? (
+        <Flex direction="row" maxW="900px" wrap="wrap">
+          {challenges.map((challenge) => {
+            return <ChallengeCard challenge={challenge} />;
+          })}
+        </Flex>
+      ) : null}
       <Button bgColor="purple.200" onClick={onOpen}>
         Create Challenge
       </Button>

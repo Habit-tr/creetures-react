@@ -21,7 +21,7 @@ const FETCH_ALLCHALLENGES_REQUEST = "FETCH_ALLCHALLENGES_REQUEST";
 //   payload: error,
 // });
 
-export const fetchAllChallengesAsync = createAsyncThunk(
+export const fetchAllChallengesAsync: any = createAsyncThunk(
   "fetchAllChallengesAsync",
   async () => {
     try {
