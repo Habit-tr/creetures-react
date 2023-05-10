@@ -1,13 +1,15 @@
 import { Box } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import DashboardRoutes from './dashboard/DashboardRoutes';
+import DashboardRoutes from "./dashboard/DashboardRoutes";
 import Login from "./loginsystem/login/login";
 
-const AppRoutes = () => {
+ const AppRoutes =  () => {
   const { currentUser } = useAuth();
-  console.log(currentUser);
-  return currentUser ? (
+   const { session } =  useAuth();
+  console.log(session);
+
+  return session.session ? (
     <Box>
       <DashboardRoutes />
     </Box>

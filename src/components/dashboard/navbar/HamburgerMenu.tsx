@@ -14,8 +14,22 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import supabase from "../../../utils/supabaseClient";
 const HamburgerMenu = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { session } = useAuth();
+  async function handleLogout(e: any) {
+    e?.preventDefault();
+    try {
+      await logout();
+      navigate(0);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <Menu>
       <MenuButton
@@ -37,9 +51,11 @@ const HamburgerMenu = () => {
             Profile
           </Button>
         </Link>
-        <Button m="5px" bgColor="purple.200">
-          Logout
-        </Button>
+        <Link to="/">
+          <Button m="5px" bgColor="purple.200" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Link>
         <MenuItem icon={<AddIcon />} command="⌘T">
           New Tab
         </MenuItem>
