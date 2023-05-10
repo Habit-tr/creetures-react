@@ -28,7 +28,39 @@ interface allChallengesState {
   value: Challenge[];
 }
 
+interface postNewChallengeProps {
+  challengeName: string;
+  description: string;
+  categoryId: string;
+  createdBy: string;
+}
+
 const initialState: allChallengesState = { value: [] };
+
+export const postNewChallengeAsync: any = createAsyncThunk(
+  "postNewChallenge",
+  async ({
+    challengeName,
+    description,
+    categoryId,
+    createdBy = "31928c26-8a01-41c6-947b-0fadccabf3eb",
+  }: postNewChallengeProps) => {
+    try {
+      const { data } = await supabase
+        .from("challenges")
+        .insert({
+          name: challengeName,
+          description: description,
+          category_id: parseInt(categoryId),
+          created_by: createdBy,
+        })
+        .select();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
 
 export const fetchAllChallengesAsync: any = createAsyncThunk(
   "fetchAllChallengesAsync",
@@ -51,6 +83,12 @@ const allChallengesSlice = createSlice({
       fetchAllChallengesAsync.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      postNewChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Challenge>) => {
+        state.value.push(action.payload);
       },
     );
   },
