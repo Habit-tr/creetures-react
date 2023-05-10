@@ -26,7 +26,7 @@ const AllChallenges = () => {
       {challenges && challenges.length ? (
         <Flex direction="row" maxW="900px" wrap="wrap">
           {challenges.map((challenge) => {
-            return <ChallengeCard challenge={challenge} />;
+            return <ChallengeCard key={challenge.id} challenge={challenge} />;
           })}
         </Flex>
       ) : null}
