@@ -12,7 +12,8 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import supabase from "../../../utils/supabaseClient";
+import { useAppDispatch } from "../../../utils/reduxHooks";
+import { postNewChallengeAsync } from "./allChallengesSlice";
 
 interface AddChallengeProps {
   isOpen: boolean;
@@ -20,18 +21,20 @@ interface AddChallengeProps {
 }
 
 const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
+  const dispatch = useAppDispatch();
+
   // const [allCategories, setAllCategories] = useState<any[]>([]);
   const [challengeName, setChallengeName] = useState(""); //sets to whatever value is typed into input
-  const [category, setCategory] = useState(""); //sets to ID number of selected category. currently setting to string
+  const [categoryId, setCategoryId] = useState(""); //sets to ID number of selected category. currently setting to string
 
   const handleSubmit = async () => {
-    const { data, error } = await supabase.from("challenges").insert([
-      {
-        name: challengeName,
-        category_id: category,
-        created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
-      },
-    ]);
+    const description = "this is a test";
+    dispatch(postNewChallengeAsync({ challengeName, description, categoryId }));
+    // name: challengeName,
+    //     category_id: category,
+    //     description: "this is a test",
+    //     created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
+
     //will need to pull UUID from authenticated user object when that's available
     onClose();
   };
@@ -65,7 +68,7 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
               Category:{" "}
               <Select
                 placeholder="Select a category"
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => setCategoryId(e.target.value)}
               >
                 {/* Will map over allCategories to render these options */}
                 <option value="1">fitness</option>
@@ -74,11 +77,12 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
                 <option value="4">music</option>
               </Select>
             </Box>
+            {categoryId}
           </ModalBody>
 
           <ModalFooter>
             <Button
-              isDisabled={!challengeName || !category}
+              isDisabled={!challengeName || !categoryId}
               bgColor="green.200"
               mr={3}
               onClick={() => handleSubmit()}

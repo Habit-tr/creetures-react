@@ -15,6 +15,30 @@ export interface Challenge {
   description: string | null;
 }
 
+export interface challenges {
+  Row: {
+    category_id: number | null;
+    created_at: string | null;
+    created_by: string | null;
+    id: number;
+    name: string | null;
+  };
+  Insert: {
+    category_id?: number | null;
+    created_at?: string | null;
+    created_by?: string | null;
+    id?: number;
+    name?: string | null;
+  };
+  Update: {
+    category_id?: number | null;
+    created_at?: string | null;
+    created_by?: string | null;
+    id?: number;
+    name?: string | null;
+  };
+}
+
 export interface Database {
   public: {
     Tables: {
