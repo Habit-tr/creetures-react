@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-
+import supabase from "../../../utils/supabaseClient";
+import { useEffect } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,19 +11,24 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { session } = useAuth();
 
   async function handleLogin(e: any) {
     e.preventDefault();
     try {
       setError("");
       setLoading(true);
+
       const user = await login(email, password);
-      navigate("/");
+      navigate(0);
     } catch {
       setError("Failed to Login. Check password and try again.");
     }
     setLoading(false);
   }
+
+  useEffect(() => {}, [session]);
+
   return (
     <>
       <div className="bg-grey-lighter min-h-screen flex flex-col">
