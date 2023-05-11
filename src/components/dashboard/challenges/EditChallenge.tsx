@@ -12,6 +12,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../../utils/reduxHooks";
 import { Challenge } from "../../../utils/supabaseTypes";
 import { editChallengeAsync } from "./singleChallengeSlice";
@@ -20,6 +21,7 @@ interface EditChallengeProps {
   isOpen: boolean;
   onClose: () => void;
   challenge: Challenge;
+  handleDelete: (id: number | string) => Promise<void>;
   setChallenge: React.Dispatch<any>;
 }
 
@@ -37,6 +39,7 @@ const EditChallenge = ({
   isOpen,
   onClose,
   challenge,
+  handleDelete,
   setChallenge,
 }: EditChallengeProps) => {
   const [name, setName] = useState<any>("");
@@ -44,6 +47,7 @@ const EditChallenge = ({
   const [categoryId, setCategoryId] = useState<any>("");
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setName(challenge.name);
@@ -64,11 +68,6 @@ const EditChallenge = ({
     setChallenge(returnedChallenge);
     onClose();
   };
-  const handleDelete = async () => {
-    //deleteById
-
-    onClose();
-  };
 
   return (
     <>
@@ -86,7 +85,7 @@ const EditChallenge = ({
             <Box>
               Description:
               <Input
-                value={description}
+                value={description || ""}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
@@ -110,7 +109,7 @@ const EditChallenge = ({
               isDisabled={!challenge || !categoryId}
               bgColor="red.200"
               mr={3}
-              onClick={() => handleDelete()}
+              onClick={() => handleDelete(challenge.id)}
             >
               Delete
             </Button>
