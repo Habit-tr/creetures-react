@@ -84,37 +84,37 @@ export interface Database {
       };
       commitments: {
         Row: {
-          badgeLevel: number | null;
-          challenge_id: number | null;
+          badgeLevel: number;
+          challenge_id: number;
           created_at: string | null;
           frequency: string | null;
           id: number;
-          isUpToDate: boolean | null;
+          isUpToDate: boolean;
           timeframe: string | null;
           updatedAt: string | null;
-          user_id: string | null;
+          user_id: string;
         };
         Insert: {
-          badgeLevel?: number | null;
-          challenge_id?: number | null;
+          badgeLevel?: number;
+          challenge_id: number;
           created_at?: string | null;
           frequency?: string | null;
           id?: number;
-          isUpToDate?: boolean | null;
+          isUpToDate?: boolean;
           timeframe?: string | null;
           updatedAt?: string | null;
-          user_id?: string | null;
+          user_id: string;
         };
         Update: {
-          badgeLevel?: number | null;
-          challenge_id?: number | null;
+          badgeLevel?: number;
+          challenge_id?: number;
           created_at?: string | null;
           frequency?: string | null;
           id?: number;
-          isUpToDate?: boolean | null;
+          isUpToDate?: boolean;
           timeframe?: string | null;
           updatedAt?: string | null;
-          user_id?: string | null;
+          user_id?: string;
         };
       };
       profiles: {
