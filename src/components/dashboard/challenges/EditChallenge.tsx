@@ -64,24 +64,20 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              Name:{" "}
-              <Input
-                value={name} //needs to be from state
-                onChange={(e) => setName(e.target.value)}
-              />
+              Name:
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
             </Box>
+
             <Box>
-              Description:{" "}
+              Description:
               <Input
-                height="100px"
-                value={description} //needs to be from state
+                value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
             <Box>
-              Category:{" "}
+              Category:
               <Select
-                placeholder="Select a category"
                 value={categoryId} //needs to be from state
                 onChange={(e) => setCategoryId(e.target.value)}
               >
@@ -92,7 +88,6 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
                 <option value="4">music</option>
               </Select>
             </Box>
-            {categoryId}
           </ModalBody>
 
           <ModalFooter>

@@ -26,9 +26,9 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
   // const [allCategories, setAllCategories] = useState<any[]>([]);
   const [challengeName, setChallengeName] = useState(""); //sets to whatever value is typed into input
   const [categoryId, setCategoryId] = useState(""); //sets to ID number of selected category. currently setting to string
+  const [description, setDescription] = useState("");
 
   const handleSubmit = async () => {
-    const description = "this is a test";
     dispatch(postNewChallengeAsync({ challengeName, description, categoryId }));
     // name: challengeName,
     //     category_id: category,
@@ -62,6 +62,13 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
               <Input
                 value={challengeName}
                 onChange={(e) => setChallengeName(e.target.value)}
+              />
+            </Box>
+            <Box>
+              Description:
+              <Input
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
             <Box>
