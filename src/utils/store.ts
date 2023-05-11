@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import allChallengesReducer from "../components/dashboard/challenges/allChallengesSlice";
 import allCommitmentsReducer from '../components/dashboard/challenges/allCommitmentsSlice';
 import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
+import allRewardsReducer from "../components/dashboard/challenges/allRewardsSlice";
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     // auth: authReducer,
     // allCategories: allCategoriesReducer,
     singleChallenge: singleChallengeReducer,
+    allRewards: allRewardsReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // if we install the logger, uncomment this line
 });
