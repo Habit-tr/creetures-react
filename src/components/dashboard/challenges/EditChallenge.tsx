@@ -10,9 +10,9 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../../utils/reduxHooks";
 import { Challenge } from "../../../utils/supabaseTypes";
 import { editChallengeAsync } from "./singleChallengeSlice";
@@ -45,9 +45,8 @@ const EditChallenge = ({
   const [name, setName] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [categoryId, setCategoryId] = useState<any>("");
-
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const toast = useToast();
 
   useEffect(() => {
     setName(challenge.name);
@@ -66,6 +65,9 @@ const EditChallenge = ({
       editChallengeAsync(updatedChallenge),
     );
     setChallenge(returnedChallenge);
+    toast({
+      title: "Challenge updated.",
+    });
     onClose();
   };
 

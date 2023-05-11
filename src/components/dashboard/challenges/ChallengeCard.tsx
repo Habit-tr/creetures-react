@@ -9,8 +9,20 @@ interface ChallengeCardProps {
 const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
   return (
     <Link to={`/challenges/${challenge.id}`}>
-      <Card border="1px black solid" w="150px" h="150px">
-        <Text>{challenge.name}</Text>
+      <Card
+        margin="10px"
+        padding="10px"
+        w="150px"
+        h="150px"
+        bgColor="orange.200"
+        justify="center"
+      >
+        <Text fontSize="20px" align="center">
+          {challenge.name}
+        </Text>
+        <Text fontSize="10px" align="center">
+          category-name-goes-here
+        </Text>
       </Card>
     </Link>
   );

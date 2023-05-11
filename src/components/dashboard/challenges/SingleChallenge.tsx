@@ -1,5 +1,12 @@
 import { DeleteIcon } from "@chakra-ui/icons";
-import { Button, Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
@@ -37,8 +44,22 @@ const SingleChallenge = () => {
   const handleDelete = async (id: number | string) => {
     await dispatch(deleteChallengeAsync({ id }));
     isOpen && onClose();
+    toast({
+      title: "Challenge deleted.",
+    });
     navigate("/challenges");
   };
+  const toast = useToast(); //https://chakra-ui.com/docs/components/toast/usage
+
+  /*
+          <Button
+            onClick={() =>
+              toast({
+                title: `${status} toast`,
+                status: status,
+                isClosable: true,
+              })
+*/
 
   return (
     <>

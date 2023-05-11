@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAppDispatch } from "../../../utils/reduxHooks";
@@ -28,6 +29,8 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
   const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
 
+  const toast = useToast();
+
   const handleSubmit = async () => {
     dispatch(postNewChallengeAsync({ challengeName, description, categoryId }));
     // name: challengeName,
@@ -36,6 +39,9 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
     //     created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
 
     //will need to pull UUID from authenticated user object when that's available
+    toast({
+      title: "Challenge added.",
+    });
     onClose();
   };
 
