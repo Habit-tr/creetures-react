@@ -1,8 +1,25 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as ReactLink, useNavigate } from "react-router-dom";
 import supabase from "../../../utils/supabaseClient";
 import { useEffect } from "react";
+import "./login.css";
+import LoginNavbar from "../LoginNavbar/loginnavbar";
+import {
+  Flex,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Stack,
+  Link,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -27,51 +44,62 @@ export default function Login() {
     setLoading(false);
   }
 
-  useEffect(() => {}, [session]);
 
-  return (
-    <>
-      <div className="bg-grey-lighter min-h-screen flex flex-col">
-        <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-          <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-            <h1 className="mb-8 text-3xl text-center">Log In</h1>
-
-            <input
-              type="text"
-              className="block border border-grey-light w-full p-3 rounded mb-4"
-              name="email"
-              placeholder="Email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-
-            <input
-              type="password"
-              className="block border border-grey-light w-full p-3 rounded mb-4"
-              name="password"
-              placeholder="Password"
-              onChange={(e) => {
+    return (
+      <Flex
+        minH={'100vh'}
+        align={'center'}
+        justify={'center'}
+        bg={useColorModeValue('gray.50', 'gray.800')}>
+        <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+          <Stack align={'center'}>
+            <Heading fontSize={'4xl'}>Sign in to your account</Heading>
+            <Text fontSize={'lg'} color={'gray.600'}>
+              to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️
+            </Text>
+          </Stack>
+          <Box
+            rounded={'lg'}
+            bg={useColorModeValue('white', 'gray.700')}
+            boxShadow={'lg'}
+            p={8}>
+            <Stack spacing={4}>
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input type="email"   onChange={(e:any) => {
+                setEmail(e.target.value)}}/>
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input type="password"  onChange={(e) => {
                 setPassword(e.target.value);
-              }}
-            />
+              }}/>
+              </FormControl>
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: 'column', sm: 'row' }}
+                  align={'start'}
+                  justify={'space-between'}>
+                
+                  <Link  href="/forgotpassword" color={'blue.400'}>Forgot password?</Link>
+                </Stack>
+                <Button
+                 onClick={handleLogin}
+                  bg={'blue.400'}
+                  color={'white'}
+                  _hover={{
+                    bg: 'blue.500',
+                  }}>
+                  Sign in
+                </Button>
+              </Stack>
+             
+            </Stack>
+          </Box>
+        </Stack>
+      </Flex>
+    );
+  }
 
-            <button
-              type="submit"
-              className="w-full text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1 createAccountButton"
-              onClick={handleLogin}
-              disabled={loading}
-            >
-              Sign In
-            </button>
-          </div>
-          <div className="w-100 text-center mt-2">
-            <Link to="/forgotpassword">
-              <button className="forgotPasswordButton">Forgot Password?</button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+
+
