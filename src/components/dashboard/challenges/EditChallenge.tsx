@@ -12,8 +12,12 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../../utils/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { Challenge } from "../../../utils/supabaseTypes";
+import {
+  fetchAllCategoriesAsync,
+  selectCategories,
+} from "./allCategoriesSlice";
 import { editChallengeAsync } from "./singleChallengeSlice";
 
 interface EditChallengeProps {
@@ -23,33 +27,38 @@ interface EditChallengeProps {
   setChallenge: React.Dispatch<any>;
 }
 
-// const fetchCategories = async () => {
-//   let { data: categories, error } = await supabase
-//     .from("categories")
-//     .select("*");
-//   setAllCategories(categories);
-// };
-// useEffect(() => {
-//   fetchCategories();
-// }, []);
-
 const EditChallenge = ({
   isOpen,
   onClose,
   challenge,
   setChallenge,
 }: EditChallengeProps) => {
+  const [allCategories, setAllCategories] = useState<any[]>([]);
   const [name, setName] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [categoryId, setCategoryId] = useState<any>("");
 
   const dispatch = useAppDispatch();
 
+  const fetchedCategories = useAppSelector(selectCategories);
+
   useEffect(() => {
     setName(challenge.name);
     setDescription(challenge.description);
     setCategoryId(challenge.category_id);
   }, [challenge]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        dispatch(fetchAllCategoriesAsync());
+        setAllCategories(fetchedCategories);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchCategories();
+  }, [dispatch, fetchedCategories]);
 
   const handleEdit = async () => {
     const updatedChallenge = {
@@ -96,11 +105,12 @@ const EditChallenge = ({
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
-                {/* Will map over allCategories to render these options */}
-                <option value="1">fitness</option>
-                <option value="2">health</option>
-                <option value="3">diet</option>
-                <option value="4">music</option>
+                {allCategories &&
+                  allCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
               </Select>
             </Box>
           </ModalBody>

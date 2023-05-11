@@ -11,8 +11,12 @@ import {
   ModalOverlay,
   Select,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { useAppDispatch } from "../../../utils/reduxHooks";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
+import {
+  fetchAllCategoriesAsync,
+  selectCategories,
+} from "./allCategoriesSlice";
 import { postNewChallengeAsync } from "./allChallengesSlice";
 
 interface AddChallengeProps {
@@ -23,31 +27,31 @@ interface AddChallengeProps {
 const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
   const dispatch = useAppDispatch();
 
-  // const [allCategories, setAllCategories] = useState<any[]>([]);
+  const [allCategories, setAllCategories] = useState<any[]>([]);
   const [challengeName, setChallengeName] = useState(""); //sets to whatever value is typed into input
   const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = async () => {
     dispatch(postNewChallengeAsync({ challengeName, description, categoryId }));
-    // name: challengeName,
-    //     category_id: category,
-    //     description: "this is a test",
-    //     created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
-
+    //created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
     //will need to pull UUID from authenticated user object when that's available
     onClose();
   };
 
-  // const fetchCategories = async () => {
-  //   let { data: categories, error } = await supabase
-  //     .from("categories")
-  //     .select("*");
-  //   setAllCategories(categories);
-  // };
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, []);
+  const fetchedCategories = useAppSelector(selectCategories);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        dispatch(fetchAllCategoriesAsync());
+        setAllCategories(fetchedCategories);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchCategories();
+  }, [dispatch, fetchedCategories]);
 
   return (
     <>
@@ -77,14 +81,14 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
                 placeholder="Select a category"
                 onChange={(e) => setCategoryId(e.target.value)}
               >
-                {/* Will map over allCategories to render these options */}
-                <option value="1">fitness</option>
-                <option value="2">health</option>
-                <option value="3">diet</option>
-                <option value="4">music</option>
+                {allCategories &&
+                  allCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
               </Select>
             </Box>
-            {categoryId}
           </ModalBody>
 
           <ModalFooter>
