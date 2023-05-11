@@ -9,12 +9,11 @@ import {
 } from "./singleChallengeSlice";
 
 const SingleChallenge = () => {
-  const { id } = useParams();
   const [challenge, setChallenge] = useState<any>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const fetchedChallenge = useAppSelector(selectChallenge);
 
   useEffect(() => {

@@ -11,7 +11,7 @@ import {
   ModalOverlay,
   Select,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Challenge } from "../../../utils/supabaseTypes";
 // import { editNewChallengeAsync } from "./allChallengesSlice";
 
@@ -24,9 +24,15 @@ interface EditChallengeProps {
 const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
   // const dispatch = useAppDispatch();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState(""); //sets to ID number of selected category. currently setting to string
+  const [name, setName] = useState<any>("");
+  const [description, setDescription] = useState<any>("");
+  const [categoryId, setCategoryId] = useState<any>(""); //sets to ID number of selected category. currently setting to string
+
+  useEffect(() => {
+    setName(challenge.name);
+    setDescription(challenge.description);
+    setCategoryId(challenge.category_id);
+  }, [challenge]);
 
   const handleEdit = async () => {
     //resend the values available for editing to supabase
@@ -60,7 +66,7 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
             <Box>
               Name:{" "}
               <Input
-                value={challenge.name} //needs to be from state
+                value={name} //needs to be from state
                 onChange={(e) => setName(e.target.value)}
               />
             </Box>
@@ -68,7 +74,7 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
               Description:{" "}
               <Input
                 height="100px"
-                value={challenge.description} //needs to be from state
+                value={description} //needs to be from state
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
@@ -76,7 +82,7 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
               Category:{" "}
               <Select
                 placeholder="Select a category"
-                value={challenge.category_id} //needs to be from state
+                value={categoryId} //needs to be from state
                 onChange={(e) => setCategoryId(e.target.value)}
               >
                 {/* Will map over allCategories to render these options */}
