@@ -1,52 +1,52 @@
 import { Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch } from "../../../utils/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import EditChallenge from "./EditChallenge";
+import {
+  fetchSingleChallengeAsync,
+  selectChallenge,
+} from "./singleChallengeSlice";
 
 const SingleChallenge = () => {
   const { id } = useParams();
   const [challenge, setChallenge] = useState<any>({});
-  const [category, setCategory] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(fetchSingleChallengeAsync({ id }));
-    // async function fetchSingleChallenge(id: string) {
-    // const { data: fetchedChallenge } = await supabase
-    //   .from("challenges")
-    //   .select()
-    //   .match({ id })
-    //   .single();
-    // setChallenge(fetchedChallenge);
-    // const res = await supabase
-    //   .from("categories")
-    //   .select("name")
-    //   .eq("id", fetchedChallenge?.category_id)
-    //   .single();
-    // setCategory(res.data?.name ?? "");
-    // }
-    // fetchSingleChallenge(id!);
-  }, [id]);
+  const fetchedChallenge = useAppSelector(selectChallenge);
 
-  return challenge && category ? (
+  useEffect(() => {
+    const fetchChallenge = async () => {
+      await dispatch(fetchSingleChallengeAsync({ id }));
+      setChallenge(fetchedChallenge);
+    };
+    fetchChallenge();
+  }, []); //need to figure out this dependency array
+
+  return (
     <>
       <Heading>{challenge.name}</Heading>
-      <Text>
-        Category:&nbsp;&nbsp;
-        <Link to={`/challenges/categories/${category}`}>{category}</Link>
-      </Text>
-      <Button bgColor="purple.200" onClick={onOpen}>
-        Edit Challenge
-      </Button>
-      <Button onClick={() => navigate(`/challenges/${id}/commit`)}>
-        Commit to this Challenge
-      </Button>
+      {challenge && challenge.id && (
+        <>
+          <Text>
+            Category:&nbsp;&nbsp;
+            <Link to={`/challenges/categories/${challenge.category.name}`}>
+              {challenge.category.name}
+            </Link>
+          </Text>
+          <Button bgColor="purple.200" onClick={onOpen}>
+            Edit Challenge
+          </Button>
+          <Button onClick={() => navigate(`/challenges/${id}/commit`)}>
+            Commit to this Challenge
+          </Button>
+        </>
+      )}
       <EditChallenge isOpen={isOpen} onClose={onClose} challenge={challenge} />
     </>
-  ) : null;
+  );
 };
 
 export default SingleChallenge;
