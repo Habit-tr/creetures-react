@@ -62,20 +62,7 @@ export const postNewChallengeAsync: any = createAsyncThunk(
   },
 );
 
-// export const editNewChallengeAsync: any = createAsyncThunk(
-//   "editNewChallenge",
-//   async ({ challenge }: EditChallengeProps) => {
-//     try {
-//       const { data } = await supabase
-//         .from("challenges")
-//         .update({ challenge: challenge.id })
-//         .select();
-//       return data;
-//     } catch (error) {
-//       return error;
-//     }
-//   },
-// );
+
 
 export const fetchAllChallengesAsync: any = createAsyncThunk(
   "fetchAllChallengesAsync",
@@ -106,12 +93,6 @@ const allChallengesSlice = createSlice({
         state.value.push(action.payload);
       },
     );
-    // builder.addCase(
-    //   editNewChallengeAsync.fulfilled,
-    //   (state, action: PayloadAction<Challenge>) => {
-    //     state.value = action.payload;
-    //   },
-    // );
   },
 });
 

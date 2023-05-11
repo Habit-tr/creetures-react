@@ -23,6 +23,33 @@ export const fetchSingleChallengeAsync: any = createAsyncThunk(
   },
 );
 
+interface updatedChallenge {
+  id: number;
+  name: string;
+  description: string | null;
+  categoryId: number;
+}
+
+export const editChallengeAsync: any = createAsyncThunk(
+  "editChallengeAsync",
+  async (updatedChallenge: updatedChallenge) => {
+    try {
+      const { data } = await supabase
+        .from("challenges")
+        .update({
+          name: updatedChallenge.name,
+          description: updatedChallenge.description,
+          category_id: updatedChallenge.categoryId,
+        })
+        .eq("id", updatedChallenge.id)
+        .select();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
+
 interface singleChallengeState {
   value: Challenge | {};
 }
@@ -40,16 +67,16 @@ const singleChallengeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleChallengeAsync.fulfilled,
-      (state, action: PayloadAction<any>) => {
+      (state, action: PayloadAction<Challenge>) => {
         state.value = action.payload;
       },
     );
-    // builder.addCase(
-    //   editNewChallengeAsync.fulfilled,
-    //   (state, action: PayloadAction<Challenge>) => {
-    //     state.value = action.payload;
-    //   },
-    // );
+    builder.addCase(
+      editChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Challenge>) => {
+        state.value = action.payload;
+      },
+    );
   },
 });
 

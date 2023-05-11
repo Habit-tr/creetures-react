@@ -26,7 +26,7 @@ const SingleChallenge = () => {
       }
     };
     fetchChallenge();
-  }, [dispatch, urlId]); //need to figure out this dependency array
+  }, [dispatch, urlId, isOpen]); //need to figure out this dependency array
 
   useEffect(() => {
     setChallenge(fetchedChallenge);
@@ -56,6 +56,7 @@ const SingleChallenge = () => {
             isOpen={isOpen}
             onClose={onClose}
             challenge={challenge}
+            setChallenge={setChallenge} //passing setter down to refresh state when edited challenge comes back
           />
         </>
       )}
