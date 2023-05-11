@@ -1,15 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
-import { Challenge } from "../../../utils/supabaseTypes";
+import { Database } from '../../../utils/supabaseTypes';
 
-interface fetchSingleChallengeProps {
-  id: number | string;
-}
 
 export const fetchSingleChallengeAsync: any = createAsyncThunk(
   "fetchSingleChallengeAsync",
-  async ({ id }: fetchSingleChallengeProps) => {
+  async ({ id }: Database['public']['Tables']['challenges']['Update']) => {
     try {
       const { data } = await supabase
         .from("challenges")
@@ -51,12 +48,8 @@ export const editChallengeAsync: any = createAsyncThunk(
 );
 
 interface singleChallengeState {
-  value: Challenge | {};
+  value: Database['public']['Tables']['challenges']['Update'];
 }
-
-// interface EditChallengeProps {
-//  Challenge: Challenge.update
-// }
 
 const initialState: singleChallengeState = { value: {} };
 
@@ -67,13 +60,13 @@ const singleChallengeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleChallengeAsync.fulfilled,
-      (state, action: PayloadAction<Challenge>) => {
+      (state, action: PayloadAction<Database['public']['Tables']['challenges']['Row']>) => {
         state.value = action.payload;
       },
     );
     builder.addCase(
       editChallengeAsync.fulfilled,
-      (state, action: PayloadAction<Challenge>) => {
+      (state, action: PayloadAction<Database['public']['Tables']['challenges']['Update']>) => {
         state.value = action.payload;
       },
     );
