@@ -2,8 +2,22 @@ import React, { useRef, useState } from "react";
 import "./signup.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link as ReactLink } from "react-router-dom";
 import LoginNavbar from "../LoginNavbar/loginnavbar";
+import {
+  Flex,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Stack,
+  Link,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -34,69 +48,79 @@ const SignUp = () => {
 
     setLoading(false);
   };
-
   return (
-    <>
-      <LoginNavbar />
-      <div className="bg-grey-lighter min-h-screen flex flex-col">
-        <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-          <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-            <h1 className="mb-8 text-3xl text-center">Sign up</h1>
-            <input
-              type="text"
-              className="block border border-grey-light w-full p-3 rounded mb-4"
-              name="fullName"
-              placeholder="Full Name: "
-              onChange={(e) => {
-                setFullName(e.target.value);
-              }}
-            />
-
-            <input
-              type="text"
-              className="block border border-grey-light w-full p-3 rounded mb-4"
-              name="email"
-              placeholder="Email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-
-            <input
-              type="password"
-              className="block border border-grey-light w-full p-3 rounded mb-4"
-              name="password"
-              placeholder="Password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-            <input
-              type="password"
-              className="block border border-grey-light w-full p-3 rounded mb-4"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-              }}
-            />
-
-            <button
-              type="submit"
-              className="w-full text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1 createAccountButton"
-              onClick={handleSignUp}
-              disabled={loading}
-            >
-              Create Account and Login
-            </button>
-            <Link to="/login">
-              <div className="w-100 text-left mt-2">Already registered?</div>
-              <div>{error && <p>{error}</p>}</div>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </>
+    <Flex
+      minH={"100vh"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+        <Stack align={"center"}>
+          <Heading fontSize={"4xl"}>Sign up for your account</Heading>
+          <Text fontSize={"lg"} color={"gray.600"}>
+            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
+          </Text>
+        </Stack>
+        <Box
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"lg"}
+          p={8}
+        >
+          <Stack spacing={4}>
+            <FormControl id="email">
+              <FormLabel>Email address</FormLabel>
+              <Input
+                type="email"
+                onChange={(e: any) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+            </FormControl>
+            <FormControl id="Confirm Password">
+              <FormLabel>Confirm Password</FormLabel>
+              <Input
+                type="Confirm Password"
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                }}
+              />
+            </FormControl>
+            <Stack spacing={10}>
+              <Stack
+                direction={{ base: "column", sm: "row" }}
+                align={"start"}
+                justify={"space-between"}
+              >
+                <Link href="/forgotpassword" color={"blue.400"}>
+                  Forgot password?
+                </Link>
+              </Stack>
+              <Button
+                onClick={handleSignUp}
+                bg={"blue.400"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+              >
+                Sign up!
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
+    </Flex>
   );
 };
 
