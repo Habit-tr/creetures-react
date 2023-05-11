@@ -2,15 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
 import { Challenge } from "../../../utils/supabaseTypes";
-// const fetchCategories = async () => {
-//   let { data: categories, error } = await supabase
-//     .from("categories")
-//     .select("*");
-//   setAllCategories(categories);
-// };
-// useEffect(() => {
-//   fetchCategories();
-// }, []);
 
 interface fetchSingleChallengeProps {
   id: number | string;
@@ -25,14 +16,36 @@ export const fetchSingleChallengeAsync: any = createAsyncThunk(
         .select(`*, category: categories(name)`)
         .match({ id: id })
         .single();
-      // const { data: categoryData } = await supabase
-      //   .from("category")
-      //   .select("name")
-      //   .match({ id: data?.category_id })
-      //   .single();
       return data;
     } catch (err) {
       return err;
+    }
+  },
+);
+
+interface updatedChallenge {
+  id: number;
+  name: string;
+  description: string | null;
+  categoryId: number;
+}
+
+export const editChallengeAsync: any = createAsyncThunk(
+  "editChallengeAsync",
+  async (updatedChallenge: updatedChallenge) => {
+    try {
+      const { data } = await supabase
+        .from("challenges")
+        .update({
+          name: updatedChallenge.name,
+          description: updatedChallenge.description,
+          category_id: updatedChallenge.categoryId,
+        })
+        .eq("id", updatedChallenge.id)
+        .select();
+      return data;
+    } catch (error) {
+      return error;
     }
   },
 );
@@ -54,16 +67,16 @@ const singleChallengeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleChallengeAsync.fulfilled,
-      (state, action: PayloadAction<any>) => {
+      (state, action: PayloadAction<Challenge>) => {
         state.value = action.payload;
       },
     );
-    // builder.addCase(
-    //   editNewChallengeAsync.fulfilled,
-    //   (state, action: PayloadAction<Challenge>) => {
-    //     state.value = action.payload;
-    //   },
-    // );
+    builder.addCase(
+      editChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Challenge>) => {
+        state.value = action.payload;
+      },
+    );
   },
 });
 

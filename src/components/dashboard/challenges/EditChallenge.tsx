@@ -12,21 +12,38 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "../../../utils/reduxHooks";
 import { Challenge } from "../../../utils/supabaseTypes";
-// import { editNewChallengeAsync } from "./allChallengesSlice";
+import { editChallengeAsync } from "./singleChallengeSlice";
 
 interface EditChallengeProps {
   isOpen: boolean;
   onClose: () => void;
   challenge: Challenge;
+  setChallenge: React.Dispatch<any>;
 }
 
-const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
-  // const dispatch = useAppDispatch();
+// const fetchCategories = async () => {
+//   let { data: categories, error } = await supabase
+//     .from("categories")
+//     .select("*");
+//   setAllCategories(categories);
+// };
+// useEffect(() => {
+//   fetchCategories();
+// }, []);
 
+const EditChallenge = ({
+  isOpen,
+  onClose,
+  challenge,
+  setChallenge,
+}: EditChallengeProps) => {
   const [name, setName] = useState<any>("");
   const [description, setDescription] = useState<any>("");
-  const [categoryId, setCategoryId] = useState<any>(""); //sets to ID number of selected category. currently setting to string
+  const [categoryId, setCategoryId] = useState<any>("");
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setName(challenge.name);
@@ -35,8 +52,16 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
   }, [challenge]);
 
   const handleEdit = async () => {
-    //resend the values available for editing to supabase
-
+    const updatedChallenge = {
+      id: challenge.id,
+      name,
+      description,
+      categoryId,
+    };
+    const returnedChallenge = await dispatch(
+      editChallengeAsync(updatedChallenge),
+    );
+    setChallenge(returnedChallenge);
     onClose();
   };
   const handleDelete = async () => {
@@ -44,16 +69,6 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
 
     onClose();
   };
-
-  // const fetchCategories = async () => {
-  //   let { data: categories, error } = await supabase
-  //     .from("categories")
-  //     .select("*");
-  //   setAllCategories(categories);
-  // };
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, []);
 
   return (
     <>
@@ -64,25 +79,21 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              Name:{" "}
-              <Input
-                value={name} //needs to be from state
-                onChange={(e) => setName(e.target.value)}
-              />
+              Name:
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
             </Box>
+
             <Box>
-              Description:{" "}
+              Description:
               <Input
-                height="100px"
-                value={description} //needs to be from state
+                value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
             <Box>
-              Category:{" "}
+              Category:
               <Select
-                placeholder="Select a category"
-                value={categoryId} //needs to be from state
+                value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
                 {/* Will map over allCategories to render these options */}
@@ -92,7 +103,6 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
                 <option value="4">music</option>
               </Select>
             </Box>
-            {categoryId}
           </ModalBody>
 
           <ModalFooter>
