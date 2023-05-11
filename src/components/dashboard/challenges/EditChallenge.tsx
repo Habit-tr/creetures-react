@@ -11,31 +11,37 @@ import {
   ModalOverlay,
   Select,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { useAppDispatch } from "../../../utils/reduxHooks";
-import { editNewChallengeAsync } from "./allChallengesSlice";
+import { useEffect, useState } from "react";
+import { Challenge } from "../../../utils/supabaseTypes";
+// import { editNewChallengeAsync } from "./allChallengesSlice";
 
 interface EditChallengeProps {
   isOpen: boolean;
   onClose: () => void;
+  challenge: Challenge;
 }
 
-const EditChallenge = ({ isOpen, onClose }: EditChallengeProps) => {
-  const dispatch = useAppDispatch();
+const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
+  // const dispatch = useAppDispatch();
 
-  // const [allCategories, setAllCategories] = useState<any[]>([]);
-  const [challenge, setChallenge] = useState('')
-  const [categoryId, setCategoryId] = useState(""); //sets to ID number of selected category. currently setting to string
+  const [name, setName] = useState<any>("");
+  const [description, setDescription] = useState<any>("");
+  const [categoryId, setCategoryId] = useState<any>(""); //sets to ID number of selected category. currently setting to string
 
-  const handleSubmit = async () => {
-  
-    dispatch(editChallengeAsync({ challenge }));
-    // name: challengeName,
-    //     category_id: category,
-    //     description: "this is a test",
-    //     created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
+  useEffect(() => {
+    setName(challenge.name);
+    setDescription(challenge.description);
+    setCategoryId(challenge.category_id);
+  }, [challenge]);
 
-    //will need to pull UUID from authenticated user object when that's available
+  const handleEdit = async () => {
+    //resend the values available for editing to supabase
+
+    onClose();
+  };
+  const handleDelete = async () => {
+    //deleteById
+
     onClose();
   };
 
@@ -54,20 +60,29 @@ const EditChallenge = ({ isOpen, onClose }: EditChallengeProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bgColor="purple.200">Edit Your Challenge</ModalHeader>
+          <ModalHeader bgColor="red.200">Edit Your Challenge</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box>
               Name:{" "}
               <Input
-                value={challenge}
-                onChange={(e) => setChallenge(e.target.value)}
+                value={name} //needs to be from state
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Box>
+            <Box>
+              Description:{" "}
+              <Input
+                height="100px"
+                value={description} //needs to be from state
+                onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
             <Box>
               Category:{" "}
               <Select
                 placeholder="Select a category"
+                value={categoryId} //needs to be from state
                 onChange={(e) => setCategoryId(e.target.value)}
               >
                 {/* Will map over allCategories to render these options */}
@@ -83,9 +98,17 @@ const EditChallenge = ({ isOpen, onClose }: EditChallengeProps) => {
           <ModalFooter>
             <Button
               isDisabled={!challenge || !categoryId}
+              bgColor="red.200"
+              mr={3}
+              onClick={() => handleDelete()}
+            >
+              Delete
+            </Button>
+            <Button
+              isDisabled={!challenge || !categoryId}
               bgColor="green.200"
               mr={3}
-              onClick={() => handleSubmit()}
+              onClick={() => handleEdit()}
             >
               Save
             </Button>

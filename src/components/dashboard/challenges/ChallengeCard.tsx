@@ -1,4 +1,4 @@
-import { Card, Text } from "@chakra-ui/react";
+import { Button, Card, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Challenge } from "../../../utils/supabaseTypes";
 

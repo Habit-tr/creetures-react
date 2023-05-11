@@ -27,9 +27,6 @@ const AllChallenges = () => {
       <Button bgColor="purple.200" onClick={onOpen}>
         Create Challenge
       </Button>
-      <Button bgColor="purple.200" onClick={onOpen}>
-        Edit Challenge
-      </Button>
       {challenges && challenges.length ? (
         <Flex direction="row" maxW="900px" wrap="wrap">
           {challenges.map((challenge, id) => {
