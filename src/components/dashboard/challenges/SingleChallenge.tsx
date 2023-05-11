@@ -13,22 +13,31 @@ const SingleChallenge = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { urlId } = useParams();
   const fetchedChallenge = useAppSelector(selectChallenge);
 
   useEffect(() => {
+    const id = urlId;
     const fetchChallenge = async () => {
-      await dispatch(fetchSingleChallengeAsync({ id }));
-      setChallenge(fetchedChallenge);
+      try {
+        await dispatch(fetchSingleChallengeAsync({ id }));
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchChallenge();
-  }, []); //need to figure out this dependency array
+  }, [dispatch, urlId]); //need to figure out this dependency array
+
+  useEffect(() => {
+    setChallenge(fetchedChallenge);
+  }, [fetchedChallenge]);
 
   return (
     <>
-      <Heading>{challenge.name}</Heading>
       {challenge && challenge.id && (
         <>
+          <Heading>{challenge.name}</Heading>
+
           <Text>
             Category:&nbsp;&nbsp;
             <Link to={`/challenges/categories/${challenge.category.name}`}>
@@ -38,12 +47,17 @@ const SingleChallenge = () => {
           <Button bgColor="purple.200" onClick={onOpen}>
             Edit Challenge
           </Button>
-          <Button onClick={() => navigate(`/challenges/${id}/commit`)}>
+          <Button onClick={() => navigate(`/challenges/${urlId}/commit`)}>
             Commit to this Challenge
           </Button>
+
+          <EditChallenge
+            isOpen={isOpen}
+            onClose={onClose}
+            challenge={challenge}
+          />
         </>
       )}
-      <EditChallenge isOpen={isOpen} onClose={onClose} challenge={challenge} />
     </>
   );
 };

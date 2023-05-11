@@ -20,13 +20,11 @@ export const fetchSingleChallengeAsync: any = createAsyncThunk(
   "fetchSingleChallengeAsync",
   async ({ id }: fetchSingleChallengeProps) => {
     try {
-      console.log("id in thunk: ", id);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("challenges")
         .select(`*, category: categories(name)`)
         .match({ id: id })
         .single();
-      console.log("data is ", data);
       // const { data: categoryData } = await supabase
       //   .from("category")
       //   .select("name")
