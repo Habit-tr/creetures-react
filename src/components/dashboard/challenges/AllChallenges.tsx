@@ -24,7 +24,7 @@ const AllChallenges = () => {
   return (
     <>
       <Heading>All Challenges</Heading>
-      <Button bgColor="purple.200" onClick={onOpen}>
+      <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
         Create Challenge
       </Button>
       {challenges && challenges.length ? (

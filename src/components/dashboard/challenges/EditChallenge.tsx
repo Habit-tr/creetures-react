@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
@@ -24,6 +25,7 @@ interface EditChallengeProps {
   isOpen: boolean;
   onClose: () => void;
   challenge: Challenge;
+  handleDelete: (id: number | string) => Promise<void>;
   setChallenge: React.Dispatch<any>;
 }
 
@@ -31,14 +33,15 @@ const EditChallenge = ({
   isOpen,
   onClose,
   challenge,
+  handleDelete,
   setChallenge,
 }: EditChallengeProps) => {
   const [allCategories, setAllCategories] = useState<any[]>([]);
   const [name, setName] = useState<any>("");
   const [description, setDescription] = useState<any>("");
   const [categoryId, setCategoryId] = useState<any>("");
-
   const dispatch = useAppDispatch();
+  const toast = useToast();
 
   const fetchedCategories = useAppSelector(selectCategories);
 
@@ -71,11 +74,9 @@ const EditChallenge = ({
       editChallengeAsync(updatedChallenge),
     );
     setChallenge(returnedChallenge);
-    onClose();
-  };
-  const handleDelete = async () => {
-    //deleteById
-
+    toast({
+      title: "Challenge updated.",
+    });
     onClose();
   };
 
@@ -95,7 +96,7 @@ const EditChallenge = ({
             <Box>
               Description:
               <Input
-                value={description}
+                value={description || ""}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
@@ -120,7 +121,7 @@ const EditChallenge = ({
               isDisabled={!challenge || !categoryId}
               bgColor="red.200"
               mr={3}
-              onClick={() => handleDelete()}
+              onClick={() => handleDelete(challenge.id)}
             >
               Delete
             </Button>

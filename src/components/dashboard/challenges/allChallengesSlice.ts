@@ -62,7 +62,26 @@ export const postNewChallengeAsync: any = createAsyncThunk(
   },
 );
 
+interface deleteChallengeProps {
+  id: number | string;
+}
 
+export const deleteChallengeAsync: any = createAsyncThunk(
+  "deleteChallengeAsync",
+  async ({ id }: deleteChallengeProps) => {
+    try {
+      const { data } = await supabase
+        .from("challenges")
+        .delete()
+        .eq("id", id)
+        .select();
+      console.log("returned from delete request: ", data);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
 
 export const fetchAllChallengesAsync: any = createAsyncThunk(
   "fetchAllChallengesAsync",
@@ -91,6 +110,14 @@ const allChallengesSlice = createSlice({
       postNewChallengeAsync.fulfilled,
       (state, action: PayloadAction<Challenge>) => {
         state.value.push(action.payload);
+      },
+    );
+    builder.addCase(
+      deleteChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Challenge>) => {
+        state.value = state.value.filter(
+          (challenge) => challenge.id !== action.payload.id,
+        );
       },
     );
   },

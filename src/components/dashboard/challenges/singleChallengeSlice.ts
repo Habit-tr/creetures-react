@@ -47,6 +47,11 @@ export const editChallengeAsync: any = createAsyncThunk(
   },
 );
 
+//remember to check Supabase for the code to use with each individual database table
+
+//this is redundant with fetchSingleChallengeProps;
+//could refactor to merge them:
+
 interface singleChallengeState {
   value: Database['public']['Tables']['challenges']['Update'];
 }

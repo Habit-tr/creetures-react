@@ -1,8 +1,17 @@
-import { Button, Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import EditChallenge from "./EditChallenge";
+import { deleteChallengeAsync } from "./allChallengesSlice";
 import {
   fetchSingleChallengeAsync,
   selectChallenge,
@@ -32,6 +41,26 @@ const SingleChallenge = () => {
     setChallenge(fetchedChallenge);
   }, [fetchedChallenge]);
 
+  const handleDelete = async (id: number | string) => {
+    await dispatch(deleteChallengeAsync({ id }));
+    isOpen && onClose();
+    toast({
+      title: "Challenge deleted.",
+    });
+    navigate("/challenges");
+  };
+  const toast = useToast(); //https://chakra-ui.com/docs/components/toast/usage
+
+  /*
+          <Button
+            onClick={() =>
+              toast({
+                title: `${status} toast`,
+                status: status,
+                isClosable: true,
+              })
+*/
+
   return (
     <>
       {challenge && challenge.id && (
@@ -46,16 +75,28 @@ const SingleChallenge = () => {
           {challenge.description && (
             <Flex>Description: {challenge.description}</Flex>
           )}
-          <Button bgColor="purple.200" onClick={onOpen}>
-            Edit Challenge
+          <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
+            Edit
           </Button>
-          <Button onClick={() => navigate(`/challenges/${urlId}/commit`)}>
-            Commit to this Challenge
+          <Button
+            margin="10px"
+            bgColor="green.200"
+            onClick={() => navigate(`/challenges/${urlId}/commit`)}
+          >
+            Commit
+          </Button>
+          <Button
+            margin="10px"
+            bgColor="red.200"
+            onClick={() => handleDelete(challenge.id)}
+          >
+            <DeleteIcon />
           </Button>
           <EditChallenge
             isOpen={isOpen}
             onClose={onClose}
             challenge={challenge}
+            handleDelete={handleDelete}
             setChallenge={setChallenge} //passing setter down to refresh state when edited challenge comes back
           />
         </>
