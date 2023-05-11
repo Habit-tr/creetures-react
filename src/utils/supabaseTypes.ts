@@ -15,7 +15,7 @@ export interface Challenge {
   description: string | null;
 }
 
-export interface challenges {
+export interface Challenges {
   Row: {
     category_id: number | null;
     created_at: string | null;
