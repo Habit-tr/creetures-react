@@ -21,7 +21,7 @@ const DashboardRoutes = () => {
         <Route path="/medals" element={<RenderMedals />} />
         <Route path="/rewards" element={<Rewards />} />
         <Route path="/challenges" element={<AllChallenges />} />
-        <Route path="/challenges/:id" element={<SingleChallenge />} />
+        <Route path="/challenges/:urlId" element={<SingleChallenge />} />
         <Route path="/challenges/categories" element={<AllCategories />} />
         <Route
           path="/challenges/categories/:name"
