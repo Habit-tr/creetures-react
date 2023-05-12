@@ -95,23 +95,7 @@ const AllChallenges = () => {
       <Heading>All Challenges</Heading>
       {/* <Box>isShowingAll: {JSON.stringify(isShowingAll)}</Box>
       <Box>categoryToDisplay: {JSON.stringify(selectedCategoryId)}</Box> */}
-      <Flex justifyContent="space-evenly" maxW="900px" wrap="wrap">
-        <Box>
-          <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
-            Create Challenge
-          </Button>
-        </Box>
-        <Box>
-          <Checkbox
-            isChecked={!isShowingAll}
-            onChange={() => {
-              setIsShowingAll(!isShowingAll);
-              filterChallenges(challenges);
-            }}
-          >
-            Only My Challenges
-          </Checkbox>
-        </Box>
+      <Flex justifyContent="space-between" maxW="900px" wrap="wrap">
         <Box>
           <Select
             value={selectedCategoryId}
@@ -133,11 +117,35 @@ const AllChallenges = () => {
               ))}
           </Select>
         </Box>
+        <Box>
+          <Checkbox
+            isChecked={!isShowingAll}
+            onChange={() => {
+              setIsShowingAll(!isShowingAll);
+              filterChallenges(challenges);
+            }}
+          >
+            Only My Challenges
+          </Checkbox>
+        </Box>
+        <Box>
+          <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
+            Create Challenge
+          </Button>
+        </Box>
       </Flex>
       {filteredChallenges && filteredChallenges.length ? (
         <Flex direction="row" maxW="900px" wrap="wrap">
           {filteredChallenges.map((challenge, id) => {
-            return <ChallengeCard key={id} challenge={challenge} />;
+            return (
+              <ChallengeCard
+                key={id}
+                challenge={challenge}
+                category={allCategories.find(
+                  (category) => category.id === challenge.category_id,
+                )}
+              />
+            );
           })}
         </Flex>
       ) : null}

@@ -18,7 +18,7 @@ const HamburgerMenu = () => {
         icon={<HamburgerIcon />}
         variant="outline"
         m="5px"
-        bgColor="purple.200"
+        bgColor="green.200"
       />
       <MenuList>
         <MenuItem onClick={() => navigate("/")}>Home</MenuItem>

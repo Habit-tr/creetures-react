@@ -1,12 +1,27 @@
-import { Box, Center } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
-    <Box p="20px" minH="50px" mt="40px" bgColor="green.200">
-      <Center>
-        Ben | Simin | Danny | Andrew | Jack - Fullstack Academy, May 2023
-      </Center>
-    </Box>
+    <Flex
+      display="flex"
+      width="100%"
+      p="20px"
+      minH="50px"
+      mt="40px"
+      bgColor="black"
+      justifyContent="space-between"
+      color="green.200"
+    >
+      <Flex width="50%" justify="space-between">
+        <Text>Ben</Text> <Text>Simin</Text> <Text>Danny</Text>{" "}
+        <Text>Andrew</Text> <Text>Jack</Text>
+      </Flex>
+      <Flex width="20%"></Flex>
+      <Flex width="30%" justify="space-between">
+        <Text>Fullstack Academy</Text>
+        <Text>May 2023</Text>
+      </Flex>
+    </Flex>
   );
 };
 
