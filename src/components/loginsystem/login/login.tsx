@@ -95,6 +95,9 @@ export default function Login() {
                 <Link href="/forgotpassword" color={"blue.400"}>
                   Forgot password?
                 </Link>
+                <Link href="/login" color={"blue.400"}>
+                  Need to sign up?
+                </Link>
               </Stack>
               <Button
                 onClick={handleLogin}
