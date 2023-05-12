@@ -12,6 +12,7 @@ import Footer from "./footer/Footer";
 import Navbar from "./navbar/Navbar";
 import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
+import SingleReward from "./profile/SingleReward";
 
 const DashboardRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const DashboardRoutes = () => {
         <Route path="/commitments/:id" element={<SingleCommitment />} />
         <Route path="/medals" element={<RenderMedals />} />
         <Route path="/rewards" element={<Rewards />} />
+        <Route path="/rewards/:urlId" element={<SingleReward />} />
         <Route path="/challenges" element={<AllChallenges />} />
         <Route path="/challenges/:urlId" element={<SingleChallenge />} />
         <Route path="/challenges/categories" element={<AllCategories />} />

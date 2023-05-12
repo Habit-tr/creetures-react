@@ -23,7 +23,7 @@ const Rewards = () => {
             <>
               <pre>{JSON.stringify(reward, null, 2)}</pre>;
               <Button bgColor="purple.200" onClick={onOpen}>
-                <Link to={`/reward/${reward.id}`}>View reward</Link>
+                <Link to={`/rewards/${reward.id}`}>View reward</Link>
               </Button>
             </>
           ))}
