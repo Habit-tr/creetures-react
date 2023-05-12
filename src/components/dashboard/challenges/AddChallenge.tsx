@@ -13,6 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import {
   fetchAllCategoriesAsync,
@@ -27,7 +28,8 @@ interface AddChallengeProps {
 
 const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
   const dispatch = useAppDispatch();
-
+  const { session } = useAuth();
+  const user = session.session.user;
   const [allCategories, setAllCategories] = useState<any[]>([]);
   const [challengeName, setChallengeName] = useState(""); //sets to whatever value is typed into input
   const [categoryId, setCategoryId] = useState("");
@@ -36,7 +38,14 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
   const toast = useToast();
 
   const handleSubmit = async () => {
-    dispatch(postNewChallengeAsync({ challengeName, description, categoryId }));
+    dispatch(
+      postNewChallengeAsync({
+        challengeName,
+        description,
+        categoryId,
+        createdBy: user.id,
+      }),
+    );
     //created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
     //will need to pull UUID from authenticated user object when that's available
     toast({
@@ -67,6 +76,7 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
           <ModalHeader bgColor="purple.200">Create a New Challenge</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            {JSON.stringify(user.id)}
             <Box>
               Name:{" "}
               <Input
