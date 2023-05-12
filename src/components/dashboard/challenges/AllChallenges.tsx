@@ -38,7 +38,7 @@ const AllChallenges = () => {
   useEffect(() => {
     // console.log("refetching");
     dispatch(fetchAllChallengesAsync());
-  }, [dispatch]);
+  }, [dispatch, isOpen]);
 
   const fetchedCategories = useAppSelector(selectCategories);
 
@@ -64,38 +64,37 @@ const AllChallenges = () => {
   }, [fetchedChallenges]);
 
   const filterChallenges = (challenges: Challenge[]) => {
-    debugger;
+    // debugger;
     //build a new array of all possible challenges
-    setChallenges(fetchedChallenges);
-    setFilteredChallenges(fetchedChallenges);
     let newlyFilteredChallenges = [...fetchedChallenges];
 
     //filter by category if needed
     if (selectedCategoryId > 0) {
-      console.log("before category sort: ", newlyFilteredChallenges);
+      // console.log("before category sort: ", newlyFilteredChallenges);
       newlyFilteredChallenges = newlyFilteredChallenges.filter(
         (challenge) => challenge.category_id === selectedCategoryId,
       );
-      console.log("after category sort: ", newlyFilteredChallenges);
+      // console.log("after category sort: ", newlyFilteredChallenges);
     }
+    let onceFilteredChallenges = [...newlyFilteredChallenges];
     //filter out the non-owned ones if needed
     if (isShowingAll) {
-      console.log("before mine sort: ", newlyFilteredChallenges);
-      newlyFilteredChallenges = newlyFilteredChallenges.filter(
+      // console.log("before mine sort: ", onceFilteredChallenges);
+      onceFilteredChallenges = onceFilteredChallenges.filter(
         (challenge) => challenge.created_by === user.id,
       );
-      console.log("after mine sort: ", newlyFilteredChallenges);
+      // console.log("after mine sort: ", onceFilteredChallenges);
     }
-    console.log("final after all sorting: ", newlyFilteredChallenges);
-    setFilteredChallenges(newlyFilteredChallenges);
+    const twiceFilteredChallenges = [...onceFilteredChallenges];
+    // console.log("final after all sorting: ", twiceFilteredChallenges);
+    setFilteredChallenges(twiceFilteredChallenges);
   };
-  // filterChallenges(challenges);
 
   return (
     <>
       <Heading>All Challenges</Heading>
-      <Box>isShowingAll: {JSON.stringify(isShowingAll)}</Box>
-      <Box>categoryToDisplay: {JSON.stringify(selectedCategoryId)}</Box>
+      {/* <Box>isShowingAll: {JSON.stringify(isShowingAll)}</Box>
+      <Box>categoryToDisplay: {JSON.stringify(selectedCategoryId)}</Box> */}
       <Flex justifyContent="space-evenly">
         <Box>
           <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
@@ -117,9 +116,10 @@ const AllChallenges = () => {
           <Select
             value={selectedCategoryId}
             onChange={(e) => {
-              console.log("clicked Id is ", e.target.value);
+              // console.log("clicked Id is ", e.target.value);
               setSelectedCategoryId(parseInt(e.target.value));
               filterChallenges(challenges);
+              setChallenges(fetchedChallenges);
             }}
           >
             <option key={0} value={0}>
