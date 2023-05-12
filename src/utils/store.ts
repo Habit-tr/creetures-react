@@ -4,18 +4,19 @@ import allChallengesReducer from "../components/dashboard/challenges/allChalleng
 import allCommitmentsReducer from "../components/dashboard/challenges/allCommitmentsSlice";
 import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
 import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
+import singleCommitmentReducer from '../components/dashboard/challenges/singleCommitmentSlice';
 import singleRewardReducer from "../components/dashboard/profile/singleRewardSlice";
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
   reducer: {
+    allCategories: allCategoriesReducer,
     allChallenges: allChallengesReducer, //documentation: https://redux-toolkit.js.org/usage/usage-with-typescript
     allCommitments: allCommitmentsReducer,
-    allCategories: allCategoriesReducer,
-    // auth: authReducer,
-    // allCategories: allCategoriesReducer,
-    singleChallenge: singleChallengeReducer,
     allRewards: allRewardsReducer,
+    // auth: authReducer,
+    singleChallenge: singleChallengeReducer,
+    singleCommitment: singleCommitmentReducer,
     singleReward: singleRewardReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // if we install the logger, uncomment this line
