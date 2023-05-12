@@ -63,21 +63,13 @@ const AllChallenges = () => {
     setIsShowingAll(true);
   }, [fetchedChallenges]);
 
-  const filterChallenges = (action: string, challenges: Challenge[]) => {
-    console.log("action is ", action, " and typeof action is ", typeof action);
-    console.log("type of category_id is ", typeof challenges[0].category_id);
-
+  const filterChallenges = (challenges: Challenge[]) => {
+    debugger;
     //build a new array of all possible challenges
     setChallenges(fetchedChallenges);
     setFilteredChallenges(fetchedChallenges);
     let newlyFilteredChallenges = [...fetchedChallenges];
 
-    //handle the action to change state.
-    if (action === "checkbox") {
-      setIsShowingAll(!isShowingAll);
-    } else {
-      setSelectedCategoryId(parseInt(action));
-    }
     //filter by category if needed
     if (selectedCategoryId > 0) {
       console.log("before category sort: ", newlyFilteredChallenges);
@@ -114,7 +106,8 @@ const AllChallenges = () => {
           <Checkbox
             isChecked={!isShowingAll}
             onChange={() => {
-              filterChallenges("checkbox", challenges);
+              setIsShowingAll(!isShowingAll);
+              filterChallenges(challenges);
             }}
           >
             Only My Challenges
@@ -124,7 +117,9 @@ const AllChallenges = () => {
           <Select
             value={selectedCategoryId}
             onChange={(e) => {
-              filterChallenges(e.target.value, challenges);
+              console.log("clicked Id is ", e.target.value);
+              setSelectedCategoryId(parseInt(e.target.value));
+              filterChallenges(challenges);
             }}
           >
             <option key={0} value={0}>
