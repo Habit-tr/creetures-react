@@ -1,10 +1,4 @@
-import {
-  AddIcon,
-  EditIcon,
-  ExternalLinkIcon,
-  HamburgerIcon,
-  RepeatIcon,
-} from "@chakra-ui/icons";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   IconButton,
   Menu,
@@ -12,7 +6,10 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router";
 const HamburgerMenu = () => {
+  const navigate = useNavigate();
+
   return (
     <Menu>
       <MenuButton
@@ -24,18 +21,18 @@ const HamburgerMenu = () => {
         bgColor="purple.200"
       />
       <MenuList>
-        <MenuItem icon={<AddIcon />} command="⌘T">
-          Home
+        <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
+        <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
+        <MenuItem onClick={() => navigate("/commitments")}>
+          Commitments
         </MenuItem>
-        <MenuItem icon={<ExternalLinkIcon />} command="⌘N">
-          Profile
+        <MenuItem onClick={() => navigate("/rewards")}>Rewards</MenuItem>
+        <MenuItem onClick={() => navigate("/friends")}>Friends</MenuItem>
+        <MenuItem onClick={() => navigate("/challenges")}>Challenges</MenuItem>
+        <MenuItem onClick={() => navigate("/challenges/categories")}>
+          Categories
         </MenuItem>
-        <MenuItem icon={<RepeatIcon />} command="⌘⇧N">
-          Challenges
-        </MenuItem>
-        <MenuItem icon={<EditIcon />} command="⌘O">
-          Logout
-        </MenuItem>
+        <MenuItem isDisabled={true}>Logout</MenuItem>
       </MenuList>
     </Menu>
   );
