@@ -43,7 +43,7 @@ export const postNewChallengeAsync: any = createAsyncThunk(
     challengeName,
     description,
     categoryId,
-    createdBy = "31928c26-8a01-41c6-947b-0fadccabf3eb",
+    createdBy,
   }: postNewChallengeProps) => {
     try {
       const { data } = await supabase
