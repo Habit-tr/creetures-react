@@ -95,7 +95,7 @@ const AllChallenges = () => {
       <Heading>All Challenges</Heading>
       {/* <Box>isShowingAll: {JSON.stringify(isShowingAll)}</Box>
       <Box>categoryToDisplay: {JSON.stringify(selectedCategoryId)}</Box> */}
-      <Flex justifyContent="space-evenly">
+      <Flex justifyContent="space-evenly" maxW="900px" wrap="wrap">
         <Box>
           <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
             Create Challenge
