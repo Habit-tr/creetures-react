@@ -140,6 +140,7 @@ const AllChallenges = () => {
             return (
               <ChallengeCard
                 key={id}
+                user={user}
                 challenge={challenge}
                 category={allCategories.find(
                   (category) => category.id === challenge.category_id,

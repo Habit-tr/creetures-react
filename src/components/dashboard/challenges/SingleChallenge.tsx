@@ -1,4 +1,4 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -65,15 +65,15 @@ const SingleChallenge = () => {
           {challenge.description && (
             <Flex>Description: {challenge.description}</Flex>
           )}
-          <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
-            Edit
-          </Button>
           <Button
             margin="10px"
             bgColor="green.200"
             onClick={() => navigate(`/challenges/${urlId}/commit`)}
           >
             Commit
+          </Button>
+          <Button margin="10px" bgColor="orange.200" onClick={onOpen}>
+            <EditIcon />
           </Button>
           <Button
             margin="10px"
