@@ -73,7 +73,6 @@ export const deleteChallengeAsync: any = createAsyncThunk(
         .delete()
         .eq("id", id)
         .select();
-      console.log("returned from delete request: ", data);
       return data;
     } catch (error) {
       return error;

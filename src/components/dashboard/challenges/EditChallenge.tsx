@@ -18,7 +18,7 @@ import { Challenge } from "../../../utils/supabaseTypes";
 import {
   fetchAllCategoriesAsync,
   selectCategories,
-} from "./allCategoriesSlice";
+} from "./categories/allCategoriesSlice";
 import { editChallengeAsync } from "./singleChallengeSlice";
 
 interface EditChallengeProps {

@@ -15,13 +15,13 @@ import { Challenge } from "../../../utils/supabaseTypes";
 import AddChallenge from "./AddChallenge";
 import ChallengeCard from "./ChallengeCard";
 import {
-  fetchAllCategoriesAsync,
-  selectCategories,
-} from "./allCategoriesSlice";
-import {
   fetchAllChallengesAsync,
   selectChallenges,
 } from "./allChallengesSlice";
+import {
+  fetchAllCategoriesAsync,
+  selectCategories,
+} from "./categories/allCategoriesSlice";
 
 const AllChallenges = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
