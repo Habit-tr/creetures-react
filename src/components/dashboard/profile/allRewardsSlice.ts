@@ -7,6 +7,12 @@ interface allRewardsState {
   value: Database['public']['Tables']['rewards']['Row'][];
 }
 
+interface postNewRewardProps {
+  rewardName: string;
+  description: string;
+  user_id: string;
+}
+
 const initialState: allRewardsState = { value: [] };
 
 export const fetchAllRewardsAsync: any = createAsyncThunk(
@@ -23,15 +29,73 @@ export const fetchAllRewardsAsync: any = createAsyncThunk(
   },
 );
 
+export const postNewRewardAsync: any = createAsyncThunk(
+  'postNewRewardAsync',
+  async({
+    rewardName,
+    description,
+    user_id,
+  }: postNewRewardProps) => {
+    try {
+      const { data } = await supabase
+        .from("rewards")
+        .insert({
+          name: rewardName,
+          description: description,
+          user_id: user_id,
+        })
+        .select();
+        console.log(data);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
+
+interface deleteRewardProps {
+  id: number | string;
+}
+
+export const deleteRewardAsync: any = createAsyncThunk(
+  'deleteRewardAsync',
+  async ({ id }: deleteRewardProps) => {
+    try {
+      const { data } = await supabase
+        .from("rewards")
+        .delete()
+        .eq("id", id)
+        .select();
+        return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
+
 const allRewardsSlice = createSlice({
   name: "allRewards",
   initialState,
   reducers: {},
-  extraReducers: (builders) => {
-    builders.addCase(
+  extraReducers: (builder) => {
+    builder.addCase(
       fetchAllRewardsAsync.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      postNewRewardAsync.fulfilled,
+      (state, action: PayloadAction<any>) => { //should I use update here? gives me linter error
+        state.value.push(action.payload);
+      },
+    );
+    builder.addCase(
+      deleteRewardAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['rewards']['Row']>) => {
+        state.value = state.value.filter(
+          (reward) => reward.id !== action.payload.id,
+        );
       },
     );
   },
