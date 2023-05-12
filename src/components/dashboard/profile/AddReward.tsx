@@ -39,7 +39,9 @@ const AddReward = ({ isOpen, onClose }: AddRewardProps) => {
       }),
     );
     toast({
-      title: "Reward added."
+      title: "Reward added",
+      duration: 5000,
+      isClosable: true,
     });
     onClose();
   };

@@ -45,7 +45,6 @@ export const postNewRewardAsync: any = createAsyncThunk(
           user_id: user_id,
         })
         .select();
-        console.log(data);
       return data;
     } catch (error) {
       return error;
@@ -66,6 +65,7 @@ export const deleteRewardAsync: any = createAsyncThunk(
         .delete()
         .eq("id", id)
         .select();
+        console.log(data);
         return data;
     } catch (error) {
       return error;
