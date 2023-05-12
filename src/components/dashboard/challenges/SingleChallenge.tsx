@@ -51,23 +51,13 @@ const SingleChallenge = () => {
   };
   const toast = useToast(); //https://chakra-ui.com/docs/components/toast/usage
 
-  /*
-          <Button
-            onClick={() =>
-              toast({
-                title: `${status} toast`,
-                status: status,
-                isClosable: true,
-              })
-*/
-
   return (
     <>
       {challenge && challenge.id && (
         <>
-          <Heading>{challenge.name}</Heading>
+          <Heading>Challenge: {challenge.name}</Heading>
           <Text>
-            Category:&nbsp;&nbsp;
+            Category:{" "}
             <Link to={`/challenges/categories/${challenge.category.name}`}>
               {challenge.category.name}
             </Link>
