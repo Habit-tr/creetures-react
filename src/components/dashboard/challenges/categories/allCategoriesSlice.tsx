@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../../utils/store";
-import supabase from "../../../utils/supabaseClient";
-import { Database } from "../../../utils/supabaseTypes";
+import { RootState } from "../../../../utils/store";
+import supabase from "../../../../utils/supabaseClient";
+import { Database } from "../../../../utils/supabaseTypes";
 
 export const fetchAllCategoriesAsync: any = createAsyncThunk(
   "fetchAllCategoriesAsync",
@@ -33,6 +33,27 @@ export const postNewCategoryAsync: any = createAsyncThunk(
   },
 );
 
+interface deleteCategoryProps {
+  id: number | string;
+}
+
+export const deleteCategoryAsync: any = createAsyncThunk(
+  "deleteCategoryAsync",
+  async ({ id }: deleteCategoryProps) => {
+    try {
+      const { data } = await supabase
+        .from("categories")
+        .delete()
+        .eq("id", id)
+        .select();
+      console.log("returned from delete request: ", data);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
+
 interface allCategoriesState {
   value: Database["public"]["Tables"]["categories"]["Row"][];
 }
@@ -54,6 +75,14 @@ const allCategoriesSlice = createSlice({
       postNewCategoryAsync.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.value.push(action.payload);
+      },
+    );
+    builder.addCase(
+      deleteCategoryAsync.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.value = state.value.filter(
+          (category) => category.id !== action.payload.id,
+        );
       },
     );
   },
