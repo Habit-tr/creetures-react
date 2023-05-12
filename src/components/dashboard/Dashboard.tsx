@@ -30,7 +30,7 @@ const Dashboard = () => {
       <Text fontSize="20px">It's a beautiful day for a new habit!</Text>
       <Flex direction="row" flexWrap="wrap">
         <Box
-          w="575px"
+          w="550px"
           h="300px"
           border="2px black solid"
           margin="20px"

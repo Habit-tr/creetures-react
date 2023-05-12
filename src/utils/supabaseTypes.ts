@@ -13,6 +13,9 @@ export interface Challenge {
   id: number;
   name: string | null;
   description: string | null;
+  category?: {
+    name?: string;
+  };
 }
 
 export interface Challenges {

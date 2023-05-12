@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import AddCommitment from "./challenges/AddCommitment";
@@ -19,24 +20,26 @@ const DashboardRoutes = () => {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/friends" element={<Friends />} />
-        <Route path="/commitments" element={<AllCommitments />} />
-        <Route path="/commitments/:id" element={<SingleCommitment />} />
-        <Route path="/medals" element={<RenderMedals />} />
-        <Route path="/rewards" element={<Rewards />} />
-        <Route path="/rewards/:urlId" element={<SingleReward />} />
-        <Route path="/challenges" element={<AllChallenges />} />
-        <Route path="/challenges/:urlId" element={<SingleChallenge />} />
-        <Route path="/challenges/categories" element={<AllCategories />} />
-        <Route
-          path="/challenges/categories/:name"
-          element={<SingleCategory />}
-        />
-        <Route path="/challenges/:id/commit" element={<AddCommitment />} />
-      </Routes>
+      <Box padding="20px">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/commitments" element={<AllCommitments />} />
+          <Route path="/commitments/:id" element={<SingleCommitment />} />
+          <Route path="/medals" element={<RenderMedals />} />
+          <Route path="/rewards" element={<Rewards />} />
+          <Route path="/rewards/:urlId" element={<SingleReward />} />
+          <Route path="/challenges" element={<AllChallenges />} />
+          <Route path="/challenges/:urlId" element={<SingleChallenge />} />
+          <Route path="/challenges/categories" element={<AllCategories />} />
+          <Route
+            path="/challenges/categories/:name"
+            element={<SingleCategory />}
+          />
+          <Route path="/challenges/:id/commit" element={<AddCommitment />} />
+        </Routes>
+      </Box>
       <Footer />
     </>
   );
