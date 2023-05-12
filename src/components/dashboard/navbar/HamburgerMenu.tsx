@@ -32,7 +32,6 @@ const HamburgerMenu = () => {
         <MenuItem onClick={() => navigate("/challenges/categories")}>
           Categories
         </MenuItem>
-        <MenuItem isDisabled={true}>Logout</MenuItem>
       </MenuList>
     </Menu>
   );
