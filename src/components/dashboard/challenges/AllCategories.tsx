@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import supabase from '../../../utils/supabaseClient';
-import { Heading } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Heading } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import supabase from "../../../utils/supabaseClient";
+import AddCategory from "./AddCategory";
 
 const AllCategories = () => {
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetchCategories() {
-      const { data } = await supabase.from('categories').select();
+      const { data } = await supabase.from("categories").select();
       setCategories(data || []);
     }
     fetchCategories();
@@ -16,14 +17,20 @@ const AllCategories = () => {
 
   return (
     <>
-      <Heading as='h1'>Categories</Heading>
+      <Heading as="h1">Categories</Heading>
+      <AddCategory />
       {categories && categories.length
-      ? categories.map(category => (
-        <Link to={`/challenges/categories/${category.name}`} key={category.id}>
-          <Heading as='h2' size='md'>{category.name}</Heading>
-        </Link>
-      ))
-      : null}
+        ? categories.map((category) => (
+            <Link
+              to={`/challenges/categories/${category.name}`}
+              key={category.id}
+            >
+              <Heading as="h2" size="md">
+                {category.name}
+              </Heading>
+            </Link>
+          ))
+        : null}
     </>
   );
 };

@@ -3,12 +3,6 @@ import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
 import { Database } from "../../../utils/supabaseTypes";
 
-interface allCategoriesState {
-  value: Database["public"]["Tables"]["categories"]["Row"][];
-}
-
-const initialState: allCategoriesState = { value: [] };
-
 export const fetchAllCategoriesAsync: any = createAsyncThunk(
   "fetchAllCategoriesAsync",
   async () => {
@@ -23,15 +17,43 @@ export const fetchAllCategoriesAsync: any = createAsyncThunk(
   },
 );
 
+export const postNewCategoryAsync: any = createAsyncThunk(
+  "postNewCategory",
+  async (categoryName: string) => {
+    try {
+      const { data } = await supabase
+        .from("categories")
+        .insert([{ name: categoryName }])
+        .select();
+      console.log("data returned: ", data);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
+
+interface allCategoriesState {
+  value: Database["public"]["Tables"]["categories"]["Row"][];
+}
+
+const initialState: allCategoriesState = { value: [] };
+
 const allCategoriesSlice = createSlice({
   name: "allCategories",
   initialState,
   reducers: {},
-  extraReducers: (builders) => {
-    builders.addCase(
+  extraReducers: (builder) => {
+    builder.addCase(
       fetchAllCategoriesAsync.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      postNewCategoryAsync.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.value.push(action.payload);
       },
     );
   },
