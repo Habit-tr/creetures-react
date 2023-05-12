@@ -1,37 +1,18 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
-import { Challenge } from "../../../utils/supabaseTypes";
-// const fetchCategories = async () => {
-//   let { data: categories, error } = await supabase
-//     .from("categories")
-//     .select("*");
-//   setAllCategories(categories);
-// };
-// useEffect(() => {
-//   fetchCategories();
-// }, []);
+import { Database } from '../../../utils/supabaseTypes';
 
-interface fetchSingleChallengeProps {
-  id: number | string;
-}
 
 export const fetchSingleChallengeAsync: any = createAsyncThunk(
   "fetchSingleChallengeAsync",
-  async ({ id }: fetchSingleChallengeProps) => {
+  async ({ id }: Database['public']['Tables']['challenges']['Update']) => {
     try {
-      console.log("id in thunk: ", id);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("challenges")
         .select(`*, category: categories(name)`)
         .match({ id: id })
         .single();
-      console.log("data is ", data);
-      // const { data: categoryData } = await supabase
-      //   .from("category")
-      //   .select("name")
-      //   .match({ id: data?.category_id })
-      //   .single();
       return data;
     } catch (err) {
       return err;
@@ -39,13 +20,41 @@ export const fetchSingleChallengeAsync: any = createAsyncThunk(
   },
 );
 
-interface singleChallengeState {
-  value: Challenge | {};
+interface updatedChallenge {
+  id: number;
+  name: string;
+  description: string | null;
+  categoryId: number;
 }
 
-// interface EditChallengeProps {
-//  Challenge: Challenge.update
-// }
+export const editChallengeAsync: any = createAsyncThunk(
+  "editChallengeAsync",
+  async (updatedChallenge: updatedChallenge) => {
+    try {
+      const { data } = await supabase
+        .from("challenges")
+        .update({
+          name: updatedChallenge.name,
+          description: updatedChallenge.description,
+          category_id: updatedChallenge.categoryId,
+        })
+        .eq("id", updatedChallenge.id)
+        .select();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
+
+//remember to check Supabase for the code to use with each individual database table
+
+//this is redundant with fetchSingleChallengeProps;
+//could refactor to merge them:
+
+interface singleChallengeState {
+  value: Database['public']['Tables']['challenges']['Update'];
+}
 
 const initialState: singleChallengeState = { value: {} };
 
@@ -56,16 +65,16 @@ const singleChallengeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleChallengeAsync.fulfilled,
-      (state, action: PayloadAction<any>) => {
+      (state, action: PayloadAction<Database['public']['Tables']['challenges']['Row']>) => {
         state.value = action.payload;
       },
     );
-    // builder.addCase(
-    //   editNewChallengeAsync.fulfilled,
-    //   (state, action: PayloadAction<Challenge>) => {
-    //     state.value = action.payload;
-    //   },
-    // );
+    builder.addCase(
+      editChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['challenges']['Update']>) => {
+        state.value = action.payload;
+      },
+    );
   },
 });
 

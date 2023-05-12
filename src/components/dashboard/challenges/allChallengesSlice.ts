@@ -62,20 +62,26 @@ export const postNewChallengeAsync: any = createAsyncThunk(
   },
 );
 
-// export const editNewChallengeAsync: any = createAsyncThunk(
-//   "editNewChallenge",
-//   async ({ challenge }: EditChallengeProps) => {
-//     try {
-//       const { data } = await supabase
-//         .from("challenges")
-//         .update({ challenge: challenge.id })
-//         .select();
-//       return data;
-//     } catch (error) {
-//       return error;
-//     }
-//   },
-// );
+interface deleteChallengeProps {
+  id: number | string;
+}
+
+export const deleteChallengeAsync: any = createAsyncThunk(
+  "deleteChallengeAsync",
+  async ({ id }: deleteChallengeProps) => {
+    try {
+      const { data } = await supabase
+        .from("challenges")
+        .delete()
+        .eq("id", id)
+        .select();
+      console.log("returned from delete request: ", data);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+);
 
 export const fetchAllChallengesAsync: any = createAsyncThunk(
   "fetchAllChallengesAsync",
@@ -106,12 +112,14 @@ const allChallengesSlice = createSlice({
         state.value.push(action.payload);
       },
     );
-    // builder.addCase(
-    //   editNewChallengeAsync.fulfilled,
-    //   (state, action: PayloadAction<Challenge>) => {
-    //     state.value = action.payload;
-    //   },
-    // );
+    builder.addCase(
+      deleteChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Challenge>) => {
+        state.value = state.value.filter(
+          (challenge) => challenge.id !== action.payload.id,
+        );
+      },
+    );
   },
 });
 

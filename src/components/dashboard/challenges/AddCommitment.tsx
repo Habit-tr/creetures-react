@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Heading } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useParams } from "react-router";
 
@@ -20,6 +20,7 @@ const AddCommitment = () => {
   return (
     <>
       <Heading>Add Commitment for Challenge #{id}</Heading>
+      <Text>Please select the days you'd like to commit:</Text>
       <Box>
         <Checkbox onChange={() => handleDayClick("M")} /> Mon{" "}
         <Checkbox onChange={() => handleDayClick("T")} /> Tue{" "}

@@ -1,10 +1,10 @@
 import { Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
-import { fetchAllRewardsAsync, selectRewards } from "./allRewardsSlice";
+import { fetchAllRewardsAsync, selectRewards } from '../profile/allRewardsSlice';
 import { Link } from 'react-router-dom';
 
-const Rewards = () => {
+const AllRewards = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
@@ -23,7 +23,7 @@ const Rewards = () => {
             <>
               <pre>{JSON.stringify(reward, null, 2)}</pre>;
               <Button bgColor="purple.200" onClick={onOpen}>
-                <Link to={`/rewards/${reward.id}`}>View reward</Link>
+                <Link to={`/reward/${reward.id}`}>View reward</Link>
               </Button>
             </>
           ))}
@@ -31,6 +31,6 @@ const Rewards = () => {
       ) : null}
     </>
   )
-};
+}
 
-export default Rewards;
+export default AllRewards;

@@ -9,7 +9,17 @@ function App() {
   return (
     <>
       <React.StrictMode>
-        <ChakraProvider>
+        <ChakraProvider
+          toastOptions={{
+            defaultOptions: {
+              status: "info",
+              variant: "left-accent",
+              position: "top-right",
+              duration: 9000,
+              isClosable: true,
+            },
+          }}
+        >
           <Provider store={store}>
             <AuthProvider>
               <Flex direction="column">

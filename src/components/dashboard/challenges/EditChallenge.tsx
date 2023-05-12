@@ -10,23 +10,40 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { Challenge } from "../../../utils/supabaseTypes";
-// import { editNewChallengeAsync } from "./allChallengesSlice";
+import {
+  fetchAllCategoriesAsync,
+  selectCategories,
+} from "./allCategoriesSlice";
+import { editChallengeAsync } from "./singleChallengeSlice";
 
 interface EditChallengeProps {
   isOpen: boolean;
   onClose: () => void;
   challenge: Challenge;
+  handleDelete: (id: number | string) => Promise<void>;
+  setChallenge: React.Dispatch<any>;
 }
 
-const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
-  // const dispatch = useAppDispatch();
-
+const EditChallenge = ({
+  isOpen,
+  onClose,
+  challenge,
+  handleDelete,
+  setChallenge,
+}: EditChallengeProps) => {
+  const [allCategories, setAllCategories] = useState<any[]>([]);
   const [name, setName] = useState<any>("");
   const [description, setDescription] = useState<any>("");
-  const [categoryId, setCategoryId] = useState<any>(""); //sets to ID number of selected category. currently setting to string
+  const [categoryId, setCategoryId] = useState<any>("");
+  const dispatch = useAppDispatch();
+  const toast = useToast();
+
+  const fetchedCategories = useAppSelector(selectCategories);
 
   useEffect(() => {
     setName(challenge.name);
@@ -34,26 +51,34 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
     setCategoryId(challenge.category_id);
   }, [challenge]);
 
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        dispatch(fetchAllCategoriesAsync());
+        setAllCategories(fetchedCategories);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchCategories();
+  }, [dispatch, fetchedCategories]);
+
   const handleEdit = async () => {
-    //resend the values available for editing to supabase
-
+    const updatedChallenge = {
+      id: challenge.id,
+      name,
+      description,
+      categoryId,
+    };
+    const returnedChallenge = await dispatch(
+      editChallengeAsync(updatedChallenge),
+    );
+    setChallenge(returnedChallenge);
+    toast({
+      title: "Challenge updated.",
+    });
     onClose();
   };
-  const handleDelete = async () => {
-    //deleteById
-
-    onClose();
-  };
-
-  // const fetchCategories = async () => {
-  //   let { data: categories, error } = await supabase
-  //     .from("categories")
-  //     .select("*");
-  //   setAllCategories(categories);
-  // };
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, []);
 
   return (
     <>
@@ -64,35 +89,31 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              Name:{" "}
-              <Input
-                value={name} //needs to be from state
-                onChange={(e) => setName(e.target.value)}
-              />
+              Name:
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
             </Box>
+
             <Box>
-              Description:{" "}
+              Description:
               <Input
-                height="100px"
-                value={description} //needs to be from state
+                value={description || ""}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
             <Box>
-              Category:{" "}
+              Category:
               <Select
-                placeholder="Select a category"
-                value={categoryId} //needs to be from state
+                value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
-                {/* Will map over allCategories to render these options */}
-                <option value="1">fitness</option>
-                <option value="2">health</option>
-                <option value="3">diet</option>
-                <option value="4">music</option>
+                {allCategories &&
+                  allCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
               </Select>
             </Box>
-            {categoryId}
           </ModalBody>
 
           <ModalFooter>
@@ -100,7 +121,7 @@ const EditChallenge = ({ isOpen, onClose, challenge }: EditChallengeProps) => {
               isDisabled={!challenge || !categoryId}
               bgColor="red.200"
               mr={3}
-              onClick={() => handleDelete()}
+              onClick={() => handleDelete(challenge.id)}
             >
               Delete
             </Button>
