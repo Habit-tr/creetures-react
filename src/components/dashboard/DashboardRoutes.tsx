@@ -5,7 +5,6 @@ import AddCommitment from "./challenges/AddCommitment";
 import AllCategories from "./challenges/AllCategories";
 import AllChallenges from "./challenges/AllChallenges";
 import AllCommitments from "./challenges/AllCommitments";
-import RenderMedals from "./challenges/RenderMedals";
 import SingleCategory from "./challenges/SingleCategory";
 import SingleChallenge from "./challenges/SingleChallenge";
 import SingleCommitment from "./challenges/SingleCommitment";
@@ -27,7 +26,6 @@ const DashboardRoutes = () => {
           <Route path="/friends" element={<Friends />} />
           <Route path="/commitments" element={<AllCommitments />} />
           <Route path="/commitments/:id" element={<SingleCommitment />} />
-          <Route path="/medals" element={<RenderMedals />} />
           <Route path="/rewards" element={<Rewards />} />
           <Route path="/rewards/:urlId" element={<SingleReward />} />
           <Route path="/challenges" element={<AllChallenges />} />

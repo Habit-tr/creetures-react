@@ -88,6 +88,13 @@ export interface Database {
       commitments: {
         Row: {
           badgeLevel: number;
+          challenge: {
+            category: {
+              name: string;
+            };
+            category_id: number;
+            name: string;
+          };
           challenge_id: number;
           created_at: string | null;
           frequency: string | null;

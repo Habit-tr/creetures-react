@@ -7,11 +7,11 @@ interface allCommitmentsState {
   value: Database['public']['Tables']['commitments']['Row'][];
 }
 
-const initialState: allCommitmentsState = { value: [] };
-
 // interface postNewCommitmentProps {
 //   value: Database['public']['Tables']['commitments']['Insert'];
 // }
+
+const initialState: allCommitmentsState = { value: [] };
 
 export const fetchAllCommitmentsAsync: any = createAsyncThunk(
   'fetchAllCommitmentsAsync',
@@ -19,8 +19,7 @@ export const fetchAllCommitmentsAsync: any = createAsyncThunk(
     try {
       const { data: fetchedCommitments } = await supabase
         .from('commitments')
-        .select('id, challenge_id, isUpToDate, badgeLevel');
-      // We also want to fetch the challenge names using commitments.challenge_id
+        .select('id, badgeLevel, challenge_id, isUpToDate, challenge: challenges(name)');
       return fetchedCommitments;
     } catch (err) {
       console.error(err);
@@ -62,7 +61,7 @@ const allCommitmentsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchAllCommitmentsAsync.fulfilled,
-      (state, action: PayloadAction<any>) => {
+      (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row'][]>) => {
         state.value = action.payload;
       },
     );

@@ -1,50 +1,83 @@
-import { Button, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import supabase from "../../../utils/supabaseClient";
+import { Box, Heading, Text } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
+import { fetchSingleCommitmentAsync, selectCommitment } from './singleCommitmentSlice';
+import RenderMedal from './RenderMedal';
 
 const SingleCommitment = () => {
+  const dispatch = useAppDispatch();
   const { id } = useParams();
 
-  // REFERENCE: SingleChallenge component
-  // const [challenge, setChallenge] = useState<any>({});
-  // const [category, setCategory] = useState<string>("");
+  useEffect(() => {
+    dispatch(fetchSingleCommitmentAsync(id));
+  }, [dispatch, id]);
 
-  // const navigate = useNavigate();
+  const commitment = useAppSelector(selectCommitment);
 
-  // useEffect(() => {
-  //   async function fetchSingleChallenge(id: string) {
-  //     const { data: fetchedChallenge } = await supabase
-  //       .from("challenges")
-  //       .select()
-  //       .match({ id })
-  //       .single();
-  //     setChallenge(fetchedChallenge);
-  //     const res = await supabase
-  //       .from("categories")
-  //       .select("name")
-  //       .eq("id", fetchedChallenge?.category_id)
-  //       .single();
-  //     setCategory(res.data?.name ?? "");
-  //   }
-  //   fetchSingleChallenge(id!);
-  // }, [id]);
+  if (!commitment) {
+    return <Text>Loading...</Text>;
+  }
+  
+  const { badgeLevel, challenge, frequency, isUpToDate, timeframe } = commitment;
 
-  // return challenge && category ? (
-  //   <>
-  //     <Heading>{challenge.name}</Heading>
-  //     <Text>
-  //       Category:&nbsp;&nbsp;
-  //       <Link to={`/challenges/categories/${category}`}>{category}</Link>
-  //     </Text>
-  //     <Button onClick={() => navigate("/challenges/1/commit")}>
-  //       Commit to this Challenge
-  //     </Button>
-  //     {/* "Commit" button links to commit form modal */}
-  //   </>
-  // ) : null;
+  const dayFrequency = (frequency: string) => {
+    const days: string[] = [];
+    const frequencyArray = frequency?.split('');
+    frequencyArray?.forEach(day => {
+      if (day === 'M') {
+        days.push('Monday');
+      }
+      if (day === 'T') {
+        days.push('Tuesday');
+      }
+      if (day === 'W') {
+        days.push('Wednesday');
+      }
+      if (day === 'H') {
+        days.push('Thursday');
+      }
+      if (day === 'F') {
+        days.push('Friday');
+      }
+      if (day === 'S') {
+        days.push('Saturday');
+      }
+      if (day === 'U') {
+        days.push('Sunday');
+      }
+    });
+    const allDays = days.join(', ')
+    return <Text>{`Frequency: ${allDays}`}</Text>
+  }
 
-  return <Heading>Single Commitment #{id}</Heading>
+  return (
+    <>
+      <Box display='flex' alignItems='center'>
+        <Heading as='h1'>{challenge.name}&nbsp;&nbsp;</Heading>
+        <RenderMedal level={badgeLevel} />
+      </Box>
+      <Heading as='h2' size='md'>
+        Category:&nbsp;&nbsp;
+        <Link to={`/challenges/categories/${challenge.category.name}`}>
+          {challenge.category.name}
+        </Link>
+      </Heading>
+      {frequency && frequency.length
+      ? dayFrequency(frequency)
+      : null
+      }
+      {timeframe && timeframe.length
+      ? <Text>Time of day: {timeframe}</Text>
+      : null
+      }
+      <br />
+      {isUpToDate
+      ? <Text fontWeight='bold'>You are up to date on your challenge!</Text>
+      : <Text fontWeight='bold'>You behind on your challenge</Text>
+      }
+    </>
+  )
 };
 
 export default SingleCommitment;
