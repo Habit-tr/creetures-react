@@ -8,6 +8,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { Challenge } from "../../../utils/supabaseTypes";
@@ -34,6 +35,7 @@ const AllChallenges = () => {
   const fetchedChallenges = useAppSelector(selectChallenges);
   const { session } = useAuth();
   const user = session.session.user;
+  const navigate = useNavigate();
 
   useEffect(() => {
     // console.log("refetching");
@@ -130,7 +132,15 @@ const AllChallenges = () => {
         </Box>
         <Box>
           <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
-            Create Challenge
+            + Challenge
+          </Button>
+          {/* adding a category feels like admin only stuff */}
+          <Button
+            margin="10px"
+            bgColor="purple.200"
+            onClick={() => navigate("/challenges/categories")}
+          >
+            + Category
           </Button>
         </Box>
       </Flex>

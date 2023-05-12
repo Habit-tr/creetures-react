@@ -27,15 +27,13 @@ import { Challenge } from "../../../utils/supabaseTypes";
 interface allChallengesState {
   value: Challenge[];
 }
-
+const initialState: allChallengesState = { value: [] };
 interface postNewChallengeProps {
   challengeName: string;
   description: string;
   categoryId: string;
   createdBy: string;
 }
-
-const initialState: allChallengesState = { value: [] };
 
 export const postNewChallengeAsync: any = createAsyncThunk(
   "postNewChallenge",
