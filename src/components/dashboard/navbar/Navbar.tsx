@@ -10,8 +10,8 @@ const Navbar = () => {
     e?.preventDefault();
     try {
       await logout();
-      await navigate(0);
       await navigate("/");
+      await navigate(0);
     } catch (error) {
       console.log(error);
     }

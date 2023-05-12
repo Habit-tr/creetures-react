@@ -9,9 +9,8 @@ import ForgotPassword from "./loginsystem/forgotpassword/ForgotPassword";
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();
-  const { session } = useAuth();
 
-  return session.session ? (
+  return currentUser ? (
     <Box>
       <DashboardRoutes />
     </Box>

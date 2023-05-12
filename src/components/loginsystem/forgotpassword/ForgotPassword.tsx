@@ -11,6 +11,8 @@ import {
   Stack,
   Link,
   Button,
+  Alert,
+  AlertIcon,
   Heading,
   Text,
   useColorModeValue,
@@ -26,7 +28,8 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const user = await resetPassword(forgotPasswordEmail);
-      navigate(0);
+      setError("Check your email!");
+      await navigate("/");
     } catch {
       setError("Failure sending password email, check email and try again.");
     }
@@ -76,6 +79,12 @@ const ForgotPassword = () => {
               >
                 Send password reset email
               </Button>
+              {error && (
+                <Alert status="warning">
+                  <AlertIcon />
+                  {error}
+                </Alert>
+              )}
             </Stack>
           </Stack>
         </Box>
