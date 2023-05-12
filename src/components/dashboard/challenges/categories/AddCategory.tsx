@@ -18,7 +18,7 @@ const AddCategory = () => {
   };
   return (
     <>
-      <Heading>Add a New Category:</Heading>
+      <Heading size="md">Add a New Category:</Heading>
       <Input
         value={categoryName}
         onChange={(e) => {

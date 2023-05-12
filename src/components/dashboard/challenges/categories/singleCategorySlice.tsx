@@ -32,19 +32,19 @@ const { data: category } = await supabase
 
 interface updatedCategory {
   id: number;
-  name: string;
+  categoryName: string;
 }
 
 export const editCategoryAsync: any = createAsyncThunk(
   "editCategoryAsync",
-  async (updatedCategory: updatedCategory) => {
+  async ({ id, categoryName }: updatedCategory) => {
     try {
       const { data } = await supabase
         .from("categories")
         .update({
-          name: updatedCategory.name,
+          name: categoryName,
         })
-        .eq("id", updatedCategory.id)
+        .eq("id", id)
         .select();
       return data;
     } catch (error) {
