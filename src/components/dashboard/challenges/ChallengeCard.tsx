@@ -14,7 +14,7 @@ const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
           <Heading mb="0px" size="md">
             {challenge.name?.toUpperCase()}
           </Heading>
-          <Text fontSize="sm">CATEGORY:</Text>
+          <Text fontSize="sm">CATEGORY ID: {challenge.category_id}</Text>
           <Text fontSize="sm">COMMITTED USERS:</Text>
           <Text fontSize="sm">LIKES / SUCCESS RATE:</Text>
         </CardBody>

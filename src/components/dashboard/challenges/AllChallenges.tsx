@@ -8,6 +8,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { Challenge } from "../../../utils/supabaseTypes";
 import AddChallenge from "./AddChallenge";
@@ -23,18 +24,21 @@ import {
 
 const AllChallenges = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
   const [allCategories, setAllCategories] = useState<any[]>([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<any>(0);
-  const [isFilteringMine, setIsFilteringMine] = useState<boolean>(true);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
+  const [isShowingAll, setIsShowingAll] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
   const fetchedChallenges = useAppSelector(selectChallenges);
+  const { session } = useAuth();
+  const user = session.session.user;
 
   useEffect(() => {
+    // console.log("refetching");
     dispatch(fetchAllChallengesAsync());
-    setChallenges(fetchedChallenges);
-  }, [dispatch, fetchedChallenges]);
+  }, [dispatch]);
 
   const fetchedCategories = useAppSelector(selectCategories);
 
@@ -42,17 +46,64 @@ const AllChallenges = () => {
     async function fetchCategories() {
       try {
         dispatch(fetchAllCategoriesAsync());
-        setAllCategories(fetchedCategories);
       } catch (error) {
         console.error(error);
       }
     }
     fetchCategories();
-  }, [dispatch, fetchedCategories]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    setChallenges(fetchedChallenges);
+    setAllCategories(fetchedCategories);
+  }, [fetchedCategories, fetchedChallenges]);
+
+  useEffect(() => {
+    setFilteredChallenges(fetchedChallenges);
+    setIsShowingAll(true);
+  }, [fetchedChallenges]);
+
+  const filterChallenges = (action: string, challenges: Challenge[]) => {
+    console.log("action is ", action, " and typeof action is ", typeof action);
+    console.log("type of category_id is ", typeof challenges[0].category_id);
+
+    //build a new array of all possible challenges
+    setChallenges(fetchedChallenges);
+    setFilteredChallenges(fetchedChallenges);
+    let newlyFilteredChallenges = [...fetchedChallenges];
+
+    //handle the action to change state.
+    if (action === "checkbox") {
+      setIsShowingAll(!isShowingAll);
+    } else {
+      setSelectedCategoryId(parseInt(action));
+    }
+    //filter by category if needed
+    if (selectedCategoryId > 0) {
+      console.log("before category sort: ", newlyFilteredChallenges);
+      newlyFilteredChallenges = newlyFilteredChallenges.filter(
+        (challenge) => challenge.category_id === selectedCategoryId,
+      );
+      console.log("after category sort: ", newlyFilteredChallenges);
+    }
+    //filter out the non-owned ones if needed
+    if (isShowingAll) {
+      console.log("before mine sort: ", newlyFilteredChallenges);
+      newlyFilteredChallenges = newlyFilteredChallenges.filter(
+        (challenge) => challenge.created_by === user.id,
+      );
+      console.log("after mine sort: ", newlyFilteredChallenges);
+    }
+    console.log("final after all sorting: ", newlyFilteredChallenges);
+    setFilteredChallenges(newlyFilteredChallenges);
+  };
+  // filterChallenges(challenges);
 
   return (
     <>
       <Heading>All Challenges</Heading>
+      <Box>isShowingAll: {JSON.stringify(isShowingAll)}</Box>
+      <Box>categoryToDisplay: {JSON.stringify(selectedCategoryId)}</Box>
       <Flex justifyContent="space-evenly">
         <Box>
           <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
@@ -61,8 +112,10 @@ const AllChallenges = () => {
         </Box>
         <Box>
           <Checkbox
-            isChecked={isFilteringMine}
-            onChange={() => setIsFilteringMine(!isFilteringMine)}
+            isChecked={!isShowingAll}
+            onChange={() => {
+              filterChallenges("checkbox", challenges);
+            }}
           >
             Only My Challenges
           </Checkbox>
@@ -70,7 +123,9 @@ const AllChallenges = () => {
         <Box>
           <Select
             value={selectedCategoryId}
-            onChange={(e) => setSelectedCategoryId(e.target.value)}
+            onChange={(e) => {
+              filterChallenges(e.target.value, challenges);
+            }}
           >
             <option key={0} value={0}>
               All Categories
@@ -78,15 +133,15 @@ const AllChallenges = () => {
             {allCategories &&
               allCategories.map((category) => (
                 <option key={category.id} value={category.id}>
-                  {category.name}
+                  {category.name} {category.id}
                 </option>
               ))}
           </Select>
         </Box>
       </Flex>
-      {challenges && challenges.length ? (
+      {filteredChallenges && filteredChallenges.length ? (
         <Flex direction="row" maxW="900px" wrap="wrap">
-          {challenges.map((challenge, id) => {
+          {filteredChallenges.map((challenge, id) => {
             return <ChallengeCard key={id} challenge={challenge} />;
           })}
         </Flex>
