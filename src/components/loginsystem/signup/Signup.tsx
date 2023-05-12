@@ -11,11 +11,13 @@ import {
   FormLabel,
   Input,
   Checkbox,
+  AlertIcon,
   Stack,
   Link,
   Button,
   Heading,
   Text,
+  Alert,
   useColorModeValue,
 } from "@chakra-ui/react";
 
@@ -34,13 +36,15 @@ const SignUp = () => {
     if (password !== confirmPassword) {
       return setError("Passwords do not match");
     }
+    if (password.length < 6) {
+      return setError("Passwords must be 6 characters");
+    }
 
     try {
       setError("");
       setLoading(true);
       const user = await signup(email, password);
-
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       setError("Failed to create an account ");
       console.log(error);
@@ -55,6 +59,12 @@ const SignUp = () => {
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
     >
+      {error && (
+        <Alert status="warning">
+          <AlertIcon />
+          {error}
+        </Alert>
+      )}
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Sign up for your account</Heading>
@@ -90,7 +100,7 @@ const SignUp = () => {
             <FormControl id="Confirm Password">
               <FormLabel>Confirm Password</FormLabel>
               <Input
-                type="Confirm Password"
+                type="password"
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                 }}
@@ -104,6 +114,9 @@ const SignUp = () => {
               >
                 <Link href="/forgotpassword" color={"blue.400"}>
                   Forgot password?
+                </Link>
+                <Link href="/login" color={"blue.400"}>
+                  Already have an account?
                 </Link>
               </Stack>
               <Button

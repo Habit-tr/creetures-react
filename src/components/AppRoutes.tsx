@@ -5,11 +5,11 @@ import DashboardRoutes from "./dashboard/DashboardRoutes";
 import Login from "./loginsystem/login/login";
 import Home from "./loginsystem/home/home";
 import SignUp from "./loginsystem/signup/Signup";
+import ForgotPassword from "./loginsystem/forgotpassword/ForgotPassword";
 
 const AppRoutes = () => {
   const { currentUser } = useAuth();
   const { session } = useAuth();
-  console.log(session);
 
   return session.session ? (
     <Box>
@@ -21,6 +21,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
       </Routes>
     </Box>
   );

@@ -33,9 +33,6 @@ const HamburgerMenu = () => {
         <MenuItem icon={<RepeatIcon />} command="⌘⇧N">
           Challenges
         </MenuItem>
-        <MenuItem icon={<EditIcon />} command="⌘O">
-          Logout
-        </MenuItem>
       </MenuList>
     </Menu>
   );
