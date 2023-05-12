@@ -33,7 +33,7 @@ const singleRewardSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleRewardAsync.fulfilled,
-      (state, action: PayloadAction<Database['public']['Tables']['rewards']['Update']>) => {
+      (state, action: PayloadAction<Database['public']['Tables']['rewards']['Row']>) => {
         state.value = action.payload;
       },
     );
