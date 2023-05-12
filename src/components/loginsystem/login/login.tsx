@@ -37,7 +37,9 @@ export default function Login() {
       setError("");
       setLoading(true);
       const user = await login(email, password);
-      navigate(0);
+
+      await navigate("/profile");
+      await navigate(0);
     } catch {
       setError("Failed to Login. Check password and try again.");
     }
@@ -95,7 +97,7 @@ export default function Login() {
                 <Link href="/forgotpassword" color={"blue.400"}>
                   Forgot password?
                 </Link>
-                <Link href="/login" color={"blue.400"}>
+                <Link href="/SignUp" color={"blue.400"}>
                   Need to sign up?
                 </Link>
               </Stack>

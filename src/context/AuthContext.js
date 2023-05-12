@@ -10,7 +10,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState("");
   const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState(null);
 
   async function signup(email, password) {
     const { data, error } = await supabase.auth.signUp({
@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
 
   async function getSession() {
     const { data, error } = await supabase.auth.getSession();
-    setSession(data)
+    setSession(data);
   }
 
   async function updateProfilePicture(event) {
@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     getUser();
-    getSession(); 
+      getSession();
     setLoading(false);
   }, []);
 
