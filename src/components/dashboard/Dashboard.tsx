@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
+import Reaction from "./profile/AllReactions";
 
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
@@ -95,6 +96,7 @@ const Dashboard = () => {
           <Text mb="10px">Jack high-fived Simin!</Text>
           <Text mb="10px">Danny committed to a new challenge!</Text>
         </Box>
+        <Reaction />
       </Flex>
     </>
   );
