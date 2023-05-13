@@ -1,6 +1,7 @@
-import { Card, Text, Button } from "@chakra-ui/react";
-// import { Link } from "react-router-dom";
+import { Card, Text, Button, Flex } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { Database } from '../../../utils/supabaseTypes';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 interface RewardCardProps {
   reward: Database['public']['Tables']['rewards']['Row'];
@@ -26,9 +27,16 @@ const RewardCard = ({ reward, onDelete }: RewardCardProps) => {
       <Text fontSize="10px" align="center">
         {reward.description}
       </Text>
-      <Button colorScheme="red" size="sm" onClick={handleDelete}>
-        Delete
-      </Button>
+      <Flex justify="space-between" align="center">
+        <Link to={`/rewards/${reward.id}`}>
+          <Button colorScheme="blue" size="sm" mt={2}>
+            View
+          </Button>
+        </Link>
+        <Button colorScheme="red" size="sm" onClick={handleDelete}>
+          <DeleteIcon />
+        </Button>
+      </Flex>
     </Card>
   );
 };

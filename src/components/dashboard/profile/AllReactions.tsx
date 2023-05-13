@@ -11,8 +11,8 @@ import {
     Stack
   } from "@chakra-ui/react";
 
-  import highfive from '/Users/spak/Desktop/creetures-react/src/components/dashboard/components/high-five.gif'
-  import point from '/Users/spak/Desktop/creetures-react/src/components/dashboard/components/point.gif'
+  import highfive from '../components/high-five.gif'
+  import point from '../components/point.gif'
 
 
 

@@ -2,13 +2,14 @@ import {
   Button,
   Flex,
   Heading,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { fetchSingleRewardAsync, selectReward } from "./singleRewardSlice";
+import { EditIcon } from '@chakra-ui/icons';
+import EditReward from "./EditReward";
 
 const SingleReward = () => {
   const [reward, setReward] = useState<any>({});
@@ -41,6 +42,15 @@ const SingleReward = () => {
           {reward.description && (
             <Flex>Description: {reward.description}</Flex>
           )}
+          <Button margin="10px" bgColor="orange.200" onClick={onOpen}>
+            <EditIcon />
+          </Button>
+          <EditReward
+            isOpen={isOpen}
+            onClose={onClose}
+            reward={reward}
+            setReward={setReward}
+          />
         </>
       )}
     </>
