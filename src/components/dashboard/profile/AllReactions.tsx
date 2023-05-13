@@ -58,7 +58,7 @@ const Reaction: React.FC = () => {
            <Stack spacing={0} align={'center'} mb={5}>
             <Text color={'black'}>Poke!</Text>
            </Stack>
-               <Button bg="transparent" onClick={()=> setTotalHighfives(totalNudges + 1)}>
+               <Button bg="transparent" onClick={()=> setTotalNudges(totalNudges + 1)}>
                <img style={{ height: '50px' }} className="point" src={point} alt="point"/>
                {totalNudges}
                 </Button>
