@@ -10,7 +10,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { fetchSingleRewardAsync, selectReward } from "./singleRewardSlice";
 import { deleteRewardAsync } from "./allRewardsSlice";
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import EditReward from "./EditReward";
 
 const SingleReward = () => {
@@ -59,10 +59,11 @@ const SingleReward = () => {
       {reward && reward.id && (
         <>
           <Button
-          colorScheme="blue"
-          onClick={() => handleBackToRewards()}
+            leftIcon={<ArrowBackIcon />}
+            colorScheme="blue"
+            onClick={() => handleBackToRewards()}
           >
-            View Rewards
+            Rewards
           </Button>
           <Heading>REWARD</Heading>
           {reward.name && (
@@ -77,6 +78,7 @@ const SingleReward = () => {
           {reward.dateLastRedeemed && (
             <Flex>Date Last Redeemed: {reward.dateLastRedeemed}</Flex>
           )}
+          <Button bgColor="green.200" width="100px" marginRight="10px">Redeem</Button>
           <Button
             margin="10px"
             bgColor="orange.200"
