@@ -1,43 +1,32 @@
-import { Card, Text, Button, Flex } from "@chakra-ui/react";
+import { Card, Text, CardBody, Heading, Button, Divider } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Database } from '../../../utils/supabaseTypes';
-import { DeleteIcon } from '@chakra-ui/icons';
 
 interface RewardCardProps {
   reward: Database['public']['Tables']['rewards']['Row'];
-  onDelete: (id: number) => void;
 }
 
-const RewardCard = ({ reward, onDelete }: RewardCardProps) => {
-  const handleDelete = () => {
-    onDelete(reward.id)
-  }
+const RewardCard = ({ reward }: RewardCardProps) => {
   return (
-    <Card
-      margin="10px"
-      padding="10px"
-      w="150px"
-      h="150px"
-      bgColor="orange.200"
-      justify="center"
-    >
-      <Text fontSize="20px" align="center">
-        {reward.name}
-      </Text>
-      <Text fontSize="10px" align="center">
-        {reward.description}
-      </Text>
-      <Flex justify="space-between" align="center">
-        <Link to={`/rewards/${reward.id}`}>
-          <Button colorScheme="blue" size="sm" mt={2}>
-            View
-          </Button>
-        </Link>
-        <Button colorScheme="red" size="sm" onClick={handleDelete}>
-          <DeleteIcon />
-        </Button>
-      </Flex>
-    </Card>
+    <Link to={`/rewards/${reward.id}`}>
+      <Card
+        margin="10px"
+        w="475px"
+        h="175px"
+        border="2px black solid"
+        bgColor="gray.100"
+      >
+        <CardBody>
+          <Heading mb="0px" size="md">
+            REWARD
+          </Heading>
+          <Text fontSize="md">Name: {reward.name}</Text>
+          <Text fontSize="sm">Description: {reward.description}</Text>
+        </CardBody>
+        <Divider />
+        <Button bgColor="green.200" width="100px" m="10px">Redeem</Button>
+      </Card>
+    </Link>
   );
 };
 
