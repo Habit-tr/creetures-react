@@ -21,7 +21,7 @@ export const fetchAllRewardsAsync: any = createAsyncThunk(
     try {
       const { data: fetchedRewards } = await supabase
       .from('rewards')
-      .select('id, name, description, timesRedeemed');
+      .select('id, name, description, timesRedeemed, dateLastRedeemed');
       return fetchedRewards;
     } catch (err) {
       console.error(err);
@@ -65,7 +65,6 @@ export const deleteRewardAsync: any = createAsyncThunk(
         .delete()
         .eq("id", id)
         .select();
-        console.log(data);
         return data;
     } catch (error) {
       return error;

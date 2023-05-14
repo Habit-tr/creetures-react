@@ -25,6 +25,8 @@ interface updatedReward {
   name: string;
   description: string | null;
   user_id: string;
+  timesRedeemed: number | null;
+  dateLastRedeemed: string | null;
 }
 
 export const editRewardAsync: any = createAsyncThunk(
@@ -37,6 +39,8 @@ export const editRewardAsync: any = createAsyncThunk(
           name: updatedReward.name,
           description: updatedReward.description,
           user_id: updatedReward.user_id,
+          timesRedeemed: updatedReward.timesRedeemed,
+          dateLastRedeemed: updatedReward.dateLastRedeemed,
         })
         .eq("id", updatedReward.id)
         .select();
