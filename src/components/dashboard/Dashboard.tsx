@@ -32,9 +32,7 @@ const Dashboard = () => {
     <>
       <Flex justifyContent="space-between">
         <Box>
-          <Heading>Welcome, {user && user.email}!</Heading>
-          <Text fontSize="20px">It's a beautiful day for a new habit!</Text>
-          <Text>This is your dashboard.</Text>
+          <Heading>{user.email}'s Dashboard</Heading>
         </Box>
         <Box>
           <Button bgColor="purple.200">My Profile</Button>
@@ -44,7 +42,7 @@ const Dashboard = () => {
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
         <Box
           w="550px"
-          h="420px"
+          h="440px"
           border="2px black solid"
           margin="20px"
           padding="10px"
@@ -64,7 +62,13 @@ const Dashboard = () => {
           </Text>
           <Link to="/challenges">
             <Text cursor="pointer" margin="20px">
-              Not busy? Browse for more Challenges!
+              <Button
+                bgColor="green.200"
+                color="black"
+                onClick={() => navigate("/challenges")}
+              >
+                Challenges
+              </Button>
             </Text>
           </Link>
           <Table>
@@ -103,15 +107,20 @@ const Dashboard = () => {
             </Tbody>
           </Table>
           <Link to="/rewards">
-            <Text cursor="pointer" margin="20px">
-              Not motivated? Adjust your Rewards!
-            </Text>
+            <Button
+              bgColor="yellow.200"
+              color="black"
+              margin="10px"
+              onClick={() => navigate("/rewards")}
+            >
+              Rewards
+            </Button>
           </Link>
         </Box>
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
         <Box
           w="275px"
-          h="420px"
+          h="440px"
           border="2px black solid"
           margin="20px"
           padding="10px"

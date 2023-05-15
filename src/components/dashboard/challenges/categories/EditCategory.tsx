@@ -1,10 +1,11 @@
 import { Button, Flex, Heading, Input, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../../utils/reduxHooks";
+import { Database } from "../../../../utils/supabaseTypes";
 import { editCategoryAsync } from "./singleCategorySlice";
 
 interface EditCategoryProps {
-  category: { name: string; id: number };
+  category: Database["public"]["Tables"]["categories"]["Update"];
 }
 
 const EditCategory = ({ category }: EditCategoryProps) => {
@@ -13,7 +14,7 @@ const EditCategory = ({ category }: EditCategoryProps) => {
   const toast = useToast();
 
   useEffect(() => {
-    setCategoryName(category.name);
+    setCategoryName(category.name || "");
   }, [category.name]);
 
   const handleSubmit = async () => {

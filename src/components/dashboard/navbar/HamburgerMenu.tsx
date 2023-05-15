@@ -5,10 +5,12 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router";
 const HamburgerMenu = () => {
   const navigate = useNavigate();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Menu>
@@ -16,7 +18,6 @@ const HamburgerMenu = () => {
         as={IconButton}
         aria-label="Options"
         icon={<HamburgerIcon />}
-        variant="outline"
         m="5px"
         bgColor="green.200"
       />
@@ -30,6 +31,10 @@ const HamburgerMenu = () => {
         <MenuItem onClick={() => navigate("/friends")}>My Friends</MenuItem>
         <MenuItem onClick={() => navigate("/challenges")}>
           Browse Challenges
+        </MenuItem>
+        {/* this will eventually live in the user profile / settings:  */}
+        <MenuItem onClick={() => toggleColorMode()}>
+          Toggle {colorMode === "light" ? "Dark" : "Light"} Mode
         </MenuItem>
       </MenuList>
     </Menu>

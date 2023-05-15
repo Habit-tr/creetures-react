@@ -32,7 +32,7 @@ const DashboardRoutes = () => {
           <Route path="/challenges/:urlId" element={<SingleChallenge />} />
           <Route path="/challenges/categories" element={<AllCategories />} />
           <Route
-            path="/challenges/categories/:name"
+            path="/challenges/categories/:id"
             element={<SingleCategory />}
           />
           <Route path="/challenges/:id/commit" element={<AddCommitment />} />

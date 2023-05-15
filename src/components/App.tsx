@@ -1,15 +1,17 @@
-import { ChakraProvider, Flex } from "@chakra-ui/react";
+import { ChakraProvider, Flex, ColorModeScript } from "@chakra-ui/react";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import store from "../utils/store";
+import theme from "../utils/theme";
 import AppRoutes from "./AppRoutes";
 function App() {
   return (
     <>
       <React.StrictMode>
         <ChakraProvider
+          theme={theme}
           toastOptions={{
             defaultOptions: {
               status: "info",
