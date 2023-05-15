@@ -24,27 +24,42 @@ import {
 } from "./categories/allCategoriesSlice";
 
 const AllChallenges = () => {
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  // const [challenges, setChallenges] = useState<Challenge[]>([]);
+
   const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
-  const [allCategories, setAllCategories] = useState<any[]>([]);
+  // const [allCategories, setAllCategories] = useState<any[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
   const [isShowingAll, setIsShowingAll] = useState<boolean>(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
-  const fetchedChallenges = useAppSelector(selectChallenges);
   const { session } = useAuth();
   const user = session.session.user;
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   // console.log("fetching");
+  //   // dispatch(fetchAllChallengesAsync());
+  // }, [dispatch, isOpen]);
+
+  // useEffect(() => {
+  //   // async function fetchCategories() {
+  //   //   try {
+  //   //     dispatch(fetchAllCategoriesAsync());
+  //   //   } catch (error) {
+  //   //     console.error(error);
+  //   //   }
+  //   // }
+  //   // fetchCategories();
+  // }, [dispatch]);
+
+  const challenges = useAppSelector(selectChallenges);
+  const allCategories = useAppSelector(selectCategories);
+
   useEffect(() => {
-    // console.log("refetching");
+    console.log("fetching");
     dispatch(fetchAllChallengesAsync());
-  }, [dispatch, isOpen]);
-
-  const fetchedCategories = useAppSelector(selectCategories);
-
-  useEffect(() => {
     async function fetchCategories() {
       try {
         dispatch(fetchAllCategoriesAsync());
@@ -55,20 +70,21 @@ const AllChallenges = () => {
     fetchCategories();
   }, [dispatch]);
 
-  useEffect(() => {
-    setChallenges(fetchedChallenges);
-    setAllCategories(fetchedCategories);
-  }, [fetchedCategories, fetchedChallenges]);
+  // useEffect(() => {
+  //   setChallenges(fetchedChallenges);
+  //   setAllCategories(fetchedCategories);
+  // }, [fetchedCategories, fetchedChallenges]);
 
   useEffect(() => {
-    setFilteredChallenges(fetchedChallenges);
+    console.log("is filtering");
+    setFilteredChallenges(challenges);
     setIsShowingAll(true);
-  }, [fetchedChallenges]);
+  }, [challenges]);
 
   const filterChallenges = (challenges: Challenge[]) => {
     // debugger;
     //build a new array of all possible challenges
-    let newlyFilteredChallenges = [...fetchedChallenges];
+    let newlyFilteredChallenges = [...challenges];
 
     //filter by category if needed
     if (selectedCategoryId > 0) {
@@ -105,7 +121,6 @@ const AllChallenges = () => {
               // console.log("clicked Id is ", e.target.value);
               setSelectedCategoryId(parseInt(e.target.value));
               filterChallenges(challenges);
-              setChallenges(fetchedChallenges);
             }}
           >
             <option key={0} value={0}>
@@ -122,6 +137,7 @@ const AllChallenges = () => {
         <Box>
           <Checkbox
             isChecked={!isShowingAll}
+            colorScheme="purple"
             onChange={() => {
               setIsShowingAll(!isShowingAll);
               filterChallenges(challenges);
@@ -152,7 +168,7 @@ const AllChallenges = () => {
                 key={id}
                 user={user}
                 challenge={challenge}
-                category={allCategories.find(
+                category={allCategories?.find(
                   (category) => category.id === challenge.category_id,
                 )}
               />
