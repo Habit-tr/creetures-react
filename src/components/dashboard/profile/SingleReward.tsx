@@ -10,8 +10,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { fetchSingleRewardAsync, selectReward } from "./singleRewardSlice";
 import { deleteRewardAsync } from "./allRewardsSlice";
-import { EditIcon, DeleteIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import EditReward from "./EditReward";
+import DeleteAlert from "./DeleteAlert";
 
 const SingleReward = () => {
   const [reward, setReward] = useState<any>({});
@@ -43,7 +44,7 @@ const SingleReward = () => {
     isOpen && onClose();
     toast({
       title: "Reward deleted.",
-      status: "warning",
+      status: "error",
       duration: 5000,
       isClosable: true,
     });
@@ -86,13 +87,14 @@ const SingleReward = () => {
           >
             <EditIcon />
           </Button>
-          <Button
+          {/* <Button
             margin="10px"
             bgColor="red.200"
             onClick={() => handleDelete(reward.id)}
           >
             <DeleteIcon />
-          </Button>
+          </Button> */}
+          <DeleteAlert onDelete={() => handleDelete(reward.id)}/>
           <EditReward
             isOpen={isOpen}
             onClose={onClose}

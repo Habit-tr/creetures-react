@@ -26,7 +26,7 @@ const Rewards = () => {
         + Create Reward
       </Button>
       {rewards && rewards.length ? (
-        <Flex direction="row" maxW="900px" wrap="wrap">
+        <Flex key="reward" direction="row" maxW="900px" wrap="wrap">
           {rewards.map((reward) => (
             <RewardCard
               key={reward.id}
@@ -35,7 +35,7 @@ const Rewards = () => {
           ))}
         </Flex>
       ) : null}
-      <AddReward isOpen={isOpen} onClose={onClose} />
+      <AddReward key="addedReward" isOpen={isOpen} onClose={onClose} />
     </>
   );
 };
