@@ -24,12 +24,9 @@ import {
 } from "./categories/allCategoriesSlice";
 
 const AllChallenges = () => {
-  // const [challenges, setChallenges] = useState<Challenge[]>([]);
-
-  const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
-  // const [allCategories, setAllCategories] = useState<any[]>([]);
+  // const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-  const [isShowingAll, setIsShowingAll] = useState<boolean>(false);
+  const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
@@ -38,48 +35,21 @@ const AllChallenges = () => {
   const user = session.session.user;
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   // console.log("fetching");
-  //   // dispatch(fetchAllChallengesAsync());
-  // }, [dispatch, isOpen]);
-
-  // useEffect(() => {
-  //   // async function fetchCategories() {
-  //   //   try {
-  //   //     dispatch(fetchAllCategoriesAsync());
-  //   //   } catch (error) {
-  //   //     console.error(error);
-  //   //   }
-  //   // }
-  //   // fetchCategories();
-  // }, [dispatch]);
-
   const challenges = useAppSelector(selectChallenges);
   const allCategories = useAppSelector(selectCategories);
 
   useEffect(() => {
     console.log("fetching");
-    dispatch(fetchAllChallengesAsync());
-    async function fetchCategories() {
+    async function fetchData() {
       try {
         dispatch(fetchAllCategoriesAsync());
+        dispatch(fetchAllChallengesAsync());
       } catch (error) {
         console.error(error);
       }
     }
-    fetchCategories();
+    fetchData();
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   setChallenges(fetchedChallenges);
-  //   setAllCategories(fetchedCategories);
-  // }, [fetchedCategories, fetchedChallenges]);
-
-  useEffect(() => {
-    console.log("is filtering");
-    setFilteredChallenges(challenges);
-    setIsShowingAll(true);
-  }, [challenges]);
 
   const filterChallenges = (challenges: Challenge[]) => {
     // debugger;
@@ -96,7 +66,7 @@ const AllChallenges = () => {
     }
     let onceFilteredChallenges = [...newlyFilteredChallenges];
     //filter out the non-owned ones if needed
-    if (isShowingAll) {
+    if (showOnlyMine) {
       // console.log("before mine sort: ", onceFilteredChallenges);
       onceFilteredChallenges = onceFilteredChallenges.filter(
         (challenge) => challenge.created_by === user.id,
@@ -105,8 +75,9 @@ const AllChallenges = () => {
     }
     const twiceFilteredChallenges = [...onceFilteredChallenges];
     // console.log("final after all sorting: ", twiceFilteredChallenges);
-    setFilteredChallenges(twiceFilteredChallenges);
+    return twiceFilteredChallenges;
   };
+  const filteredChallenges = filterChallenges(challenges);
 
   return (
     <>
@@ -136,14 +107,14 @@ const AllChallenges = () => {
         </Box>
         <Box>
           <Checkbox
-            isChecked={!isShowingAll}
+            isChecked={!showOnlyMine}
             colorScheme="purple"
             onChange={() => {
-              setIsShowingAll(!isShowingAll);
+              setShowOnlyMine(!showOnlyMine);
               filterChallenges(challenges);
             }}
           >
-            Only My Challenges
+            Show All Challenges
           </Checkbox>
         </Box>
         <Box>

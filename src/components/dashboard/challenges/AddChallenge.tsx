@@ -15,7 +15,10 @@ import {
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch } from "../../../utils/reduxHooks";
-import { postNewChallengeAsync } from "./allChallengesSlice";
+import {
+  fetchAllChallengesAsync,
+  postNewChallengeAsync,
+} from "./allChallengesSlice";
 
 interface AddChallengeProps {
   isOpen: boolean;
@@ -49,6 +52,7 @@ const AddChallenge = ({
     toast({
       title: "Challenge added.",
     });
+    await dispatch(fetchAllChallengesAsync());
     onClose();
   };
 

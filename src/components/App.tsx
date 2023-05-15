@@ -13,7 +13,6 @@ function App() {
           toastOptions={{
             defaultOptions: {
               status: "info",
-              variant: "left-accent",
               position: "top-right",
               duration: 9000,
               isClosable: true,
