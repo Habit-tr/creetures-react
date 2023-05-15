@@ -35,7 +35,8 @@ const AddReward = ({ isOpen, onClose }: AddRewardProps) => {
       postNewRewardAsync({
         rewardName,
         description,
-        user_id: user.id
+        user_id: user.id,
+        timesRedeemed: 0,
       }),
     );
     toast({
