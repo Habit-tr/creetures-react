@@ -22,7 +22,7 @@ import {
   FiSettings,
   FiMenu,
 } from 'react-icons/fi';
-import  IconType  from 'react-icons';
+import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 
 import friend from '/Users/spak/Desktop/creetures-react/src/components/dashboard/components/friend.gif';

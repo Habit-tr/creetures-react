@@ -45,7 +45,6 @@ export const fetchAllReactionsAsync: any = createAsyncThunk(
         const { data } = await supabase
           .from("reactions")
           .select()
-          console.log('what are we grabing', data)
         return data;
       } catch (err) {
         return err;
@@ -65,7 +64,6 @@ export const fetchAllReactionsAsync: any = createAsyncThunk(
         })
         .eq('user_id',user_id)
         .select()
-        console.log('this is data', data)
         return data;
       } catch (err) {
         return err;

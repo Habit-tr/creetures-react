@@ -24,10 +24,10 @@ interface addFriendProps {
     'fetchFriendsAsync',
     async () => {
       try {
-        const { data: fetchedFriend } = await supabase
+        const { data } = await supabase
         .from('profiles')
-        .select('user_id, username, avatar_url')
-        return fetchedFriend;
+        .select()
+        return data;
       } catch (err) {
         console.error(err);
       }

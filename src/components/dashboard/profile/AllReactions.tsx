@@ -15,9 +15,6 @@ import {
   import point from '../components/point.gif'
 
 
-
-
-
 const Reaction: React.FC = () => {
 
     const dispatch = useAppDispatch();
@@ -49,7 +46,7 @@ const Reaction: React.FC = () => {
             <Text color={'black'}>High Five!</Text>
            </Stack>
                <Button bg="transparent" onClick={()=> setTotalHighfives(totalHighfives + 1)}>
-               <img style={{ height: '60px' }} className="highfive" src={highfive} alt="highfive" />
+               <img style={{ height: '40px' }} className="highfive" src={highfive} alt="highfive" />
                {totalHighfives}
                 </Button>
            </Box>
@@ -59,7 +56,7 @@ const Reaction: React.FC = () => {
             <Text color={'black'}>Poke!</Text>
            </Stack>
                <Button bg="transparent" onClick={()=> setTotalNudges(totalNudges + 1)}>
-               <img style={{ height: '50px' }} className="point" src={point} alt="point"/>
+               <img style={{ height: '30px' }} className="point" src={point} alt="point"/>
                {totalNudges}
                 </Button>
            </Box>
