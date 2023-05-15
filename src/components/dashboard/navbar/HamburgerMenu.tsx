@@ -21,16 +21,15 @@ const HamburgerMenu = () => {
         bgColor="green.200"
       />
       <MenuList>
-        <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
-        <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
+        <MenuItem onClick={() => navigate("/")}>My Dashboard</MenuItem>
+        <MenuItem onClick={() => navigate("/profile")}>My Profile</MenuItem>
         <MenuItem onClick={() => navigate("/commitments")}>
-          Commitments
+          My Commitments
         </MenuItem>
-        <MenuItem onClick={() => navigate("/rewards")}>Rewards</MenuItem>
-        <MenuItem onClick={() => navigate("/friends")}>Friends</MenuItem>
-        <MenuItem onClick={() => navigate("/challenges")}>Challenges</MenuItem>
-        <MenuItem onClick={() => navigate("/challenges/categories")}>
-          Categories
+        <MenuItem onClick={() => navigate("/rewards")}>My Rewards</MenuItem>
+        <MenuItem onClick={() => navigate("/friends")}>My Friends</MenuItem>
+        <MenuItem onClick={() => navigate("/challenges")}>
+          Browse Challenges
         </MenuItem>
       </MenuList>
     </Menu>

@@ -92,7 +92,7 @@ export const fetchAllChallengesAsync: any = createAsyncThunk(
   },
 );
 
-const allChallengesSlice = createSlice({
+const allChallengesSlice: any = createSlice({
   name: "allChallenges",
   initialState,
   reducers: {},
@@ -122,7 +122,7 @@ const allChallengesSlice = createSlice({
 
 // export const fetchAllChallengesAsync = allChallengesSlice.actions;
 export const selectChallenges = (state: RootState) => {
-  return state.allChallenges.value;
+  return (state.allChallenges as allChallengesState).value;
 };
 
 export default allChallengesSlice.reducer;

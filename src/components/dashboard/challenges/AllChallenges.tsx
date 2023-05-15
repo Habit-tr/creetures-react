@@ -26,7 +26,7 @@ import {
 const AllChallenges = () => {
   // const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-  const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
+  const [showOnlyMine, setShowOnlyMine] = useState<boolean>(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
@@ -81,13 +81,17 @@ const AllChallenges = () => {
 
   return (
     <>
-      <Heading>All Challenges</Heading>
-      {/* <Box>isShowingAll: {JSON.stringify(isShowingAll)}</Box>
-      <Box>categoryToDisplay: {JSON.stringify(selectedCategoryId)}</Box> */}
-      <Flex justifyContent="space-between" maxW="900px" wrap="wrap">
+      <Heading margin="10px">Browse Challenges</Heading>
+      <Flex
+        margin="10px"
+        justifyContent="space-between"
+        maxW="900px"
+        wrap="wrap"
+      >
         <Box>
           <Select
             value={selectedCategoryId}
+            margin="5px"
             onChange={(e) => {
               // console.log("clicked Id is ", e.target.value);
               setSelectedCategoryId(parseInt(e.target.value));
@@ -104,17 +108,16 @@ const AllChallenges = () => {
                 </option>
               ))}
           </Select>
-        </Box>
-        <Box>
           <Checkbox
-            isChecked={!showOnlyMine}
+            isChecked={showOnlyMine}
             colorScheme="purple"
+            margin="5px"
             onChange={() => {
               setShowOnlyMine(!showOnlyMine);
               filterChallenges(challenges);
             }}
           >
-            Show All Challenges
+            Only My Challenges
           </Checkbox>
         </Box>
         <Box>
