@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  Checkbox,
   Flex,
   Heading,
   Table,
@@ -12,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
 
@@ -27,15 +30,24 @@ const Dashboard = () => {
 
   return (
     <>
-      <Heading>Welcome, {user && user.email}!</Heading>
-      <Text fontSize="20px">It's a beautiful day for a new habit!</Text>
+      <Flex justifyContent="space-between">
+        <Box>
+          <Heading>Welcome, {user && user.email}!</Heading>
+          <Text fontSize="20px">It's a beautiful day for a new habit!</Text>
+          <Text>This is your dashboard.</Text>
+        </Box>
+        <Box>
+          <Button bgColor="purple.200">My Profile</Button>
+        </Box>
+      </Flex>
       <Flex direction="row" flexWrap="wrap">
+        {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
         <Box
           w="550px"
-          h="300px"
+          h="420px"
           border="2px black solid"
           margin="20px"
-          padding="5px"
+          padding="10px"
         >
           <Heading
             size="md"
@@ -50,6 +62,11 @@ const Dashboard = () => {
             Display a mini battle pass view here with today's commitments and
             rewards and maybe also tomorrow's.
           </Text>
+          <Link to="/challenges">
+            <Text cursor="pointer" margin="20px">
+              Not busy? Browse for more Challenges!
+            </Text>
+          </Link>
           <Table>
             <Thead>
               <Tr>
@@ -60,24 +77,44 @@ const Dashboard = () => {
             </Thead>
             <Tbody>
               <Tr>
-                <Td>Chew Gum</Td>
-                <Td>Practice Yoga</Td>
-                <Td>Update Resume</Td>
+                {/* will map over fetched commitments for auth user */}
+                <Td>
+                  <Checkbox colorScheme="green" /> Chew Gum
+                </Td>
+                <Td>
+                  <Checkbox colorScheme="green" /> Practice Yoga
+                </Td>
+                <Td>
+                  <Checkbox colorScheme="green" /> Update Resume
+                </Td>
               </Tr>
               <Tr>
-                <Td>Jaw Massage</Td>
-                <Td>New Mat</Td>
-                <Td>30-min Selfie Session</Td>
+                {/* will map over fetched rewards for above commitments */}
+                <Td>
+                  <Checkbox colorScheme="yellow" /> Jaw Massage
+                </Td>
+                <Td>
+                  <Checkbox colorScheme="yellow" /> New Mat
+                </Td>
+                <Td>
+                  <Checkbox colorScheme="yellow" /> 30-min Selfie Session
+                </Td>
               </Tr>
             </Tbody>
           </Table>
+          <Link to="/rewards">
+            <Text cursor="pointer" margin="20px">
+              Not motivated? Adjust your Rewards!
+            </Text>
+          </Link>
         </Box>
+        {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
         <Box
           w="275px"
-          h="300px"
+          h="420px"
           border="2px black solid"
           margin="20px"
-          padding="5px"
+          padding="10px"
         >
           <Heading
             size="md"

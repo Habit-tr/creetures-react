@@ -32,17 +32,11 @@ const Navbar = () => {
         </Heading>
       </Link>
       <HamburgerMenu />
-      <Link to="/profile">
-        <Button m="5px" bgColor="green.200">
-          Profile
-        </Button>
-      </Link>
-      <Link to="/challenges">
-        <Button m="5px" bgColor="green.200">
-          Challenges
-        </Button>
-      </Link>
-      <Flex flexDirection="column">
+      <Flex
+        flexDirection="column"
+        cursor="pointer"
+        onClick={() => navigate("/profile")}
+      >
         <Center color="white">Logged in as:</Center>{" "}
         <Center color="white">{user.email}</Center>
       </Flex>
