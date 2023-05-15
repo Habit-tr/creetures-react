@@ -154,6 +154,7 @@ const AllChallenges = () => {
         isOpen={isOpen}
         onClose={onClose}
         allCategories={allCategories}
+        selectedCategoryId={selectedCategoryId}
       />
     </>
   );

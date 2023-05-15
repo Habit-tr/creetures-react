@@ -12,7 +12,7 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch } from "../../../utils/reduxHooks";
 import {
@@ -24,21 +24,26 @@ interface AddChallengeProps {
   isOpen: boolean;
   onClose: () => void;
   allCategories: any[];
+  selectedCategoryId: number;
 }
 
 const AddChallenge = ({
   isOpen,
   onClose,
   allCategories,
+  selectedCategoryId,
 }: AddChallengeProps) => {
   const dispatch = useAppDispatch();
   const { session } = useAuth();
   const user = session.session.user;
   const [challengeName, setChallengeName] = useState(""); //sets to whatever value is typed into input
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState<number>(selectedCategoryId);
   const [description, setDescription] = useState("");
-
   const toast = useToast();
+
+  useEffect(() => {
+    setCategoryId(selectedCategoryId);
+  }, [selectedCategoryId]);
 
   const handleSubmit = async () => {
     await dispatch(
@@ -54,7 +59,7 @@ const AddChallenge = ({
     });
     setChallengeName("");
     setDescription("");
-    setCategoryId("");
+    setCategoryId(selectedCategoryId);
     onClose();
     await dispatch(fetchAllChallengesAsync());
   };
@@ -84,9 +89,12 @@ const AddChallenge = ({
             <Box>
               Category:{" "}
               <Select
-                placeholder="Select a category"
-                onChange={(e) => setCategoryId(e.target.value)}
+                defaultValue={categoryId}
+                onChange={(e) => setCategoryId(parseInt(e.target.value))}
               >
+                <option key={0} value={0}>
+                  Select a category
+                </option>
                 {allCategories &&
                   allCategories.map((category) => (
                     <option key={category.id} value={category.id}>
