@@ -25,7 +25,7 @@ const ChallengeCard = ({ user, challenge, category }: ChallengeCardProps) => {
           </Heading>
 
           <Text fontSize="sm">Description: {challenge.description}</Text>
-          <Text fontSize="sm">Category: {category.name?.toUpperCase()}</Text>
+          {/* <Text fontSize="sm">Category: {category.name?.toUpperCase()}</Text> */}
           <Text fontSize="sm">Committed Users: ( ) ( ) ( )</Text>
           {/* <Text fontSize="sm">Success Rate: tbd</Text> */}
           {/* don't show commitment button if already committed? make it say view Commitment? */}

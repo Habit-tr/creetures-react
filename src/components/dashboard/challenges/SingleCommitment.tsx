@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
 import { fetchSingleCommitmentAsync, selectCommitment } from './singleCommitmentSlice';
 import RenderMedal from './RenderMedal';
+import Reaction from '../profile/AllReactions';
 
 const SingleCommitment = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +19,7 @@ const SingleCommitment = () => {
   if (!commitment) {
     return <Text>Loading...</Text>;
   }
-  
+
   const { badgeLevel, challenge, frequency, isUpToDate, timeframe } = commitment;
 
   const dayFrequency = (frequency: string) => {
@@ -76,6 +77,7 @@ const SingleCommitment = () => {
       ? <Text fontWeight='bold'>You are up to date on your challenge!</Text>
       : <Text fontWeight='bold'>You behind on your challenge</Text>
       }
+      <Reaction />
     </>
   )
 };

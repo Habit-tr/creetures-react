@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { useEffect, useState } from "react";
-import { selectReactions, fetchAllReactionsAsync } from "./AllReactionsSlice";
+import { fetchAllReactionsAsync, selectReactions } from "./AllReactionsSlice";
 import {
     Button,
     Box,

@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
+import SideBar from "./components/sideBar";
 
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
@@ -30,6 +31,9 @@ const Dashboard = () => {
       <Heading>Welcome, {user && user.email}!</Heading>
       <Text fontSize="20px">It's a beautiful day for a new habit!</Text>
       <Flex direction="row" flexWrap="wrap">
+        <SideBar>
+          
+        </SideBar>
         <Box
           w="550px"
           h="300px"
@@ -95,8 +99,9 @@ const Dashboard = () => {
           <Text mb="10px">Andrew nudged Ben!</Text>
           <Text mb="10px">Jack high-fived Simin!</Text>
           <Text mb="10px">Danny committed to a new challenge!</Text>
+          <Reaction />
         </Box>
-        <Reaction />
+
       </Flex>
     </>
   );
