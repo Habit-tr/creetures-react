@@ -1,35 +1,32 @@
 import { Button, Heading, Text, useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppDispatch } from "../../../../utils/reduxHooks";
-import supabase from "../../../../utils/supabaseClient";
+import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import EditCategory from "./EditCategory";
 import { deleteCategoryAsync } from "./allCategoriesSlice";
+import {
+  fetchSingleCategoryAsync,
+  selectCategory,
+} from "./singleCategorySlice";
 
 const SingleCategory = () => {
-  const { name } = useParams();
-  const [categoryChallenges, setCategoryChallenges] = useState<any[]>([]);
-  const [fetchedCategory, setFetchedCategory] = useState<any>({});
+  const { id } = useParams();
+  // const [categoryChallenges, setCategoryChallenges] = useState<any[]>([]);
   const dispatch = useAppDispatch();
   const toast = useToast();
 
-  useEffect(() => {
-    async function fetchChallengesByCategory(name: string) {
-      const { data: category } = await supabase
-        .from("categories")
-        .select("id")
-        .match({ name })
-        .single();
-      setFetchedCategory(category);
+  const category: any = useAppSelector(selectCategory);
+  const challenges = category.challenges;
+  // setCategoryChallenges(category.challenges);
 
-      const { data: challenges } = await supabase
-        .from("challenges")
-        .select()
-        .eq("category_id", category?.id);
-      setCategoryChallenges(challenges || []);
-    }
-    fetchChallengesByCategory(name!);
-  }, [name]);
+  useEffect(() => {
+    console.log("fetching a single category and its challenges");
+    const fetchCategoryData = async (id: number) => {
+      const fetchedCategoryData = await dispatch(fetchSingleCategoryAsync(id));
+      return fetchedCategoryData;
+    };
+    fetchCategoryData(parseInt(id!));
+  }, [dispatch, id]);
 
   const handleDelete = async (id: number) => {
     const { data } = await dispatch(deleteCategoryAsync(id));
@@ -49,22 +46,22 @@ const SingleCategory = () => {
   return (
     <>
       <Heading as="h1" mb="20px">
-        [{name?.toUpperCase()}] Challenges:{" "}
-        {categoryChallenges && categoryChallenges.length}
+        [{category.name?.toUpperCase()}] Challenges:{" "}
+        {challenges && challenges.length}
       </Heading>
-      {categoryChallenges && categoryChallenges.length ? (
-        categoryChallenges.map((challenge) => (
+      {challenges && challenges.length ? (
+        challenges.map((challenge: any) => (
           <Link to={`/challenges/${challenge.id}`} key={challenge.id}>
             <Text>{challenge.name}</Text>
           </Link>
         ))
       ) : (
         <>
-          <EditCategory category={fetchedCategory} />
+          <EditCategory category={category} />
           <Button
             bgColor="red.200"
             m="10px"
-            onClick={() => handleDelete(fetchedCategory.id)}
+            onClick={() => handleDelete(category.id!)}
           >
             DELETE
           </Button>

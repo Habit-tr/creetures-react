@@ -24,7 +24,6 @@ import {
 } from "./categories/allCategoriesSlice";
 
 const AllChallenges = () => {
-  // const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
   const [showOnlyMine, setShowOnlyMine] = useState<boolean>(true);
 
@@ -39,7 +38,7 @@ const AllChallenges = () => {
   const allCategories = useAppSelector(selectCategories);
 
   useEffect(() => {
-    console.log("fetching");
+    console.log("fetching all challenges");
     async function fetchData() {
       try {
         dispatch(fetchAllCategoriesAsync());
@@ -52,29 +51,23 @@ const AllChallenges = () => {
   }, [dispatch]);
 
   const filterChallenges = (challenges: Challenge[]) => {
-    // debugger;
     //build a new array of all possible challenges
     let newlyFilteredChallenges = [...challenges];
 
     //filter by category if needed
     if (selectedCategoryId > 0) {
-      // console.log("before category sort: ", newlyFilteredChallenges);
       newlyFilteredChallenges = newlyFilteredChallenges.filter(
         (challenge) => challenge.category_id === selectedCategoryId,
       );
-      // console.log("after category sort: ", newlyFilteredChallenges);
     }
     let onceFilteredChallenges = [...newlyFilteredChallenges];
     //filter out the non-owned ones if needed
     if (showOnlyMine) {
-      // console.log("before mine sort: ", onceFilteredChallenges);
       onceFilteredChallenges = onceFilteredChallenges.filter(
         (challenge) => challenge.created_by === user.id,
       );
-      // console.log("after mine sort: ", onceFilteredChallenges);
     }
     const twiceFilteredChallenges = [...onceFilteredChallenges];
-    // console.log("final after all sorting: ", twiceFilteredChallenges);
     return twiceFilteredChallenges;
   };
   const filteredChallenges = filterChallenges(challenges);
@@ -93,7 +86,6 @@ const AllChallenges = () => {
             value={selectedCategoryId}
             margin="5px"
             onChange={(e) => {
-              // console.log("clicked Id is ", e.target.value);
               setSelectedCategoryId(parseInt(e.target.value));
               filterChallenges(challenges);
             }}
@@ -124,7 +116,7 @@ const AllChallenges = () => {
           <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
             + Challenge
           </Button>
-          {/* adding a category feels like admin only stuff */}
+          {/* adding a category feels like admin only functionality */}
           <Button
             margin="10px"
             bgColor="purple.200"
