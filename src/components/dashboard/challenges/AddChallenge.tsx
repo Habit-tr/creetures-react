@@ -41,7 +41,7 @@ const AddChallenge = ({
   const toast = useToast();
 
   const handleSubmit = async () => {
-    dispatch(
+    await dispatch(
       postNewChallengeAsync({
         challengeName,
         description,
@@ -52,8 +52,11 @@ const AddChallenge = ({
     toast({
       title: "Challenge added.",
     });
-    await dispatch(fetchAllChallengesAsync());
+    setChallengeName("");
+    setDescription("");
+    setCategoryId("");
     onClose();
+    await dispatch(fetchAllChallengesAsync());
   };
 
   return (
