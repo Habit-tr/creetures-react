@@ -6,7 +6,7 @@ import { Challenge, Database } from "../../../utils/supabaseTypes";
 interface ChallengeCardProps {
   challenge: Challenge;
   user: any;
-  category: Database["public"]["Tables"]["categories"]["Row"];
+  category?: Database["public"]["Tables"]["categories"]["Row"];
 }
 
 const ChallengeCard = ({ user, challenge, category }: ChallengeCardProps) => {
@@ -17,29 +17,25 @@ const ChallengeCard = ({ user, challenge, category }: ChallengeCardProps) => {
         w="430px"
         h="175px"
         border="2px black solid"
-        bgColor="gray.100"
+        color="black"
+        bgGradient="linear(to-b, gray.100, gray.300)"
       >
         <CardBody>
           <Heading mb="0px" size="md">
             {challenge.name?.toUpperCase()}
           </Heading>
-
           <Text fontSize="sm">Description: {challenge.description}</Text>
-          <Text fontSize="sm">Category: {category.name?.toUpperCase()}</Text>
+          <Text fontSize="sm">Category: {category?.name?.toUpperCase()}</Text>
           <Text fontSize="sm">Committed Users: ( ) ( ) ( )</Text>
           {/* <Text fontSize="sm">Success Rate: tbd</Text> */}
           {/* don't show commitment button if already committed? make it say view Commitment? */}
-          <Button m="10px" bgColor="green.200">
+          <Button m="10px" bgColor="white" border="1px black solid">
             Commit
           </Button>
           {user.id === challenge.created_by && (
             <>
-              <Button m="10px" bgColor="orange.200">
-                <EditIcon />
-              </Button>
-              <Button m="10px" bgColor="red.200">
-                <DeleteIcon />
-              </Button>
+              <EditIcon margin="10px" />
+              <DeleteIcon margin="10px" />
             </>
           )}
         </CardBody>

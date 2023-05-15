@@ -24,51 +24,37 @@ import {
 } from "./categories/allCategoriesSlice";
 
 const AllChallenges = () => {
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
-  const [allCategories, setAllCategories] = useState<any[]>([]);
+  // const [filteredChallenges, setFilteredChallenges] = useState<Challenge[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-  const [isShowingAll, setIsShowingAll] = useState<boolean>(false);
+  const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
-  const fetchedChallenges = useAppSelector(selectChallenges);
   const { session } = useAuth();
   const user = session.session.user;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // console.log("refetching");
-    dispatch(fetchAllChallengesAsync());
-  }, [dispatch, isOpen]);
-
-  const fetchedCategories = useAppSelector(selectCategories);
+  const challenges = useAppSelector(selectChallenges);
+  const allCategories = useAppSelector(selectCategories);
 
   useEffect(() => {
-    async function fetchCategories() {
+    console.log("fetching");
+    async function fetchData() {
       try {
         dispatch(fetchAllCategoriesAsync());
+        dispatch(fetchAllChallengesAsync());
       } catch (error) {
         console.error(error);
       }
     }
-    fetchCategories();
+    fetchData();
   }, [dispatch]);
-
-  useEffect(() => {
-    setChallenges(fetchedChallenges);
-    setAllCategories(fetchedCategories);
-  }, [fetchedCategories, fetchedChallenges]);
-
-  useEffect(() => {
-    setFilteredChallenges(fetchedChallenges);
-    setIsShowingAll(true);
-  }, [fetchedChallenges]);
 
   const filterChallenges = (challenges: Challenge[]) => {
     // debugger;
     //build a new array of all possible challenges
-    let newlyFilteredChallenges = [...fetchedChallenges];
+    let newlyFilteredChallenges = [...challenges];
 
     //filter by category if needed
     if (selectedCategoryId > 0) {
@@ -80,7 +66,7 @@ const AllChallenges = () => {
     }
     let onceFilteredChallenges = [...newlyFilteredChallenges];
     //filter out the non-owned ones if needed
-    if (isShowingAll) {
+    if (showOnlyMine) {
       // console.log("before mine sort: ", onceFilteredChallenges);
       onceFilteredChallenges = onceFilteredChallenges.filter(
         (challenge) => challenge.created_by === user.id,
@@ -89,8 +75,9 @@ const AllChallenges = () => {
     }
     const twiceFilteredChallenges = [...onceFilteredChallenges];
     // console.log("final after all sorting: ", twiceFilteredChallenges);
-    setFilteredChallenges(twiceFilteredChallenges);
+    return twiceFilteredChallenges;
   };
+  const filteredChallenges = filterChallenges(challenges);
 
   return (
     <>
@@ -105,7 +92,6 @@ const AllChallenges = () => {
               // console.log("clicked Id is ", e.target.value);
               setSelectedCategoryId(parseInt(e.target.value));
               filterChallenges(challenges);
-              setChallenges(fetchedChallenges);
             }}
           >
             <option key={0} value={0}>
@@ -121,13 +107,14 @@ const AllChallenges = () => {
         </Box>
         <Box>
           <Checkbox
-            isChecked={!isShowingAll}
+            isChecked={!showOnlyMine}
+            colorScheme="purple"
             onChange={() => {
-              setIsShowingAll(!isShowingAll);
+              setShowOnlyMine(!showOnlyMine);
               filterChallenges(challenges);
             }}
           >
-            Only My Challenges
+            Show All Challenges
           </Checkbox>
         </Box>
         <Box>
@@ -152,7 +139,7 @@ const AllChallenges = () => {
                 key={id}
                 user={user}
                 challenge={challenge}
-                category={allCategories.find(
+                category={allCategories?.find(
                   (category) => category.id === challenge.category_id,
                 )}
               />
