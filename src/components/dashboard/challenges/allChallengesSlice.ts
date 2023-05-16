@@ -27,15 +27,13 @@ import { Challenge } from "../../../utils/supabaseTypes";
 interface allChallengesState {
   value: Challenge[];
 }
-
+const initialState: allChallengesState = { value: [] };
 interface postNewChallengeProps {
   challengeName: string;
   description: string;
   categoryId: string;
   createdBy: string;
 }
-
-const initialState: allChallengesState = { value: [] };
 
 export const postNewChallengeAsync: any = createAsyncThunk(
   "postNewChallenge",
@@ -75,7 +73,6 @@ export const deleteChallengeAsync: any = createAsyncThunk(
         .delete()
         .eq("id", id)
         .select();
-      console.log("returned from delete request: ", data);
       return data;
     } catch (error) {
       return error;
@@ -95,7 +92,7 @@ export const fetchAllChallengesAsync: any = createAsyncThunk(
   },
 );
 
-const allChallengesSlice = createSlice({
+const allChallengesSlice: any = createSlice({
   name: "allChallenges",
   initialState,
   reducers: {},
@@ -125,7 +122,7 @@ const allChallengesSlice = createSlice({
 
 // export const fetchAllChallengesAsync = allChallengesSlice.actions;
 export const selectChallenges = (state: RootState) => {
-  return state.allChallenges.value;
+  return (state.allChallenges as allChallengesState).value;
 };
 
 export default allChallengesSlice.reducer;

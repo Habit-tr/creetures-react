@@ -13,6 +13,9 @@ export interface Challenge {
   id: number;
   name: string | null;
   description: string | null;
+  category?: {
+    name?: string;
+  };
 }
 
 export interface Challenges {
@@ -85,6 +88,13 @@ export interface Database {
       commitments: {
         Row: {
           badgeLevel: number;
+          challenge: {
+            category: {
+              name: string;
+            };
+            category_id: number;
+            name: string;
+          };
           challenge_id: number;
           created_at: string | null;
           frequency: string | null;
@@ -126,6 +136,7 @@ export interface Database {
           updated_at: string | null;
           username: string | null;
           website: string | null;
+          user_id: string;
         };
         Insert: {
           avatar_url?: string | null;
@@ -135,6 +146,7 @@ export interface Database {
           updated_at?: string | null;
           username?: string | null;
           website?: string | null;
+          user_id: string;
         };
         Update: {
           avatar_url?: string | null;
@@ -144,6 +156,7 @@ export interface Database {
           updated_at?: string | null;
           username?: string | null;
           website?: string | null;
+          user_id: string;
         };
       };
       reactions: {

@@ -20,6 +20,37 @@ export const fetchSingleRewardAsync: any = createAsyncThunk(
   },
 );
 
+interface updatedReward {
+  id: number;
+  name: string;
+  description: string | null;
+  user_id: string;
+  timesRedeemed: number | null;
+  dateLastRedeemed: string | null;
+}
+
+export const editRewardAsync: any = createAsyncThunk(
+  "editRewardAsync",
+  async (updatedReward: updatedReward) => {
+    try {
+      const { data } = await supabase
+        .from("rewards")
+        .update({
+          name: updatedReward.name,
+          description: updatedReward.description,
+          user_id: updatedReward.user_id,
+          timesRedeemed: updatedReward.timesRedeemed,
+          dateLastRedeemed: updatedReward.dateLastRedeemed,
+        })
+        .eq("id", updatedReward.id)
+        .select();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+)
+
 interface singleRewardState {
   value: Database['public']['Tables']['rewards']['Update'];
 }
@@ -34,6 +65,12 @@ const singleRewardSlice = createSlice({
     builder.addCase(
       fetchSingleRewardAsync.fulfilled,
       (state, action: PayloadAction<Database['public']['Tables']['rewards']['Row']>) => {
+        state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      editRewardAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['rewards']['Update']>) => {
         state.value = action.payload;
       },
     );

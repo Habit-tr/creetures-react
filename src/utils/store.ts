@@ -1,22 +1,32 @@
 import { configureStore } from "@reduxjs/toolkit";
-import allCategoriesReducer from "../components/dashboard/challenges/allCategoriesSlice";
 import allChallengesReducer from "../components/dashboard/challenges/allChallengesSlice";
 import allCommitmentsReducer from "../components/dashboard/challenges/allCommitmentsSlice";
-import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
+import allCategoriesReducer from "../components/dashboard/challenges/categories/allCategoriesSlice";
+import singleCategoryReducer from "../components/dashboard/challenges/categories/singleCategorySlice";
 import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
+import singleCommitmentReducer from "../components/dashboard/challenges/singleCommitmentSlice";
+import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
 import singleRewardReducer from "../components/dashboard/profile/singleRewardSlice";
+import allReactionsReducer from "../components/dashboard/profile/AllReactionsSlice";
+import friendsReducer from "../components/dashboard/profile/FriendsSlice";
+import profilesReducer from '../components/dashboard/profile/Single-All-ProfilesSlice'
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
   reducer: {
+    allCategories: allCategoriesReducer,
     allChallenges: allChallengesReducer, //documentation: https://redux-toolkit.js.org/usage/usage-with-typescript
     allCommitments: allCommitmentsReducer,
-    allCategories: allCategoriesReducer,
-    // auth: authReducer,
-    // allCategories: allCategoriesReducer,
-    singleChallenge: singleChallengeReducer,
     allRewards: allRewardsReducer,
+    // auth: authReducer,
+    // singleProfile: singleProfileReducer,
+    singleChallenge: singleChallengeReducer,
+    singleCommitment: singleCommitmentReducer,
+    singleCategory: singleCategoryReducer,
     singleReward: singleRewardReducer,
+    allReactions: allReactionsReducer,
+    friends: friendsReducer,
+    profiles: profilesReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // if we install the logger, uncomment this line
 });

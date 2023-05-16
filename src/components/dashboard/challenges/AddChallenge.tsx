@@ -14,31 +14,39 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
+import { useAppDispatch } from "../../../utils/reduxHooks";
 import {
-  fetchAllCategoriesAsync,
-  selectCategories,
-} from "./allCategoriesSlice";
-import { postNewChallengeAsync } from "./allChallengesSlice";
+  fetchAllChallengesAsync,
+  postNewChallengeAsync,
+} from "./allChallengesSlice";
 
 interface AddChallengeProps {
   isOpen: boolean;
   onClose: () => void;
+  allCategories: any[];
+  selectedCategoryId: number;
 }
 
-const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
+const AddChallenge = ({
+  isOpen,
+  onClose,
+  allCategories,
+  selectedCategoryId,
+}: AddChallengeProps) => {
   const dispatch = useAppDispatch();
   const { session } = useAuth();
   const user = session.session.user;
-  const [allCategories, setAllCategories] = useState<any[]>([]);
   const [challengeName, setChallengeName] = useState(""); //sets to whatever value is typed into input
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState<number>(selectedCategoryId);
   const [description, setDescription] = useState("");
-
   const toast = useToast();
 
+  useEffect(() => {
+    setCategoryId(selectedCategoryId);
+  }, [selectedCategoryId]);
+
   const handleSubmit = async () => {
-    dispatch(
+    await dispatch(
       postNewChallengeAsync({
         challengeName,
         description,
@@ -46,27 +54,15 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
         createdBy: user.id,
       }),
     );
-    //created_by: "31928c26-8a01-41c6-947b-0fadccabf3eb",
-    //will need to pull UUID from authenticated user object when that's available
     toast({
       title: "Challenge added.",
     });
+    setChallengeName("");
+    setDescription("");
+    setCategoryId(selectedCategoryId);
     onClose();
+    await dispatch(fetchAllChallengesAsync());
   };
-
-  const fetchedCategories = useAppSelector(selectCategories);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        dispatch(fetchAllCategoriesAsync());
-        setAllCategories(fetchedCategories);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchCategories();
-  }, [dispatch, fetchedCategories]);
 
   return (
     <>
@@ -76,7 +72,6 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
           <ModalHeader bgColor="purple.200">Create a New Challenge</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {JSON.stringify(user.id)}
             <Box>
               Name:{" "}
               <Input
@@ -94,9 +89,12 @@ const AddChallenge = ({ isOpen, onClose }: AddChallengeProps) => {
             <Box>
               Category:{" "}
               <Select
-                placeholder="Select a category"
-                onChange={(e) => setCategoryId(e.target.value)}
+                defaultValue={categoryId}
+                onChange={(e) => setCategoryId(parseInt(e.target.value))}
               >
+                <option key={0} value={0}>
+                  Select a category
+                </option>
                 {allCategories &&
                   allCategories.map((category) => (
                     <option key={category.id} value={category.id}>
