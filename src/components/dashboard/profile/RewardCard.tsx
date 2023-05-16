@@ -30,10 +30,11 @@ const RewardCard = ({ reward }: RewardCardProps) => {
     <Link to={`/rewards/${reward.id}`}>
       <Card
         margin="10px"
-        w="475px"
+        w="430px"
         h="175px"
         border="2px black solid"
-        bgColor="gray.100"
+        color="black"
+        bgGradient="linear(to-b, gray.100, gray.300)"
       >
         <CardBody>
           <Heading mb="0px" size="md">

@@ -25,7 +25,7 @@ import {
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 
-import friend from '/Users/spak/Desktop/creetures-react/src/components/dashboard/components/friend.gif';
+import friend from 'src/components/dashboard/components/friend.gif';
 
 // const IconWithGif = () => {
 //   return <img src={friend} alt="Friend" />;

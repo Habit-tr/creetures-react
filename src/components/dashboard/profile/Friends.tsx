@@ -2,7 +2,7 @@ import { Flex, Heading, Text, Box, Spacer, HStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
 import { fetchFriendsAsync, selectFriends } from './FriendsSlice';
-import FriendCard from '/Users/spak/Desktop/creetures-react/src/components/dashboard/profile/FriendsCard';
+import FriendsCard from './FriendsCard';
 import AddFriend from './AddFriend';
 import AllProfiles from './AllProfiles';
 
@@ -49,13 +49,13 @@ const Friends = () => {
 export default Friends;
 
 
-{/* <Box  bg='tomato'>
-<Heading>Find New Friends</Heading>
-<Box >
-   {friends && friends.length ? (
-   <Flex direction='row' maxW='1000px' wrap='wrap' justifyContent='center'>
-   {friends.map(friend => <FriendCard key={friend.id} friend={friend} />)}
-   </Flex>
-   ) : null}
-</Box>
-</Box> */}
+// {/* <Box  bg='tomato'>
+// <Heading>Find New Friends</Heading>
+// <Box >
+//    {friends && friends.length ? (
+//    <Flex direction='row' maxW='1000px' wrap='wrap' justifyContent='center'>
+//    {friends.map(friend => <FriendCard key={friend.id} friend={friend} />)}
+//    </Flex>
+//    ) : null}
+// </Box>
+// </Box> */}
