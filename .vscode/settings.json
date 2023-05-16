@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["SUPABASE"]
+  "cSpell.words": [
+    "SUPABASE"
+  ],
+  "deno.enable": true,
+  "deno.unstable": true
 }

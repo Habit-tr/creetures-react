@@ -20,7 +20,7 @@ const SingleCommitment = () => {
     return <Text>Loading...</Text>;
   }
 
-  const { badgeLevel, challenge, frequency, isUpToDate, timeframe } = commitment;
+  const { badgeLevel, challenge, frequency, isUpToDate, reward, timeframe } = commitment;
 
   const dayFrequency = (frequency: string) => {
     const days: string[] = [];
@@ -70,6 +70,10 @@ const SingleCommitment = () => {
       }
       {timeframe && timeframe.length
       ? <Text>Time of day: {timeframe}</Text>
+      : null
+      }
+      {reward && reward.name
+      ? <Text>Reward: {reward.name}</Text>
       : null
       }
       <br />

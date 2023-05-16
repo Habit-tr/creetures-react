@@ -18,7 +18,6 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
-import SideBar from "./components/sideBar";
 import DashboardTable from "./DashboardTable";
 import { fetchAllCommitmentsAsync, selectCommitments } from "./challenges/commitments/allCommitmentsSlice";
 
@@ -56,7 +55,6 @@ const Dashboard = () => {
         </Box>
       </Flex>
       <Flex direction="row" flexWrap="wrap">
-        {/* <SideBar></SideBar> */}
         <Box
           w="550px"
           h="440px"

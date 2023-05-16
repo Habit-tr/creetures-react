@@ -12,12 +12,18 @@ const initialState: singleCommitmentsState = {
     badgeLevel: 1,
     challenge_id: 0,
     created_at: null,
-    frequency: null,
+    frequency: '',
     goals: null,
     id: 0,
+    isClicked: false,
     isActive: true,
     isUpToDate: true,
-    timeframe: null,
+    reward: {
+      isClicked: false,
+      name: '',
+    },
+    reward_id: 0,
+    timeframe: '',
     updatedAt: null,
     user_id: '',
     challenge: {
@@ -36,7 +42,7 @@ export const fetchSingleCommitmentAsync: any = createAsyncThunk(
     try {
       const { data: fetchedCommitment } = await supabase
         .from('commitments')
-        .select('*, challenge: challenges(category_id, name, category: categories(name))')
+        .select('*, challenge: challenges(category_id, name, category: categories(name)), reward: rewards(isClicked, name)')
         .match({ id })
         .single();
       return fetchedCommitment;

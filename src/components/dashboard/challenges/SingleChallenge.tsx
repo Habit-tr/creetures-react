@@ -31,7 +31,7 @@ const SingleChallenge = () => {
     const id = urlId;
     const fetchChallenge = async () => {
       try {
-        await dispatch(fetchSingleChallengeAsync({ id }));
+        await dispatch(fetchSingleChallengeAsync(id));
       } catch (error) {
         console.error(error);
       }
