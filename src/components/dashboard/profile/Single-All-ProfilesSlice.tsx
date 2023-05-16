@@ -67,7 +67,7 @@ export const fetchSingleProfileAsync: any = createAsyncThunk(
     },
   });
 
-  export const selectFriends = (state: RootState) => {
+  export const selectProfiles = (state: RootState) => {
     return state.profiles.value;
   };
 

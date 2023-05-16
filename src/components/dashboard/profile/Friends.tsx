@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
 import { fetchFriendsAsync, selectFriends } from './FriendsSlice';
 import FriendCard from '/Users/spak/Desktop/creetures-react/src/components/dashboard/profile/FriendsCard';
 import AddFriend from './AddFriend';
+import AllProfiles from './AllProfiles';
 
 const Friends = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ const Friends = () => {
     <HStack>
 
     <Flex justifyContent="space-between" height="100vh" width="100vw" color='white'  >
-      <Box  bg='green.500' >
+      <Box flex='1' bg='green.500' >
         <Heading>My Friends</Heading>
            <Box>
               {!friends}
@@ -30,18 +31,13 @@ const Friends = () => {
            </Box>
       </Box>
 
-      <Box  bg='tomato'>
+      <Box flex='1' bg='tomato'>
         <Heading>Find New Friends</Heading>
         <Box >
-           {friends && friends.length ? (
-           <Flex direction='row' maxW='1000px' wrap='wrap' justifyContent='center'>
-           {friends.map(friend => <FriendCard key={friend.id} friend={friend} />)}
-           </Flex>
-           ) : null}
+           <AllProfiles/>
         </Box>
       </Box>
     </Flex>
-    <AddFriend />
     </HStack>
 
 
@@ -53,21 +49,13 @@ const Friends = () => {
 export default Friends;
 
 
-{/* <Flex>
-<Flex>
-<Heading>My Friends</Heading>
-<Box>
-{!friends}
-  <Text>No Friends Yet? Make some Friends and Get inspried...</Text>
+{/* <Box  bg='tomato'>
+<Heading>Find New Friends</Heading>
+<Box >
+   {friends && friends.length ? (
+   <Flex direction='row' maxW='1000px' wrap='wrap' justifyContent='center'>
+   {friends.map(friend => <FriendCard key={friend.id} friend={friend} />)}
+   </Flex>
+   ) : null}
 </Box>
-</Flex>
-
-<Flex>
-{friends && friends.length ? (
-  <Flex direction='row' maxW='900px' wrap='wrap'>
-    {friends.map(friend => <FriendCard key={friend.id} friend={friend} />)}
-  </Flex>
-) : null}
-</Flex>
-
-</Flex> */}
+</Box> */}
