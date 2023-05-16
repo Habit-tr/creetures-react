@@ -17,7 +17,6 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
-
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
   const navigate = useNavigate();
