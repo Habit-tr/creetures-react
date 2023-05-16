@@ -38,7 +38,7 @@ export default function Login() {
       setLoading(true);
       const user = await login(email, password);
 
-      await navigate("/profile");
+      await navigate("/");
       await navigate(0);
     } catch {
       setError("Failed to Login. Check password and try again.");
