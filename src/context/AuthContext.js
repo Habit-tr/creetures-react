@@ -27,7 +27,6 @@ export function AuthProvider({ children }) {
   async function updateProfilePicture(event) {
     event.preventDefault();
     const avatarFile = event.target.files[0];
-    const filename = `${uuidv4()}-${filename}`
     const { data, error } = await supabase.storage
       .from("profilePictures")
       .upload(event, avatarFile, {
