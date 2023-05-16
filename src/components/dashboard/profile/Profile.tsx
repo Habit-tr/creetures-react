@@ -14,8 +14,8 @@ import {
 const Profile = () => {
   const { currentUser } = useAuth();
   const [currentUserUrl, setCurrentUserUrl] = useState("");
-  const [error, setError] = useState("");
-  const [file, setFile] = useState([]);
+  const [error, setError] = useState<any>("");
+  const [file, setFile] = useState<any>([]);
 
   useEffect(() => {
     const { data } = supabase.storage
