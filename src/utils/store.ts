@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import allChallengesReducer from "../components/dashboard/challenges/allChallengesSlice";
-import allCommitmentsReducer from "../components/dashboard/challenges/allCommitmentsSlice";
+import allCommitmentsReducer from "../components/dashboard/challenges/commitments/allCommitmentsSlice";
 import allCategoriesReducer from "../components/dashboard/challenges/categories/allCategoriesSlice";
 import singleCategoryReducer from "../components/dashboard/challenges/categories/singleCategorySlice";
 import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
-import singleCommitmentReducer from "../components/dashboard/challenges/singleCommitmentSlice";
+import singleCommitmentReducer from "../components/dashboard/challenges/commitments/singleCommitmentSlice";
 import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
 import singleRewardReducer from "../components/dashboard/profile/singleRewardSlice";
 import allReactionsReducer from "../components/dashboard/profile/AllReactionsSlice";

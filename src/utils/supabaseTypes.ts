@@ -65,8 +65,12 @@ export interface Database {
       challenges: {
         Row: {
           category_id: number | null;
+          category: {
+            name: string;
+          };
           created_at: string | null;
           created_by: string | null;
+          description: string | null;
           id: number;
           name: string | null;
         };
@@ -74,6 +78,7 @@ export interface Database {
           category_id?: number | null;
           created_at?: string | null;
           created_by?: string | null;
+          description?: string | null;
           id?: number;
           name?: string | null;
         };
@@ -81,6 +86,7 @@ export interface Database {
           category_id?: number | null;
           created_at?: string | null;
           created_by?: string | null;
+          description?: string | null;
           id?: number;
           name?: string | null;
         };
@@ -98,7 +104,9 @@ export interface Database {
           challenge_id: number;
           created_at: string | null;
           frequency: string | null;
+          goals: string | null;
           id: number;
+          isActive: boolean;
           isUpToDate: boolean;
           timeframe: string | null;
           updatedAt: string | null;
@@ -109,7 +117,9 @@ export interface Database {
           challenge_id: number;
           created_at?: string | null;
           frequency?: string | null;
+          goals?: string | null;
           id?: number;
+          isActive?: boolean;
           isUpToDate?: boolean;
           timeframe?: string | null;
           updatedAt?: string | null;
@@ -120,7 +130,9 @@ export interface Database {
           challenge_id?: number;
           created_at?: string | null;
           frequency?: string | null;
+          goals?: string | null;
           id?: number;
+          isActive?: boolean;
           isUpToDate?: boolean;
           timeframe?: string | null;
           updatedAt?: string | null;

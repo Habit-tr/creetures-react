@@ -1,10 +1,10 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../../utils/reduxHooks';
 import { fetchSingleCommitmentAsync, selectCommitment } from './singleCommitmentSlice';
-import RenderMedal from './RenderMedal';
-import Reaction from '../profile/AllReactions';
+import RenderMedal from '../RenderMedal';
+import Reaction from '../../profile/AllReactions';
 
 const SingleCommitment = () => {
   const dispatch = useAppDispatch();

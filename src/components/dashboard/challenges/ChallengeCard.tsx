@@ -6,7 +6,7 @@ import { Challenge, Database } from "../../../utils/supabaseTypes";
 interface ChallengeCardProps {
   challenge: Challenge;
   user: any;
-  category?: Database['public']['Tables']['categories']['Row'];
+  category?: Database["public"]["Tables"]["categories"]["Row"];
 }
 
 const ChallengeCard = ({ user, challenge, category }: ChallengeCardProps) => {
@@ -29,9 +29,11 @@ const ChallengeCard = ({ user, challenge, category }: ChallengeCardProps) => {
           <Text fontSize="sm">Committed Users: ( ) ( ) ( )</Text>
           {/* <Text fontSize="sm">Success Rate: tbd</Text> */}
           {/* don't show commitment button if already committed? make it say view Commitment? */}
-          <Button m="10px" bgColor="white" border="1px black solid">
-            Commit
-          </Button>
+          <Link to={`/challenges/${challenge.id}/commit`}>
+            <Button m="10px" bgColor="white" border="1px black solid">
+              Commit
+            </Button>
+          </Link>
           {user.id === challenge.created_by && (
             <>
               <EditIcon margin="10px" />

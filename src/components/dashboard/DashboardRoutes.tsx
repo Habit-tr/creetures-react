@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
-import AddCommitment from "./challenges/AddCommitment";
+import AddCommitment from "./challenges/commitments/AddCommitment";
 import AllChallenges from "./challenges/AllChallenges";
-import AllCommitments from "./challenges/AllCommitments";
+import AllCommitments from "./challenges/commitments/AllCommitments";
 import SingleChallenge from "./challenges/SingleChallenge";
-import SingleCommitment from "./challenges/SingleCommitment";
+import SingleCommitment from "./challenges/commitments/SingleCommitment";
 import AllCategories from "./challenges/categories/AllCategories";
 import SingleCategory from "./challenges/categories/SingleCategory";
 import Footer from "./footer/Footer";

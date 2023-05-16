@@ -3,6 +3,11 @@ import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
 import { Database } from '../../../utils/supabaseTypes';
 
+interface singleChallengeState {
+  value: Database['public']['Tables']['challenges']['Update'];
+}
+
+const initialState: singleChallengeState = { value: {} as Database['public']['Tables']['challenges']['Row'] };
 
 export const fetchSingleChallengeAsync: any = createAsyncThunk(
   "fetchSingleChallengeAsync",
@@ -11,7 +16,24 @@ export const fetchSingleChallengeAsync: any = createAsyncThunk(
       const { data } = await supabase
         .from("challenges")
         .select(`*, category: categories(name)`)
-        .match({ id: id })
+        .match({ id })
+        .single();
+      return data;
+    } catch (err) {
+      return err;
+    }
+  },
+);
+
+// THIS IS SO DUMB... but it works. Do not understand why I could not refactor the above thunk to work in SingleChallenge how it does in AddCommitment
+export const fetchSingleChallengeAsync2: any = createAsyncThunk(
+  "fetchSingleChallengeAsync2",
+  async (id) => {
+    try {
+      const { data } = await supabase
+        .from("challenges")
+        .select(`*, category: categories(name)`)
+        .match({ id })
         .single();
       return data;
     } catch (err) {
@@ -52,12 +74,6 @@ export const editChallengeAsync: any = createAsyncThunk(
 //this is redundant with fetchSingleChallengeProps;
 //could refactor to merge them:
 
-interface singleChallengeState {
-  value: Database['public']['Tables']['challenges']['Update'];
-}
-
-const initialState: singleChallengeState = { value: {} };
-
 const singleChallengeSlice = createSlice({
   name: "singleChallenge",
   initialState,
@@ -65,6 +81,12 @@ const singleChallengeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleChallengeAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['challenges']['Row']>) => {
+        state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      fetchSingleChallengeAsync2.fulfilled,
       (state, action: PayloadAction<Database['public']['Tables']['challenges']['Row']>) => {
         state.value = action.payload;
       },

@@ -1,6 +1,6 @@
 import { Card, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { Database } from "../../../utils/supabaseTypes";
+import { Database } from "../../../../utils/supabaseTypes";
 
 interface CommitmentCardProps {
   commitment: Database['public']['Tables']['commitments']['Row'];
