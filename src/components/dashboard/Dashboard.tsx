@@ -17,8 +17,6 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
-// import SideBar from "./components/sideBar";
-
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
   const navigate = useNavigate();
@@ -46,7 +44,6 @@ const Dashboard = () => {
         </Box>
       </Flex>
       <Flex direction="row" flexWrap="wrap">
-        {/* <SideBar></SideBar> */}
         <Box
           w="550px"
           h="440px"
