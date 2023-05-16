@@ -25,10 +25,11 @@ export function AuthProvider({ children }) {
   }
 
   async function updateProfilePicture(event) {
+    event.preventDefault();
     const avatarFile = event.target.files[0];
     const { data, error } = await supabase.storage
-      .from("avatars")
-      .upload("public/avatar1.png", avatarFile, {
+      .from("profilePictures")
+      .upload(event, avatarFile, {
         cacheControl: "3600",
         upsert: false,
       });
