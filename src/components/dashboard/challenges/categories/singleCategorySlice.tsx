@@ -5,25 +5,19 @@ import { Database } from "../../../../utils/supabaseTypes";
 
 export const fetchSingleCategoryAsync: any = createAsyncThunk(
   "fetchSingleCategoryAsync",
-  async ({ id }: Database["public"]["Tables"]["categories"]["Update"]) => {
+  async (id: number) => {
     try {
-      const { data } = await supabase
+      const { data: category } = await supabase
         .from("categories")
         .select()
         .match({ id: id })
         .single();
-      return data;
-      /*
-const { data: category } = await supabase
-        .from("categories")
-        .select("id")
-        .match({ name })
-        .single();
       const { data: challenges } = await supabase
         .from("challenges")
-        .select()
+        .select(`*`)
         .eq("category_id", category?.id);
-*/
+      const categoryData = { ...category, challenges: challenges };
+      return categoryData;
     } catch (err) {
       return err;
     }

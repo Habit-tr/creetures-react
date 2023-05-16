@@ -8,11 +8,12 @@ import {
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
-import { fetchSingleRewardAsync, selectReward } from "./singleRewardSlice";
+import { fetchSingleRewardAsync, selectReward, editRewardAsync } from "./singleRewardSlice";
 import { deleteRewardAsync } from "./allRewardsSlice";
 import { EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import EditReward from "./EditReward";
 import DeleteAlert from "./DeleteAlert";
+import RedeemButton from "./RedeemButton";
 
 const SingleReward = () => {
   const [reward, setReward] = useState<any>({});
@@ -55,6 +56,19 @@ const SingleReward = () => {
     navigate("/rewards");
   }
 
+  const handleRedeem = async () => {
+    const rewardToRedeem = {
+      id: reward.id,
+      timesRedeemed: reward.timesRedeemed + 1,
+    };
+    await dispatch(editRewardAsync(rewardToRedeem));
+    const updatedReward = { ...reward, timesRedeemed: reward.timesRedeemed + 1 };
+    setReward(updatedReward);
+    toast({
+      title: "Reward redeemed."
+    });
+  }
+
   return (
     <>
       {reward && reward.id && (
@@ -79,7 +93,10 @@ const SingleReward = () => {
           {reward.dateLastRedeemed && (
             <Flex>Date Last Redeemed: {reward.dateLastRedeemed}</Flex>
           )}
-          <Button bgColor="green.200" width="100px" marginRight="10px">Redeem</Button>
+          {/* <Button bgColor="green.200" width="100px" marginRight="10px"
+          onClick={() => handleRedeem()}
+          >Redeem</Button> */}
+          <RedeemButton id={reward.id} onRedeem={() => handleRedeem()}/>
           <Button
             margin="10px"
             bgColor="orange.200"

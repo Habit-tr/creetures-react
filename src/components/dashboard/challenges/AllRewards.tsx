@@ -1,8 +1,11 @@
 import { Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
-import { fetchAllRewardsAsync, selectRewards } from '../profile/allRewardsSlice';
-import { Link } from 'react-router-dom';
+import {
+  fetchAllRewardsAsync,
+  selectRewards,
+} from "../profile/allRewardsSlice";
 
 const AllRewards = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,7 +33,7 @@ const AllRewards = () => {
         </Flex>
       ) : null}
     </>
-  )
-}
+  );
+};
 
 export default AllRewards;

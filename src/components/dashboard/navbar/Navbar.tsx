@@ -1,4 +1,5 @@
-import { Button, Center, Flex, Heading } from "@chakra-ui/react";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { Button, Center, Flex, Heading, useColorMode } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import HamburgerMenu from "./HamburgerMenu";
@@ -18,6 +19,7 @@ const Navbar = () => {
       console.log(error);
     }
   }
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Flex
       p="20px"
@@ -32,17 +34,14 @@ const Navbar = () => {
         </Heading>
       </Link>
       <HamburgerMenu />
-      <Link to="/profile">
-        <Button m="5px" bgColor="green.200">
-          Profile
-        </Button>
-      </Link>
-      <Link to="/challenges">
-        <Button m="5px" bgColor="green.200">
-          Challenges
-        </Button>
-      </Link>
-      <Flex flexDirection="column">
+      <Button m="5px" onClick={() => toggleColorMode()} bgColor="green.200">
+        {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+      </Button>
+      <Flex
+        flexDirection="column"
+        cursor="pointer"
+        onClick={() => navigate("/profile")}
+      >
         <Center color="white">Logged in as:</Center>{" "}
         <Center color="white">{user.email}</Center>
       </Flex>
