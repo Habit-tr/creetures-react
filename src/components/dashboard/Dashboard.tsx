@@ -17,6 +17,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
+import SideBar from "./components/sideBar";
 
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
@@ -39,7 +40,9 @@ const Dashboard = () => {
         </Box>
       </Flex>
       <Flex direction="row" flexWrap="wrap">
-        {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
+        <SideBar>
+          
+        </SideBar>
         <Box
           w="550px"
           h="440px"
@@ -141,8 +144,9 @@ const Dashboard = () => {
           <Text mb="10px">Andrew nudged Ben!</Text>
           <Text mb="10px">Jack high-fived Simin!</Text>
           <Text mb="10px">Danny committed to a new challenge!</Text>
+          <Reaction />
         </Box>
-        <Reaction />
+
       </Flex>
     </>
   );

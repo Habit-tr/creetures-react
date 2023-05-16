@@ -11,7 +11,7 @@ import SingleCategory from "./challenges/categories/SingleCategory";
 import Footer from "./footer/Footer";
 import Navbar from "./navbar/Navbar";
 import Friends from "./profile/Friends";
-import Profile from "./profile/Profile";
+import Profile from "./profile/MyProfile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
 

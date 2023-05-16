@@ -17,6 +17,8 @@ import {
   selectChallenge,
 } from "./singleChallengeSlice";
 
+
+
 const SingleChallenge = () => {
   const [challenge, setChallenge] = useState<any>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -89,6 +91,7 @@ const SingleChallenge = () => {
             handleDelete={handleDelete}
             setChallenge={setChallenge} //passing setter down to refresh state when edited challenge comes back
           />
+          
         </>
       )}
     </>

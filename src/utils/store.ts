@@ -8,6 +8,8 @@ import singleCommitmentReducer from "../components/dashboard/challenges/singleCo
 import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
 import singleRewardReducer from "../components/dashboard/profile/singleRewardSlice";
 import allReactionsReducer from "../components/dashboard/profile/AllReactionsSlice";
+import friendsReducer from "/Users/spak/Desktop/creetures-react/src/components/dashboard/profile/FriendsSlice";
+import profilesReducer from '../components/dashboard/profile/Single-All-ProfilesSlice'
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
@@ -23,6 +25,8 @@ const store = configureStore({
     singleCategory: singleCategoryReducer,
     singleReward: singleRewardReducer,
     allReactions: allReactionsReducer,
+    friends: friendsReducer,
+    profiles: profilesReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // if we install the logger, uncomment this line
 });

@@ -35,6 +35,7 @@ interface reactions {
 interface reactionNumbers {
   total_highfives: number;
   total_nudges: number;
+  user_id: string;
 }
 
 export const fetchAllReactionsAsync: any = createAsyncThunk(
@@ -44,7 +45,6 @@ export const fetchAllReactionsAsync: any = createAsyncThunk(
         const { data } = await supabase
           .from("reactions")
           .select()
-          // console.log('what are we grabing', data)
         return data;
       } catch (err) {
         return err;
@@ -52,21 +52,26 @@ export const fetchAllReactionsAsync: any = createAsyncThunk(
     },
   );
 
-  // export const updateReactionTotal: any = createAsyncThunk(
-  //   'updateReactionTotal',
-  //   async ({total_highfives, total_nudges}: reactionNumbers) => {
-  //     try {
-  //       const { data } = await supabase
-  //       .from('reactions')
-  //       .select()
-  //       .eq('total_highfives',total_highfives)
-  //       .eq('total_nudges',total_nudges)
-  //       return data;
-  //     } catch (err) {
-  //       return err;
-  //     }
-  //   }
-  // )
+  export const updateReactionTotal: any = createAsyncThunk(
+    'updateReactionTotal',
+    async ({total_highfives, total_nudges, user_id}: reactionNumbers) => {
+      try {
+        const { data } = await supabase
+        .from('reactions')
+        .update({
+          total_highfives,
+          total_nudges,
+        })
+        .eq('user_id',user_id)
+        .select()
+        return data;
+      } catch (err) {
+        return err;
+      }
+    }
+  )
+
+
 
   interface reactionsState {
     value: {
@@ -106,12 +111,12 @@ export const fetchAllReactionsAsync: any = createAsyncThunk(
           state.value = action.payload;
         },
       );
-      // builder.addCase(
-      //   updateReactionTotal.fulfilled,
-      //   (state, action: PayloadAction<>) => {
-      //     state.value = action.payload;
-      //   },
-      // );
+      builder.addCase(
+        updateReactionTotal.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.value = action.payload;
+        },
+      );
     },
   });
 
