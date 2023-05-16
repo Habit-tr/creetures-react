@@ -10,23 +10,6 @@ interface singleChallengeState {
 const initialState: singleChallengeState = { value: {} as Database['public']['Tables']['challenges']['Row'] };
 
 export const fetchSingleChallengeAsync: any = createAsyncThunk(
-  "fetchSingleChallengeAsync",
-  async ({ id }: Database['public']['Tables']['challenges']['Update']) => {
-    try {
-      const { data } = await supabase
-        .from("challenges")
-        .select(`*, category: categories(name)`)
-        .match({ id })
-        .single();
-      return data;
-    } catch (err) {
-      return err;
-    }
-  },
-);
-
-// THIS IS SO DUMB... but it works. Do not understand why I could not refactor the above thunk to work in SingleChallenge how it does in AddCommitment
-export const fetchSingleChallengeAsync2: any = createAsyncThunk(
   "fetchSingleChallengeAsync2",
   async (id) => {
     try {
@@ -81,12 +64,6 @@ const singleChallengeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleChallengeAsync.fulfilled,
-      (state, action: PayloadAction<Database['public']['Tables']['challenges']['Row']>) => {
-        state.value = action.payload;
-      },
-    );
-    builder.addCase(
-      fetchSingleChallengeAsync2.fulfilled,
       (state, action: PayloadAction<Database['public']['Tables']['challenges']['Row']>) => {
         state.value = action.payload;
       },
