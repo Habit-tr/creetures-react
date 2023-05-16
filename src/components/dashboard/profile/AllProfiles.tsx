@@ -4,7 +4,7 @@ import { Flex, Heading, Text, Box, Spacer, HStack, Button } from '@chakra-ui/rea
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
 import { fetchAllProfilesAsync, fetchSingleProfileAsync, selectProfiles } from "./Single-All-ProfilesSlice";
-import { fetchAllCommitmentsAsync, selectCommitments } from "../challenges/allCommitmentsSlice";
+import { fetchAllCommitmentsAsync, selectCommitments } from "../challenges/commitments/allCommitmentsSlice";
 import ProfileCard from "./ProfileCard";
 import { Database } from "../../../utils/supabaseTypes";
 

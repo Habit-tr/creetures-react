@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../../utils/store';
-import supabase from '../../../utils/supabaseClient';
-import { Database } from '../../../utils/supabaseTypes';
+import { RootState } from '../../../../utils/store';
+import supabase from '../../../../utils/supabaseClient';
+import { Database } from '../../../../utils/supabaseTypes';
 
 interface singleCommitmentsState {
   value: Database['public']['Tables']['commitments']['Row'];
@@ -13,7 +13,9 @@ const initialState: singleCommitmentsState = {
     challenge_id: 0,
     created_at: null,
     frequency: null,
+    goals: null,
     id: 0,
+    isActive: true,
     isUpToDate: true,
     timeframe: null,
     updatedAt: null,
