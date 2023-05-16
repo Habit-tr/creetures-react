@@ -29,6 +29,10 @@ const Dashboard = () => {
     setUser(fetchedUser);
   }, [session.session.user]);
 
+  function navigateProf() {
+    navigate("/profile");
+  }
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -36,13 +40,13 @@ const Dashboard = () => {
           <Heading>{user.email}'s Dashboard</Heading>
         </Box>
         <Box>
-          <Button bgColor="purple.200">My Profile</Button>
+          <Button bgColor="purple.200" onClick={navigateProf}>
+            My Profile
+          </Button>
         </Box>
       </Flex>
       <Flex direction="row" flexWrap="wrap">
-        <SideBar>
-          
-        </SideBar>
+        <SideBar></SideBar>
         <Box
           w="550px"
           h="440px"
@@ -146,7 +150,6 @@ const Dashboard = () => {
           <Text mb="10px">Danny committed to a new challenge!</Text>
           <Reaction />
         </Box>
-
       </Flex>
     </>
   );
