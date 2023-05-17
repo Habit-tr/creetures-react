@@ -38,26 +38,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     }
   }
 
-  // const commitmentCategories: Record<'Morning (4am-12pm)' | 'Afternoon (12pm-8pm)' | 'Night (8pm-4am)', JSX.Element[]> = {
-  //   'Morning (4am-12pm)': [],
-  //   'Afternoon (12pm-8pm)': [],
-  //   'Night (8pm-4am)': [],
-  // };
-
-  // commitments.forEach((commitment) => {
-  //   const committedToday = checkDay(commitment);
-  //   const timeframe = commitment.timeframe as 'Morning (4am-12pm)' | 'Afternoon (12pm-8pm)' | 'Night (8pm-4am)';
-  //   if (commitmentCategories.hasOwnProperty(timeframe) && committedToday) {
-  //     commitmentCategories[timeframe].push(
-  //       <Flex key={commitment.id} align="center" mb={2}>
-  //         <Checkbox colorScheme="green"/>
-  //         <Text>{commitment.challenge.name}</Text>
-  //       </Flex>
-  //     );
-  //   }
-  // });
-
-
   const commitmentCategories: Record<'Morning (4am-12pm)' | 'Afternoon (12pm-8pm)' | 'Night (8pm-4am)', JSX.Element[]> = {
     'Morning (4am-12pm)': [],
     'Afternoon (12pm-8pm)': [],
@@ -78,9 +58,12 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
           </Td>
           {commitment.reward_id
           ? <Td>
-              <Text textAlign="center">{commitment.reward.name}</Text>
+              <Flex>
+                <Text textAlign="center">{commitment.reward.name}</Text>
+                <Button>Redeem</Button>
+              </Flex>
             </Td>
-          : null}
+          : <Text>No Reward for this commitment</Text>}
         </Tr>
       );
     }
@@ -88,27 +71,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
 
   return (
-    // <>
-    //   <Box>
-    //     <Text>{dateString}</Text>
-    //     <Table>
-    //       <Thead>
-    //         <Tr>
-    //           <Th>Morning (4am-12pm)</Th>
-    //           <Th>Afternoon (12pm-8pm)</Th>
-    //           <Th>Night (8pm-4am)</Th>
-    //         </Tr>
-    //       </Thead>
-    //       <Tbody>
-    //         <Tr>
-    //           <Td>{commitmentCategories['Morning (4am-12pm)']}</Td>
-    //           <Td>{commitmentCategories['Afternoon (12pm-8pm)']}</Td>
-    //           <Td>{commitmentCategories['Night (8pm-4am)']}</Td>
-    //         </Tr>
-    //       </Tbody>
-    //     </Table>
-    //   </Box>
-    // </>
     <>
       <Box>
         <Flex width="100%" justifyContent="space-between">
