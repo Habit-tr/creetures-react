@@ -40,8 +40,8 @@ const AddCommitment = () => {
 
   const [days, setDays] = useState<string>('');
   const [timeframe, setTimeframe] = useState<string>('');
-  const [reward, setReward] = useState<Database['public']['Tables']['rewards']['Row']>(nullReward);
   const [goals, setGoals] = useState<string>('');
+  const [reward, setReward] = useState<Database['public']['Tables']['rewards']['Row']>(nullReward);
 
   const rewardList = (rewards: Database['public']['Tables']['rewards']['Row'][]) => {
     const selectableRewards = ['Select reward (Optional)'];
@@ -63,7 +63,7 @@ const AddCommitment = () => {
   };
 
   const handleTimeframeSelect = (time: string) => {
-    if (time === 'Select time frame (Optional)') {
+    if (time === 'Select time frame') {
       setTimeframe('');
     } else {
       setTimeframe(time);
@@ -120,7 +120,7 @@ const AddCommitment = () => {
         </Box>
         <Box>
           <Select w='260px' mb='20px' onChange={(e) => handleTimeframeSelect(e.target.value)}>
-            <option>Select time frame (Optional)</option>
+            <option>Select time frame</option>
             <option>Morning (4am-12pm)</option>
             <option>Afternoon (12pm-8pm)</option>
             <option>Night (8pm-4am)</option>

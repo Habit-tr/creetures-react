@@ -52,6 +52,28 @@ export const fetchSingleCommitmentAsync: any = createAsyncThunk(
   },
 );
 
+export const editCommitmentAsync: any = createAsyncThunk(
+  'editCommitmentAsync',
+  async (updatedCommitment: Database['public']['Tables']['commitments']['Update']) => {
+    try {
+      const { data } = await supabase
+        .from('commitments')
+        .update({
+          frequency: updatedCommitment.frequency,
+          goals: updatedCommitment.goals,
+          reward_id: updatedCommitment.reward_id,
+          timeframe: updatedCommitment.timeframe,
+        })
+        .eq('id', updatedCommitment.id)
+        .select()
+        .single();
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+);
+
 const singleCommitmentSlice = createSlice({
   name: 'singleCommitment',
   initialState,
@@ -59,6 +81,12 @@ const singleCommitmentSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleCommitmentAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
+        state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      editCommitmentAsync.fulfilled,
       (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
         state.value = action.payload;
       },
