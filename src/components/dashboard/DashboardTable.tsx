@@ -76,9 +76,11 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
               <Text textAlign="center">{commitment.challenge.name}</Text>
             </Flex>
           </Td>
-          <Td>
-            <Text textAlign="center">{commitment.reward.name}</Text>
-          </Td>
+          {commitment.reward_id
+          ? <Td>
+              <Text textAlign="center">{commitment.reward.name}</Text>
+            </Td>
+          : null}
         </Tr>
       );
     }
