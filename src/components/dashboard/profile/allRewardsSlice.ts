@@ -89,7 +89,7 @@ const allRewardsSlice = createSlice({
     builder.addCase(
       postNewRewardAsync.fulfilled,
       (state, action: PayloadAction<any>) => { //should I use update here? gives me linter error
-        state.value.push(action.payload);
+        state.value.push(...action.payload);
       },
     );
     builder.addCase(

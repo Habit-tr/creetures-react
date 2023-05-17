@@ -15,7 +15,7 @@ export const fetchAllCommitmentsAsync: any = createAsyncThunk(
     try {
       const { data: fetchedCommitments } = await supabase
         .from('commitments')
-        .select('id, badgeLevel, challenge_id, isUpToDate, user_id, challenge: challenges(name), reward: rewards(isClicked, name), timeframe');
+        .select('id, badgeLevel, challenge_id, isUpToDate, user_id, challenge: challenges(name), reward: rewards(isClicked, name), timeframe, frequency');
       return fetchedCommitments;
     } catch (err) {
       console.error(err);

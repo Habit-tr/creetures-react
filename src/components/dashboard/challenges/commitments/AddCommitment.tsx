@@ -13,10 +13,15 @@ const AddCommitment = () => {
   const { id } = useParams();
   const { session } = useAuth();
   const user = session.session.user;
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchSingleChallengeAsync(id));
-    dispatch(fetchAllRewardsAsync());
+    const fetchData = async () => {
+      await dispatch(fetchSingleChallengeAsync(id));
+      await dispatch(fetchAllRewardsAsync());
+      setIsLoading(false);
+    }
+    fetchData();
   }, [dispatch, id]);
 
   const challenge = useAppSelector(selectChallenge);
@@ -96,49 +101,55 @@ const AddCommitment = () => {
 
   return (
     <>
-      {challenge && challenge.name
-      ? <Heading mb='20px'>Commit to {challenge.name} challenge</Heading>
-      : <Heading mb='20px'>Commit to this challenge</Heading>}
-      <Text>Please select the days you'd like to commit:</Text>
-      <Box mb='20px'>
-        <Checkbox onChange={() => handleDayClick('M')} /> Mon{' '}
-        <Checkbox onChange={() => handleDayClick('T')} /> Tue{' '}
-        <Checkbox onChange={() => handleDayClick('W')} /> Wed{' '}
-        <Checkbox onChange={() => handleDayClick('H')} /> Thurs{' '}
-        <Checkbox onChange={() => handleDayClick('F')} /> Fri{' '}
-        <Checkbox onChange={() => handleDayClick('S')} /> Sat{' '}
-        <Checkbox onChange={() => handleDayClick('U')} /> Sun
-      </Box>
-      <Box>
-        <Select w='260px' mb='20px' onChange={(e) => handleTimeframeSelect(e.target.value)}>
-          <option>Select time frame (Optional)</option>
-          <option>Morning (4am-12pm)</option>
-          <option>Afternoon (12pm-8pm)</option>
-          <option>Night (8pm-4am)</option>
-        </Select>
-      </Box>
-      <Box mb='20px'>
-        Goals (Optional):
-        <Textarea
-          value={goals}
-          onChange={(e) => setGoals(e.target.value)}
-        />
-      </Box>
-      <Box>
-        <Select w='260px' mb='20px' onChange={(e) => handleRewardSelect(e.target.value)}>
-          {rewards && rewards.length
-          ? rewardList(rewards).map((reward, idx) => (
-            <option key={idx}>{reward}</option>
-          ))
-          : null}
-        </Select>
-      </Box>
-      <Button 
-        isDisabled={!days || !timeframe}
-        bgColor="green.200"
-        mb='20px' onClick={handleSubmit}>
-        Commit to this Challenge
-      </Button>
+    {isLoading ? (
+      <div>Loading...</div>
+    ) : (
+      <>
+        {challenge && challenge.name
+        ? <Heading mb='20px'>Commit to {challenge.name} challenge</Heading>
+        : <Heading mb='20px'>Commit to this challenge</Heading>}
+        <Text>Please select the days you'd like to commit:</Text>
+        <Box mb='20px'>
+          <Checkbox onChange={() => handleDayClick('M')} /> Mon{' '}
+          <Checkbox onChange={() => handleDayClick('T')} /> Tue{' '}
+          <Checkbox onChange={() => handleDayClick('W')} /> Wed{' '}
+          <Checkbox onChange={() => handleDayClick('H')} /> Thurs{' '}
+          <Checkbox onChange={() => handleDayClick('F')} /> Fri{' '}
+          <Checkbox onChange={() => handleDayClick('S')} /> Sat{' '}
+          <Checkbox onChange={() => handleDayClick('U')} /> Sun
+        </Box>
+        <Box>
+          <Select w='260px' mb='20px' onChange={(e) => handleTimeframeSelect(e.target.value)}>
+            <option>Select time frame (Optional)</option>
+            <option>Morning (4am-12pm)</option>
+            <option>Afternoon (12pm-8pm)</option>
+            <option>Night (8pm-4am)</option>
+          </Select>
+        </Box>
+        <Box mb='20px'>
+          Goals (Optional):
+          <Textarea
+            value={goals}
+            onChange={(e) => setGoals(e.target.value)}
+          />
+        </Box>
+        <Box>
+          <Select w='260px' mb='20px' onChange={(e) => handleRewardSelect(e.target.value)}>
+            {rewards && rewards.length
+            ? rewardList(rewards).map((reward, idx) => (
+              <option key={idx}>{reward}</option>
+            ))
+            : null}
+          </Select>
+        </Box>
+        <Button
+          isDisabled={!days || !timeframe}
+          bgColor="green.200"
+          mb='20px' onClick={handleSubmit}>
+          Commit to this Challenge
+        </Button>
+      </>
+    )}
     </>
   );
 };
