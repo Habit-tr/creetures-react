@@ -1,16 +1,9 @@
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   Heading,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -75,17 +68,29 @@ const Dashboard = () => {
             Display a mini battle pass view here with today's commitments and
             rewards and maybe also tomorrow's.
           </Text>
-          <Link to="/challenges">
-            <Text cursor="pointer" margin="20px">
+          <Flex justifyContent="center" alignItems="center">
+            <Link to="/challenges">
+              <Text cursor="pointer" margin="20px">
+                <Button
+                  bgColor="green.200"
+                  color="black"
+                  onClick={() => navigate("/challenges")}
+                >
+                  Challenges
+                </Button>
+              </Text>
+            </Link>
+            <Link to="/rewards">
               <Button
-                bgColor="green.200"
+                bgColor="yellow.200"
                 color="black"
-                onClick={() => navigate("/challenges")}
+                margin="10px"
+                onClick={() => navigate("/rewards")}
               >
-                Challenges
+                Rewards
               </Button>
-            </Text>
-          </Link>
+            </Link>
+          </Flex>
           <DashboardTable commitments={commitments}/>
           {/* <Table>
             <Thead>
@@ -120,16 +125,6 @@ const Dashboard = () => {
               </Tr>
             </Tbody>
           </Table> */}
-          <Link to="/rewards">
-            <Button
-              bgColor="yellow.200"
-              color="black"
-              margin="10px"
-              onClick={() => navigate("/rewards")}
-            >
-              Rewards
-            </Button>
-          </Link>
         </Box>
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
         <Box
