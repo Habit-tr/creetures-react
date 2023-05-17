@@ -15,17 +15,28 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
+import DashboardTable from "./DashboardTable";
+import { fetchAllCommitmentsAsync, selectCommitments } from "./challenges/commitments/allCommitmentsSlice";
+
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
   const navigate = useNavigate();
   const { session } = useAuth();
+  const dispatch = useAppDispatch();
+
+  const commitments = useAppSelector(selectCommitments)
 
   useEffect(() => {
     const fetchedUser = session.session.user;
     setUser(fetchedUser);
   }, [session.session.user]);
+
+  useEffect(() => {
+    dispatch(fetchAllCommitmentsAsync());
+  }, [dispatch]);
 
   function navigateProf() {
     navigate("/profile");
@@ -75,7 +86,8 @@ const Dashboard = () => {
               </Button>
             </Text>
           </Link>
-          <Table>
+          <DashboardTable commitments={commitments}/>
+          {/* <Table>
             <Thead>
               <Tr>
                 <Th>Fri</Th>
@@ -85,7 +97,6 @@ const Dashboard = () => {
             </Thead>
             <Tbody>
               <Tr>
-                {/* will map over fetched commitments for auth user */}
                 <Td>
                   <Checkbox colorScheme="green" /> Chew Gum
                 </Td>
@@ -97,7 +108,6 @@ const Dashboard = () => {
                 </Td>
               </Tr>
               <Tr>
-                {/* will map over fetched rewards for above commitments */}
                 <Td>
                   <Checkbox colorScheme="yellow" /> Jaw Massage
                 </Td>
@@ -109,7 +119,7 @@ const Dashboard = () => {
                 </Td>
               </Tr>
             </Tbody>
-          </Table>
+          </Table> */}
           <Link to="/rewards">
             <Button
               bgColor="yellow.200"

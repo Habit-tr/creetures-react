@@ -1,22 +1,19 @@
 import { Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { fetchAllRewardsAsync, selectRewards } from "./allRewardsSlice";
 import RewardCard from "./RewardCard";
-import { Database } from "../../../utils/supabaseTypes";
 import AddReward from "./AddReward";
 
 const Rewards = () => {
-  const [rewards, setRewards] = useState<Database['public']['Tables']['rewards']['Row'][]>([])
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
-  const fetchedRewards = useAppSelector(selectRewards);
+  const rewards = useAppSelector(selectRewards);
 
   useEffect(() => {
     dispatch(fetchAllRewardsAsync());
-    setRewards(fetchedRewards);
-  }, [dispatch, fetchedRewards]);
+  }, [dispatch]);
 
 
   return (

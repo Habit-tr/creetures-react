@@ -13,7 +13,7 @@ const AllCommitments = () => {
   }, [dispatch]);
 
   if (!commitments || commitments.length === 0) {
-    return <Text>Loading...</Text>;
+    return <Text>You don't have any commitments, go make some!</Text>;
   }
 
   return (
