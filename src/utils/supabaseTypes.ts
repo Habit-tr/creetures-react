@@ -137,14 +137,14 @@ export interface Database {
           badgeLevel?: number;
           challenge_id?: number;
           created_at?: string | null;
-          frequency?: string | null;
+          frequency?: string;
           goals?: string | null;
-          id?: number;
+          id: number;
           isActive?: boolean;
           isClicked?: boolean;
           isUpToDate?: boolean;
           reward_id?: number | null;
-          timeframe?: string | null;
+          timeframe?: string;
           updatedAt?: string | null;
           user_id?: string;
         };
