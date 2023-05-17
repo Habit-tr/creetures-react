@@ -12,6 +12,8 @@
   "settings": {
     "files.exclude": {
       "supabase/functions/": true
-    }
+    },
+    "deno.enable": true,
+    "deno.unstable": true
   }
 }
