@@ -14,11 +14,12 @@ import Friends from "./profile/Friends";
 import Profile from "./profile/MyProfile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
+import NavBar from "./components/NavBar";
 
 const DashboardRoutes = () => {
   return (
     <>
-      <Navbar />
+      <NavBar />
       <Box padding="20px">
         <Routes>
           <Route path="/" element={<Dashboard />} />
