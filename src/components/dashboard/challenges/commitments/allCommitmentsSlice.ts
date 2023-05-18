@@ -15,7 +15,7 @@ export const fetchAllCommitmentsAsync: any = createAsyncThunk(
     try {
       const { data: fetchedCommitments } = await supabase
         .from('commitments')
-        .select('id, badgeLevel, challenge_id, isUpToDate, user_id, challenge: challenges(name)');
+        .select('*, challenge: challenges(name), reward: rewards(isClicked, name)');
       return fetchedCommitments;
     } catch (err) {
       console.error(err);
@@ -29,6 +29,7 @@ export const postNewCommitmentAsync: any = createAsyncThunk(
     challenge_id,
     frequency,
     goals,
+    reward_id,
     timeframe,
     user_id,
   }: Database['public']['Tables']['commitments']['Insert']) => {
@@ -39,9 +40,26 @@ export const postNewCommitmentAsync: any = createAsyncThunk(
           challenge_id,
           frequency,
           goals,
+          reward_id,
           timeframe,
           user_id,
         })
+        .select();
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+);
+
+export const deleteCommitmentAsync: any = createAsyncThunk(
+  'deleteCommitmentAsync',
+  async (id) => {
+    try {
+      const { data } = await supabase
+        .from('commitments')
+        .delete()
+        .eq('id', id)
         .select();
       return data;
     } catch (err) {
@@ -65,6 +83,14 @@ const allCommitmentsSlice = createSlice({
       postNewCommitmentAsync.fulfilled,
       (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
         state.value.push(action.payload);
+      },
+    );
+    builder.addCase(
+      deleteCommitmentAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
+        state.value = state.value.filter(
+          (commitment) => commitment.id !== action.payload.id
+        );
       },
     );
   },

@@ -1,26 +1,28 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import supabase from '../../../utils/supabaseClient';
-import { Database } from '../../../utils/supabaseTypes';
-import { RootState } from '../../../utils/store';
-
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../../utils/store";
+import supabase from "../../../utils/supabaseClient";
+import { Database } from "../../../utils/supabaseTypes";
 
 interface userProfileState {
-    value: Database['public']['Tables']['profiles']['Row'][];
+  value: {
+    allProfiles: Database["public"]["Tables"]["profiles"]["Insert"][];
+    singleProfile: any;
   };
-
-const initialState: userProfileState = {
-    value: []
 }
 
+const initialState: userProfileState = {
+  value: {
+    allProfiles: [],
+    singleProfile: {},
+  },
+};
 
 ////// FETCH ALL PROFILES ///////
 export const fetchAllProfilesAsync: any = createAsyncThunk(
-  'fetchUsersAsync',
+  "fetchUsersAsync",
   async () => {
     try {
-      const { data } = await supabase
-      .from('profiles')
-      .select()
+      const { data } = await supabase.from("profiles").select();
       return data;
     } catch (err) {
       console.error(err);
@@ -28,16 +30,18 @@ export const fetchAllProfilesAsync: any = createAsyncThunk(
   },
 );
 
-////// FETCH  SINGL PROFILE //////
+////// FETCH SINGLE PROFILE //////
 export const fetchSingleProfileAsync: any = createAsyncThunk(
-  'fetchSingleProfileAsync',
-  async ({id}: Database['public']['Tables']['profiles']['Row']) => {
+  "fetchSingleProfileAsync",
+  async ({ id }: any) => {
     try {
       const { data } = await supabase
-      .from('profiles')
-      .select()
-      .match({ id: id })
-      .single();
+        .from("profiles")
+        .select(
+          `*, commitments: commitments(badgeLevel, challenge: challenges(name))`, //may need policy update
+        )
+        .match({ id: id })
+        .single();
       return data;
     } catch (err) {
       console.error(err);
@@ -45,30 +49,43 @@ export const fetchSingleProfileAsync: any = createAsyncThunk(
   },
 );
 
-
 ////// REDUCER //////
-  const profilesSlice = createSlice({
-    name: 'friendsSlice',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-      builder.addCase(
-        fetchAllProfilesAsync.fulfilled,
-        (state, action: PayloadAction<Database['public']['Tables']['profiles']['Row'][]>) => {
-          state.value = action.payload;
-        },
-      );
-      builder.addCase(
-        fetchSingleProfileAsync.fulfilled,
-        (state, action: PayloadAction<Database['public']['Tables']['profiles']['Row'][]>) => {
-          state.value = action.payload;
-        },
-      );
-    },
-  });
+const profilesSlice = createSlice({
+  name: "friendsSlice",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchAllProfilesAsync.fulfilled,
+      (
+        state,
+        action: PayloadAction<
+          Database["public"]["Tables"]["profiles"]["Row"][]
+        >,
+      ) => {
+        state.value.allProfiles = action.payload;
+      },
+    );
+    builder.addCase(
+      fetchSingleProfileAsync.fulfilled,
+      (
+        state,
+        action: PayloadAction<
+          Database["public"]["Tables"]["profiles"]["Row"][]
+        >,
+      ) => {
+        state.value.singleProfile = action.payload;
+      },
+    );
+  },
+});
 
-  export const selectProfiles = (state: RootState) => {
-    return state.profiles.value;
-  };
+export const selectAllProfiles = (state: RootState) => {
+  return state.profiles.value.allProfiles;
+};
 
-  export default profilesSlice.reducer;
+export const selectSingleProfile = (state: RootState) => {
+  return state.profiles.value.singleProfile;
+};
+
+export default profilesSlice.reducer;

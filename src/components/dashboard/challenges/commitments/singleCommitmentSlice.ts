@@ -12,12 +12,18 @@ const initialState: singleCommitmentsState = {
     badgeLevel: 1,
     challenge_id: 0,
     created_at: null,
-    frequency: null,
+    frequency: '',
     goals: null,
     id: 0,
+    isClicked: false,
     isActive: true,
     isUpToDate: true,
-    timeframe: null,
+    reward: {
+      isClicked: false,
+      name: '',
+    },
+    reward_id: 0,
+    timeframe: '',
     updatedAt: null,
     user_id: '',
     challenge: {
@@ -36,10 +42,32 @@ export const fetchSingleCommitmentAsync: any = createAsyncThunk(
     try {
       const { data: fetchedCommitment } = await supabase
         .from('commitments')
-        .select('*, challenge: challenges(category_id, name, category: categories(name))')
+        .select('*, challenge: challenges(category_id, name, category: categories(name)), reward: rewards(isClicked, name)')
         .match({ id })
         .single();
       return fetchedCommitment;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+);
+
+export const editCommitmentAsync: any = createAsyncThunk(
+  'editCommitmentAsync',
+  async (updatedCommitment: Database['public']['Tables']['commitments']['Update']) => {
+    try {
+      const { data } = await supabase
+        .from('commitments')
+        .update({
+          frequency: updatedCommitment.frequency,
+          goals: updatedCommitment.goals,
+          reward_id: updatedCommitment.reward_id,
+          timeframe: updatedCommitment.timeframe,
+        })
+        .eq('id', updatedCommitment.id)
+        .select()
+        .single();
+      return data;
     } catch (err) {
       console.error(err);
     }
@@ -53,6 +81,12 @@ const singleCommitmentSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSingleCommitmentAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
+        state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      editCommitmentAsync.fulfilled,
       (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
         state.value = action.payload;
       },

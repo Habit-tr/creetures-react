@@ -1,26 +1,34 @@
-import { Box, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  useDisclosure,
+  useToast
+} from '@chakra-ui/react';
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../utils/reduxHooks';
 import { fetchSingleCommitmentAsync, selectCommitment } from './singleCommitmentSlice';
 import RenderMedal from '../RenderMedal';
 import Reaction from '../../profile/AllReactions';
+import EditCommitment from './EditCommitment';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { deleteCommitmentAsync } from './allCommitmentsSlice';
 
 const SingleCommitment = () => {
   const dispatch = useAppDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams();
+  const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchSingleCommitmentAsync(id));
   }, [dispatch, id]);
 
-  const commitment = useAppSelector(selectCommitment);
-
-  if (!commitment) {
-    return <Text>Loading...</Text>;
-  }
-
-  const { badgeLevel, challenge, frequency, isUpToDate, timeframe } = commitment;
+  const selectedCommitment = useAppSelector(selectCommitment);
+  const { badgeLevel, challenge, frequency, goals, isUpToDate, reward, timeframe } = selectedCommitment;
 
   const dayFrequency = (frequency: string) => {
     const days: string[] = [];
@@ -52,6 +60,15 @@ const SingleCommitment = () => {
     return <Text>{`Frequency: ${allDays}`}</Text>
   }
 
+  const handleDelete = async (id: number) => {
+    await dispatch(deleteCommitmentAsync(id));
+    isOpen && onClose();
+    toast({
+      title: 'Commitment deleted.',
+    });
+    navigate('/commitments');
+  };
+
   return (
     <>
       <Box display='flex' alignItems='center'>
@@ -68,8 +85,13 @@ const SingleCommitment = () => {
       ? dayFrequency(frequency)
       : null
       }
-      {timeframe && timeframe.length
-      ? <Text>Time of day: {timeframe}</Text>
+      <Text>Time of day: {timeframe}</Text>
+      {goals && goals.length
+      ? <Text>Goals: {goals}</Text>
+      : null
+      }
+      {reward && reward.name
+      ? <Text>Reward: {reward.name}</Text>
       : null
       }
       <br />
@@ -77,7 +99,26 @@ const SingleCommitment = () => {
       ? <Text fontWeight='bold'>You are up to date on your challenge!</Text>
       : <Text fontWeight='bold'>You behind on your challenge</Text>
       }
+      <br />
+      <Box>
+        <Button margin="10px" bgColor="orange.200" onClick={onOpen}>
+          <EditIcon />
+        </Button>
+        <Button
+          margin="10px"
+          bgColor="red.200"
+          onClick={() => handleDelete(selectedCommitment.id)}
+        >
+          <DeleteIcon />
+        </Button>
+      </Box>
       <Reaction />
+      <EditCommitment
+            isOpen={isOpen}
+            onClose={onClose}
+            selectedCommitment={selectedCommitment}
+            handleDelete={handleDelete}
+          />
     </>
   )
 };

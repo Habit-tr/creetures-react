@@ -1,33 +1,35 @@
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   Heading,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
-
+import DashboardTable from "./DashboardTable";
+import { fetchAllCommitmentsAsync, selectCommitments } from "./challenges/commitments/allCommitmentsSlice";
 
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
   const navigate = useNavigate();
   const { session } = useAuth();
+  const dispatch = useAppDispatch();
+
+  const commitments = useAppSelector(selectCommitments)
 
   useEffect(() => {
     const fetchedUser = session.session.user;
     setUser(fetchedUser);
   }, [session.session.user]);
+
+  useEffect(() => {
+    dispatch(fetchAllCommitmentsAsync());
+  }, [dispatch]);
 
   function navigateProf() {
     navigate("/profile");
@@ -66,18 +68,31 @@ const Dashboard = () => {
             Display a mini battle pass view here with today's commitments and
             rewards and maybe also tomorrow's.
           </Text>
-          <Link to="/challenges">
-            <Text cursor="pointer" margin="20px">
+          <Flex justifyContent="center" alignItems="center">
+            <Link to="/challenges">
+              <Text cursor="pointer" margin="20px">
+                <Button
+                  bgColor="green.200"
+                  color="black"
+                  onClick={() => navigate("/challenges")}
+                >
+                  Challenges
+                </Button>
+              </Text>
+            </Link>
+            <Link to="/rewards">
               <Button
-                bgColor="green.200"
+                bgColor="yellow.200"
                 color="black"
-                onClick={() => navigate("/challenges")}
+                margin="10px"
+                onClick={() => navigate("/rewards")}
               >
-                Challenges
+                Rewards
               </Button>
-            </Text>
-          </Link>
-          <Table>
+            </Link>
+          </Flex>
+          <DashboardTable commitments={commitments}/>
+          {/* <Table>
             <Thead>
               <Tr>
                 <Th>Fri</Th>
@@ -87,7 +102,6 @@ const Dashboard = () => {
             </Thead>
             <Tbody>
               <Tr>
-                {/* will map over fetched commitments for auth user */}
                 <Td>
                   <Checkbox colorScheme="green" /> Chew Gum
                 </Td>
@@ -99,7 +113,6 @@ const Dashboard = () => {
                 </Td>
               </Tr>
               <Tr>
-                {/* will map over fetched rewards for above commitments */}
                 <Td>
                   <Checkbox colorScheme="yellow" /> Jaw Massage
                 </Td>
@@ -111,17 +124,7 @@ const Dashboard = () => {
                 </Td>
               </Tr>
             </Tbody>
-          </Table>
-          <Link to="/rewards">
-            <Button
-              bgColor="yellow.200"
-              color="black"
-              margin="10px"
-              onClick={() => navigate("/rewards")}
-            >
-              Rewards
-            </Button>
-          </Link>
+          </Table> */}
         </Box>
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
         <Box
