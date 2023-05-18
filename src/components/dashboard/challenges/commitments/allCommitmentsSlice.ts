@@ -1,21 +1,23 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../../utils/store";
 import supabase from "../../../../utils/supabaseClient";
-import { Database } from '../../../../utils/supabaseTypes';
+import { Database } from "../../../../utils/supabaseTypes";
 
 interface allCommitmentsState {
-  value: Database['public']['Tables']['commitments']['Row'][];
+  value: Database["public"]["Tables"]["commitments"]["Row"][];
 }
 
 const initialState: allCommitmentsState = { value: [] };
 
 export const fetchAllCommitmentsAsync: any = createAsyncThunk(
-  'fetchAllCommitmentsAsync',
+  "fetchAllCommitmentsAsync",
   async () => {
     try {
       const { data: fetchedCommitments } = await supabase
-        .from('commitments')
-        .select('*, challenge: challenges(name), reward: rewards(isClicked, name)');
+        .from("commitments")
+        .select(
+          "*, challenge: challenges(name), reward: rewards(is_clicked, name)",
+        );
       return fetchedCommitments;
     } catch (err) {
       console.error(err);
@@ -24,7 +26,7 @@ export const fetchAllCommitmentsAsync: any = createAsyncThunk(
 );
 
 export const postNewCommitmentAsync: any = createAsyncThunk(
-  'postNewCommitment',
+  "postNewCommitment",
   async ({
     challenge_id,
     frequency,
@@ -32,10 +34,10 @@ export const postNewCommitmentAsync: any = createAsyncThunk(
     reward_id,
     timeframe,
     user_id,
-  }: Database['public']['Tables']['commitments']['Insert']) => {
+  }: Database["public"]["Tables"]["commitments"]["Insert"]) => {
     try {
       const { data } = await supabase
-        .from('commitments')
+        .from("commitments")
         .insert({
           challenge_id,
           frequency,
@@ -53,13 +55,13 @@ export const postNewCommitmentAsync: any = createAsyncThunk(
 );
 
 export const deleteCommitmentAsync: any = createAsyncThunk(
-  'deleteCommitmentAsync',
+  "deleteCommitmentAsync",
   async (id) => {
     try {
       const { data } = await supabase
-        .from('commitments')
+        .from("commitments")
         .delete()
-        .eq('id', id)
+        .eq("id", id)
         .select();
       return data;
     } catch (err) {
@@ -75,21 +77,36 @@ const allCommitmentsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchAllCommitmentsAsync.fulfilled,
-      (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row'][]>) => {
+      (
+        state,
+        action: PayloadAction<
+          Database["public"]["Tables"]["commitments"]["Row"][]
+        >,
+      ) => {
         state.value = action.payload;
       },
     );
     builder.addCase(
       postNewCommitmentAsync.fulfilled,
-      (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
+      (
+        state,
+        action: PayloadAction<
+          Database["public"]["Tables"]["commitments"]["Row"]
+        >,
+      ) => {
         state.value.push(action.payload);
       },
     );
     builder.addCase(
       deleteCommitmentAsync.fulfilled,
-      (state, action: PayloadAction<Database['public']['Tables']['commitments']['Row']>) => {
+      (
+        state,
+        action: PayloadAction<
+          Database["public"]["Tables"]["commitments"]["Row"]
+        >,
+      ) => {
         state.value = state.value.filter(
-          (commitment) => commitment.id !== action.payload.id
+          (commitment) => commitment.id !== action.payload.id,
         );
       },
     );

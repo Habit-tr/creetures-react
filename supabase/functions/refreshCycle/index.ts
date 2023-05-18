@@ -42,7 +42,7 @@ serve(async (req: Request): Promise<Response> => {
     // //try to fetch from database:
     const { data, error } = await supabase
       .from("commitments")
-      .select("isActive");
+      .select("is_active");
 
     console.log("fetched ", data.length, " records");
     console.log("supabase error is: ", error);

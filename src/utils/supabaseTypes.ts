@@ -93,7 +93,7 @@ export interface Database {
       };
       commitments: {
         Row: {
-          badgeLevel: number;
+          badge_level: number;
           challenge: {
             category: {
               name: string;
@@ -106,46 +106,46 @@ export interface Database {
           frequency: string;
           goals: string | null;
           id: number;
-          isActive: boolean;
-          isClicked: boolean;
-          isUpToDate: boolean;
+          is_active: boolean;
+          is_clicked: boolean;
+          is_up_to_date: boolean;
           reward: {
-            isClicked: boolean;
+            is_clicked: boolean;
             name: string;
           };
           reward_id: number | null;
           timeframe: string;
-          updatedAt: string | null;
+          updated_at: string | null;
           user_id: string;
         };
         Insert: {
-          badgeLevel?: number;
+          badge_level?: number;
           challenge_id: number;
           created_at?: string | null;
           frequency: string;
           goals?: string | null;
           id?: number;
-          isActive?: boolean;
-          isClicked?: boolean;
-          isUpToDate?: boolean;
+          is_active?: boolean;
+          is_clicked?: boolean;
+          is_up_to_date?: boolean;
           reward_id?: number | null;
           timeframe: string;
-          updatedAt?: string | null;
+          updated_at?: string | null;
           user_id?: string;
         };
         Update: {
-          badgeLevel?: number;
+          badge_level?: number;
           challenge_id?: number;
           created_at?: string | null;
           frequency?: string;
           goals?: string | null;
           id: number;
-          isActive?: boolean;
-          isClicked?: boolean;
-          isUpToDate?: boolean;
+          is_active?: boolean;
+          is_clicked?: boolean;
+          is_up_to_date?: boolean;
           reward_id?: number | null;
           timeframe?: string;
-          updatedAt?: string | null;
+          updated_at?: string | null;
           user_id?: string;
         };
       };
@@ -207,59 +207,33 @@ export interface Database {
       rewards: {
         Row: {
           created_at: string | null;
-          dateLastRedeemed: string | null;
+          date_last_redeemed: string | null;
           description: string | null;
           id: number;
-          isClicked: boolean;
+          is_clicked: boolean;
           name: string;
-          timesRedeemed: number | null;
+          times_redeemed: number | null;
           user_id: string;
         };
         Insert: {
           created_at?: string | null;
-          dateLastRedeemed?: string | null;
+          date_last_redeemed?: string | null;
           description?: string | null;
           id?: number;
-          isClicked?: boolean;
+          is_clicked?: boolean;
           name: string;
-          timesRedeemed?: number | null;
+          times_redeemed?: number | null;
           user_id?: string;
         };
         Update: {
           created_at?: string | null;
-          dateLastRedeemed?: string | null;
+          date_last_redeemed?: string | null;
           description?: string | null;
           id?: number;
-          isClicked?: boolean;
+          is_clicked?: boolean;
           name?: string;
-          timesRedeemed?: number | null;
+          times_redeemed?: number | null;
           user_id?: string;
-        };
-      };
-      users_2: {
-        Row: {
-          created_at: string | null;
-          email: string;
-          id: number;
-          password: string | null;
-          photoUrl: string | null;
-          username: string;
-        };
-        Insert: {
-          created_at?: string | null;
-          email?: string;
-          id?: number;
-          password?: string | null;
-          photoUrl?: string | null;
-          username?: string;
-        };
-        Update: {
-          created_at?: string | null;
-          email?: string;
-          id?: number;
-          password?: string | null;
-          photoUrl?: string | null;
-          username?: string;
         };
       };
     };

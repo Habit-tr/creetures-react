@@ -5,7 +5,7 @@ import supabase from "../../../utils/supabaseClient";
 const CycleTest = () => {
   // UPDATE COMMITMENTS
   //fetch relevantCommitments (filter parameters)
-  //const updatedCommitments = relevantCommitments.map(commitment) => if isClicked, isUpToDate = true and isClicked = false else isUpToDate = false and isClicked = false
+  //const updatedCommitments = relevantCommitments.map(commitment) => if is_clicked, is_up_to_date = true and is_clicked = false else is_up_to_date = false and is_clicked = false
   //updateAll(updatedCommitments)
 
   const [commitments, setCommitments] = useState<any>([]);
@@ -28,7 +28,7 @@ const CycleTest = () => {
 
   // UPDATE REACTIONS
   //fetch allCurrentReactionsFromCommitments (filter parameters)
-  //const allUpdatedReactions = allCurrentReactionsFromCommitments.map((reaction) => isArchived = true)
+  //const allUpdatedReactions = allCurrentReactionsFromCommitments.map((reaction) => is_archived = true)
   //updateAll(allUpdatedReactions)
 
   return (

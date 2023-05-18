@@ -14,10 +14,10 @@ const RewardCard = ({ reward }: RewardCardProps) => {
   const toast = useToast();
 
   const handleRedeem = async () => {
-    if (reward.timesRedeemed !== null) {
+    if (reward.times_redeemed !== null) {
       const rewardToRedeem = {
         id: reward.id,
-        timesRedeemed: reward.timesRedeemed + 1,
+        times_redeemed: reward.times_redeemed + 1,
       };
       await dispatch(editRewardAsync(rewardToRedeem));
       toast({
