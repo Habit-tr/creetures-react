@@ -12,7 +12,7 @@ import Footer from "./footer/Footer";
 import Navbar from "./navbar/Navbar";
 import CycleTest from "./profile/CycleTest";
 import Friends from "./profile/Friends";
-import Profile from "./profile/MyProfile";
+import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
 
