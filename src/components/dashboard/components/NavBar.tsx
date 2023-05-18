@@ -30,6 +30,8 @@ import {
     ChevronRightIcon,
   } from '@chakra-ui/icons';
 
+  import '/Users/spak/Desktop/creetures-react/public/styles.css'
+
   // import { IconType } from 'react-icons';
   // import {
   //   FiHome,
