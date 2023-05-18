@@ -59,10 +59,10 @@ const SingleReward = () => {
   const handleRedeem = async () => {
     const rewardToRedeem = {
       id: reward.id,
-      timesRedeemed: reward.timesRedeemed + 1,
+      times_redeemed: reward.times_redeemed + 1,
     };
     await dispatch(editRewardAsync(rewardToRedeem));
-    const updatedReward = { ...reward, timesRedeemed: reward.timesRedeemed + 1 };
+    const updatedReward = { ...reward, times_redeemed: reward.times_redeemed + 1 };
     setReward(updatedReward);
     toast({
       title: "Reward redeemed."
@@ -87,11 +87,11 @@ const SingleReward = () => {
           {reward.description && (
             <Flex>Description: {reward.description}</Flex>
           )}
-          {reward.timesRedeemed !== null && (
-            <Flex>Times Redeemed: {reward.timesRedeemed}</Flex>
+          {reward.times_redeemed !== null && (
+            <Flex>Times Redeemed: {reward.times_redeemed}</Flex>
           )}
-          {reward.dateLastRedeemed && (
-            <Flex>Date Last Redeemed: {reward.dateLastRedeemed}</Flex>
+          {reward.date_last_redeemed && (
+            <Flex>Date Last Redeemed: {reward.date_last_redeemed}</Flex>
           )}
           {/* <Button bgColor="green.200" width="100px" marginRight="10px"
           onClick={() => handleRedeem()}

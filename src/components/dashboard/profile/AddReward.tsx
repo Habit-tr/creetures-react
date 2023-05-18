@@ -36,7 +36,7 @@ const AddReward = ({ isOpen, onClose }: AddRewardProps) => {
         rewardName,
         description,
         user_id: user.id,
-        timesRedeemed: 0,
+        times_redeemed: 0,
       }),
     );
     toast({

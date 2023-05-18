@@ -7,7 +7,7 @@ interface CommitmentCardProps {
 }
 
 const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
-  const { badgeLevel, challenge, isUpToDate } = commitment;
+  const { badge_level, challenge, is_up_to_date } = commitment;
 
   return (
     <Link to={`/commitments/${commitment.id}`}>
@@ -23,9 +23,9 @@ const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
           {challenge.name}
         </Text>
         <Text fontSize="10px" align="center">
-          Badge level: {badgeLevel}
+          Badge level: {badge_level}
         </Text>
-        {isUpToDate
+        {is_up_to_date
         ? <Text fontSize="10px" fontWeight="bold" color="white" align="center">
             Up to date
           </Text>

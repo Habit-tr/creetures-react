@@ -11,7 +11,7 @@ interface postNewRewardProps {
   rewardName: string;
   description: string;
   user_id: string;
-  timesRedeemed: number;
+  times_redeemed: number;
 }
 
 const initialState: allRewardsState = { value: [] };
@@ -22,7 +22,7 @@ export const fetchAllRewardsAsync: any = createAsyncThunk(
     try {
       const { data: fetchedRewards } = await supabase
       .from('rewards')
-      .select('id, name, description, timesRedeemed, dateLastRedeemed');
+      .select('id, name, description, times_redeemed, date_last_redeemed');
       return fetchedRewards;
     } catch (err) {
       console.error(err);
@@ -36,7 +36,7 @@ export const postNewRewardAsync: any = createAsyncThunk(
     rewardName,
     description,
     user_id,
-    timesRedeemed,
+    times_redeemed,
   }: postNewRewardProps) => {
     try {
       const { data } = await supabase
@@ -45,7 +45,7 @@ export const postNewRewardAsync: any = createAsyncThunk(
           name: rewardName,
           description: description,
           user_id: user_id,
-          timesRedeemed: timesRedeemed,
+          times_redeemed: times_redeemed,
         })
         .select();
       return data;

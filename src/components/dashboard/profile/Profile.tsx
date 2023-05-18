@@ -75,7 +75,7 @@ const Profile = () => {
               justifyContent="center"
             >
               <Center mb="10px">
-                <RenderMedal level={commitment.badgeLevel} />
+                <RenderMedal level={commitment.badge_level} />
               </Center>
               <Center fontSize="xs">{commitment.challenge.name}</Center>
             </Card>
