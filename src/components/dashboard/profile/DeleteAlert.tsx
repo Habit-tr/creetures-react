@@ -42,7 +42,7 @@ const DeleteAlert = ({ onDelete }: DeleteAlertProps) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure you want to delete this reward? This action cannot be undone.
+              Are you sure you want to delete this reward?
             </AlertDialogBody>
 
             <AlertDialogFooter>
