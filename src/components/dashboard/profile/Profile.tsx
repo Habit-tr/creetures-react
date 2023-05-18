@@ -6,7 +6,13 @@ import {
   Center,
   Flex,
   Heading,
+  Table,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -23,7 +29,7 @@ import {
 const Profile = () => {
   const { currentUser } = useAuth();
   const [currentUserUrl, setCurrentUserUrl] = useState("");
-  const [file, setFile] = useState<any>([]);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -36,29 +42,6 @@ const Profile = () => {
   }, [dispatch, currentUser.id]);
 
   const profileData = useAppSelector(selectSingleProfile);
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const filename = `${currentUser.id}`;
-    try {
-      await supabase.storage.from("profilePictures").upload(filename, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-      // const filepath = data.path; // save filepath in database
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFileSelected = (e: any) => {
-    try {
-      setFile(e.target.files[0]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div>
       <Heading margin="20px">
@@ -99,35 +82,58 @@ const Profile = () => {
           ))}
       </Flex>
       <Flex direction="row" justifyContent="space-evenly">
-        <Box width="45%" margin="20px">
+        <Box width="45%" margin="20px" border="2px solid black" padding="10px">
           <Text>username: {profileData.username}</Text>
           <Text>Full Name: {profileData.full_name}</Text>
           <Text>Email: {`${currentUser.email}`}</Text>
-          <input
-            type="file"
-            id="files"
-            className=""
-            multiple={false}
-            accept="image/*"
-            title="Testing this out"
-            onChange={handleFileSelected}
-          />
-          <button type="submit" className="" onClick={handleSubmit}>
-            Submit New Profile Picture
-          </button>
-          <Link to="/commitments">
-            <Text>Your Commitments</Text>
-          </Link>
-          <Text>Your Dashboard</Text>
-          <Text>Your Rewards</Text>
           <Button margin="10px" bgColor="purple.200">
             Edit Settings
           </Button>
         </Box>
-        <Box width="45%" margin="20px">
+        <Box width="45%" margin="20px" border="2px solid black" padding="10px">
           <Text>Your Friends: COMING SOON</Text>
         </Box>
       </Flex>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th></Th>
+            <Th>Mon</Th>
+            <Th>Tues</Th>
+            <Th>Weds</Th>
+            <Th>Thurs</Th>
+            <Th>Fri</Th>
+            <Th>Sat</Th>
+            <Th>Sun</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr bgColor="red.100">
+            <Td>
+              <Link to="/commitments">Commitments</Link>
+            </Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+          </Tr>
+          <Tr bgColor="yellow.100">
+            <Td>
+              <Link to="/rewards">Rewards</Link>
+            </Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+            <Td></Td>
+          </Tr>
+        </Tbody>
+      </Table>
       {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
       <EditProfileModal />
     </div>
