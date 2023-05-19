@@ -12,21 +12,32 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
-import AddCommitment from "./commitments/AddCommitment";
+import {
+  fetchSharedUsersAsync,
+  selectSharedUsers,
+} from "../profile/friends/sharedUsersSlice";
 import EditChallenge from "./EditChallenge";
 import { deleteChallengeAsync } from "./allChallengesSlice";
+import AddCommitment from "./commitments/AddCommitment";
 import {
   fetchSingleChallengeAsync,
   selectChallenge,
 } from "./singleChallengeSlice";
-import { fetchSharedUsersAsync, selectSharedUsers } from "../profile/sharedUsersSlice";
 // import { Database } from "../../../utils/supabaseTypes";
 
 const SingleChallenge = () => {
   const [challenge, setChallenge] = useState<any>({});
   // const [sharedUsers, setSharedUsers] = useState<Database["public"]["Tables"]["challenge_users"]["Row"][]>([]);
-  const { isOpen: isCommitOpen , onOpen: onCommitOpen, onClose: onCommitClose } = useDisclosure()
-  const { isOpen: isEditOpen , onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
+  const {
+    isOpen: isCommitOpen,
+    onOpen: onCommitOpen,
+    onClose: onCommitClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { urlId } = useParams();
@@ -62,7 +73,8 @@ const SingleChallenge = () => {
   const toast = useToast(); //https://chakra-ui.com/docs/components/toast/usage
 
   return (
-    challenge && challenge.id && (
+    challenge &&
+    challenge.id && (
       <>
         <Heading>Challenge: {challenge.name.toUpperCase()}</Heading>
         <Text>
@@ -76,8 +88,8 @@ const SingleChallenge = () => {
         )}
         <Text>Creetures of this Challenge:</Text>
         <Flex>
-          {fetchedSharedUsers && fetchedSharedUsers.length
-            ? fetchedSharedUsers.map((user) => (
+          {fetchedSharedUsers && fetchedSharedUsers.length ? (
+            fetchedSharedUsers.map((user) => (
               // This route isn't set up yet, but should link to a user's profile
               <Link to={`/profile/${user.user_id}`} key={user.user_id}>
                 <Card
@@ -87,30 +99,26 @@ const SingleChallenge = () => {
                   border="1px solid black"
                   m="10px"
                   alignItems="center"
-                  justifyContent="center">
-                    {user.profile.avatar_url
-                      ? <Avatar name={`${user.profile.username}`} src={user.profile.avatar_url} />
-                      : null
-                    }
+                  justifyContent="center"
+                >
+                  {user.profile.avatar_url ? (
+                    <Avatar
+                      name={`${user.profile.username}`}
+                      src={user.profile.avatar_url}
+                    />
+                  ) : null}
                   <Text>{user.profile.username}</Text>
                 </Card>
               </Link>
             ))
-            : <Text>No one has committed to this challenge.</Text>
-            }
+          ) : (
+            <Text>No one has committed to this challenge.</Text>
+          )}
         </Flex>
-        <Button
-          margin="10px"
-          bgColor="green.200"
-          onClick={onCommitOpen}
-        >
+        <Button margin="10px" bgColor="green.200" onClick={onCommitOpen}>
           Commit
         </Button>
-        <Button
-          margin="10px"
-          bgColor="orange.200"
-          onClick={onEditOpen}
-        >
+        <Button margin="10px" bgColor="orange.200" onClick={onEditOpen}>
           <EditIcon />
         </Button>
         <Button

@@ -1,26 +1,17 @@
 import {
   Avatar,
-  Box,
   Button,
   Card,
   Center,
   Flex,
   Heading,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
-import FriendsSidebar from "../FriendsSidebar";
 import RenderMedal from "../challenges/RenderMedal";
 import EditProfile from "./EditProfile";
 import {
@@ -33,6 +24,7 @@ const Profile = () => {
   const [currentUserUrl, setCurrentUserUrl] = useState("");
   const [reactions, setReactions] = useState<any>([]);
   const [rewards, setRewards] = useState<any>([]);
+  const [myReactions, setMyReactions] = useState<any>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useAppDispatch();
@@ -50,6 +42,11 @@ const Profile = () => {
         .select(`*, commitments!inner (user_id)`)
         .eq("commitments.user_id", currentUser.id);
       setReactions(fetchedReactions);
+      const { data: myFetchedReactions } = await supabase
+        .from("reactions")
+        .select(`*`)
+        .eq(`user_id`, currentUser.id);
+      setMyReactions(myFetchedReactions);
       const { data: fetchedRewards } = await supabase
         .from("rewards")
         .select("*")
@@ -72,12 +69,7 @@ const Profile = () => {
         margin="20px"
         justifyContent="space-evenly"
       >
-        <Card
-          padding="10px"
-          height="100px"
-          width="160px"
-          justifyContent="center"
-        >
+        <Card padding="10px" height="160px" width="30%" justifyContent="center">
           <Center>
             {
               reactions.filter((reaction: any) => reaction.type === "highfive")
@@ -98,7 +90,44 @@ const Profile = () => {
             }, 0)}{" "}
             🎁 Claimed
           </Center>
+          <Center>
+            {
+              myReactions.filter(
+                (reaction: any) => reaction.type === "highfive",
+              ).length
+            }{" "}
+            🙌 Given
+          </Center>
+          <Center>
+            {
+              myReactions.filter((reaction: any) => reaction.type === "nudge")
+                .length
+            }{" "}
+            👉 Given
+          </Center>
+        </Card>{" "}
+        <Card width="40%" height="160px" justifyContent="center" padding="10px">
+          <Center flexDirection="column">
+            <Text>{profileData.username}</Text>
+            <Text>{profileData.full_name}</Text>
+            <Text>{`${currentUser.email}`}</Text>
+            <Button
+              margin="10px"
+              bgColor="purple.200"
+              width="50%"
+              onClick={() => onOpen()}
+            >
+              Edit Settings
+            </Button>
+          </Center>
         </Card>
+      </Flex>
+      <Flex
+        direction="row"
+        wrap="wrap"
+        margin="20px"
+        justifyContent="space-evenly"
+      >
         {profileData &&
           profileData.commitments &&
           profileData.commitments.map((commitment: any, i: number) => (
@@ -116,19 +145,7 @@ const Profile = () => {
             </Card>
           ))}
       </Flex>
-      <Flex direction="row" justifyContent="space-evenly">
-        <Box width="45%" margin="20px" border="2px solid black" padding="10px">
-          <Text>username: {profileData.username}</Text>
-          <Text>Full Name: {profileData.full_name}</Text>
-          <Text>Email: {`${currentUser.email}`}</Text>
-          <Button margin="10px" bgColor="purple.200" onClick={() => onOpen()}>
-            Edit Settings
-          </Button>
-          {/* {JSON.stringify(rewards)} */}
-        </Box>
-        <FriendsSidebar />
-      </Flex>
-      <Table>
+      {/* <Table>
         <Thead>
           <Tr>
             <Th></Th>
@@ -167,7 +184,8 @@ const Profile = () => {
             <Td></Td>
           </Tr>
         </Tbody>
-      </Table>
+      </Table> */}
+
       {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
       <EditProfile user={currentUser} isOpen={isOpen} onClose={onClose} />
     </div>

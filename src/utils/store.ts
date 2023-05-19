@@ -1,16 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import allChallengesReducer from "../components/dashboard/challenges/allChallengesSlice";
-import allCommitmentsReducer from "../components/dashboard/challenges/commitments/allCommitmentsSlice";
 import allCategoriesReducer from "../components/dashboard/challenges/categories/allCategoriesSlice";
 import singleCategoryReducer from "../components/dashboard/challenges/categories/singleCategorySlice";
-import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
+import allCommitmentsReducer from "../components/dashboard/challenges/commitments/allCommitmentsSlice";
 import singleCommitmentReducer from "../components/dashboard/challenges/commitments/singleCommitmentSlice";
-import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
-import singleRewardReducer from "../components/dashboard/profile/singleRewardSlice";
+import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
 import allReactionsReducer from "../components/dashboard/profile/AllReactionsSlice";
-import friendsReducer from "../components/dashboard/profile/FriendsSlice";
-import profilesReducer from '../components/dashboard/profile/Single-All-ProfilesSlice'
-import sharedUsersReducer from '../components/dashboard/profile/sharedUsersSlice';
+import profilesReducer from "../components/dashboard/profile/Single-All-ProfilesSlice";
+import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
+import friendsReducer from "../components/dashboard/profile/friends/FriendsSlice";
+import sharedUsersReducer from "../components/dashboard/profile/friends/sharedUsersSlice";
+import singleRewardReducer from "../components/dashboard/profile/singleRewardSlice";
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
