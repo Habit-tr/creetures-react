@@ -13,14 +13,16 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
+import FriendsSidebar from "../FriendsSidebar";
 import RenderMedal from "../challenges/RenderMedal";
-import EditProfileModal from "./EditProfileModal";
+import EditProfile from "./EditProfile";
 import {
   fetchSingleProfileAsync,
   selectSingleProfile,
@@ -29,16 +31,32 @@ import {
 const Profile = () => {
   const { currentUser } = useAuth();
   const [currentUserUrl, setCurrentUserUrl] = useState("");
+  const [reactions, setReactions] = useState<any>([]);
+  const [rewards, setRewards] = useState<any>([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const { data } = supabase.storage
-      .from("profilePictures")
-      .getPublicUrl(`${currentUser.id}`);
-    console.log("setting currentUser");
-    setCurrentUserUrl(data.publicUrl);
-    dispatch(fetchSingleProfileAsync({ id: currentUser.id }));
+    const fetchData = async () => {
+      const { data } = supabase.storage
+        .from("profilePictures")
+        .getPublicUrl(`${currentUser.id}`);
+      console.log("setting currentUser");
+      setCurrentUserUrl(data.publicUrl);
+      dispatch(fetchSingleProfileAsync({ id: currentUser.id }));
+      const { data: fetchedReactions } = await supabase
+        .from("reactions")
+        .select(`*, commitments!inner (user_id)`)
+        .eq("commitments.user_id", currentUser.id);
+      setReactions(fetchedReactions);
+      const { data: fetchedRewards } = await supabase
+        .from("rewards")
+        .select("*")
+        .eq(`user_id`, currentUser.id);
+      setRewards(fetchedRewards);
+    };
+    fetchData();
   }, [dispatch, currentUser.id]);
 
   const profileData = useAppSelector(selectSingleProfile);
@@ -57,12 +75,29 @@ const Profile = () => {
         <Card
           padding="10px"
           height="100px"
-          width="120px"
+          width="160px"
           justifyContent="center"
         >
-          <Center>🙌 14</Center>
-          <Center>👉 8</Center>
-          <Center>🎁 11</Center>
+          <Center>
+            {
+              reactions.filter((reaction: any) => reaction.type === "highfive")
+                .length
+            }{" "}
+            🙌 Earned
+          </Center>
+          <Center>
+            {
+              reactions.filter((reaction: any) => reaction.type === "nudge")
+                .length
+            }{" "}
+            👉 Earned
+          </Center>
+          <Center>
+            {rewards.reduce((accumulator: any, currentValue: any) => {
+              return accumulator + currentValue.times_redeemed;
+            }, 0)}{" "}
+            🎁 Claimed
+          </Center>
         </Card>
         {profileData &&
           profileData.commitments &&
@@ -86,13 +121,12 @@ const Profile = () => {
           <Text>username: {profileData.username}</Text>
           <Text>Full Name: {profileData.full_name}</Text>
           <Text>Email: {`${currentUser.email}`}</Text>
-          <Button margin="10px" bgColor="purple.200">
+          <Button margin="10px" bgColor="purple.200" onClick={() => onOpen()}>
             Edit Settings
           </Button>
+          {/* {JSON.stringify(rewards)} */}
         </Box>
-        <Box width="45%" margin="20px" border="2px solid black" padding="10px">
-          <Text>Your Friends: COMING SOON</Text>
-        </Box>
+        <FriendsSidebar />
       </Flex>
       <Table>
         <Thead>
@@ -135,7 +169,7 @@ const Profile = () => {
         </Tbody>
       </Table>
       {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
-      <EditProfileModal />
+      <EditProfile user={currentUser} isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };

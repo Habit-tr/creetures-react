@@ -1,19 +1,14 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import { useAuth } from "../../context/AuthContext";
-import Reaction from "./profile/AllReactions";
+import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import DashboardTable from "./DashboardTable";
-import { fetchAllCommitmentsAsync, selectCommitments } from "./challenges/commitments/allCommitmentsSlice";
 import FriendsSidebar from "./FriendsSidebar";
+import {
+  fetchAllCommitmentsAsync,
+  selectCommitments,
+} from "./challenges/commitments/allCommitmentsSlice";
 
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
@@ -21,7 +16,7 @@ const Dashboard = () => {
   const { session } = useAuth();
   const dispatch = useAppDispatch();
 
-  const commitments = useAppSelector(selectCommitments)
+  const commitments = useAppSelector(selectCommitments);
 
   useEffect(() => {
     const fetchedUser = session.session.user;
@@ -65,9 +60,8 @@ const Dashboard = () => {
           >
             TODAY'S COMMITMENTS
           </Heading>
-          <Flex justifyContent="center" alignItems="center">
-          </Flex>
-          <DashboardTable commitments={commitments}/>
+          <Flex justifyContent="center" alignItems="center"></Flex>
+          <DashboardTable commitments={commitments} />
           {/* <Table>
             <Thead>
               <Tr>
