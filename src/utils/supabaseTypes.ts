@@ -62,6 +62,33 @@ export interface Database {
           name?: string | null;
         };
       };
+      challenge_users: {
+        Row: {
+          challenge: {
+            name: string;
+          };
+          challenge_id: number;
+          created_at: string | null;
+          id: number;
+          profile: {
+            username: string;
+            avatar_url: string | null;
+          };
+          user_id: string;
+        }
+        Insert: {
+          challenge_id: number;
+          created_at?: string | null;
+          id?: number;
+          user_id: string;
+        };
+        Update: {
+          challenge_id?: number;
+          created_at?: string | null;
+          id?: number;
+          user_id?: string;
+        };
+      };
       challenges: {
         Row: {
           category_id: number | null;
@@ -117,6 +144,7 @@ export interface Database {
           timeframe: string;
           updated_at: string | null;
           user_id: string;
+          xp_counters: number;
         };
         Insert: {
           badge_level?: number;
@@ -131,7 +159,8 @@ export interface Database {
           reward_id?: number | null;
           timeframe: string;
           updated_at?: string | null;
-          user_id?: string;
+          user_id: string;
+          xp_counters?: number;
         };
         Update: {
           badge_level?: number;
@@ -139,7 +168,7 @@ export interface Database {
           created_at?: string | null;
           frequency?: string;
           goals?: string | null;
-          id: number;
+          id?: number;
           is_active?: boolean;
           is_clicked?: boolean;
           is_up_to_date?: boolean;
@@ -147,6 +176,27 @@ export interface Database {
           timeframe?: string;
           updated_at?: string | null;
           user_id?: string;
+          xp_counters?: number;
+        };
+      };
+      crontest: {
+        Row: {
+          created_at: string | null;
+          day: string | null;
+          id: number;
+          time: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          day?: string | null;
+          id?: number;
+          time?: string | null;
+        }
+        Update: {
+          created_at?: string | null;
+          day?: string | null;
+          id?: number;
+          time?: string | null;
         };
       };
       profiles: {
@@ -156,9 +206,7 @@ export interface Database {
           full_name: string | null;
           id: string;
           updated_at: string | null;
-          username: string | null;
-          website: string | null;
-          user_id: string;
+          username: string;
         };
         Insert: {
           avatar_url?: string | null;
@@ -166,9 +214,7 @@ export interface Database {
           full_name?: string | null;
           id: string;
           updated_at?: string | null;
-          username?: string | null;
-          website?: string | null;
-          user_id: string;
+          username: string;
         };
         Update: {
           avatar_url?: string | null;
@@ -176,9 +222,7 @@ export interface Database {
           full_name?: string | null;
           id?: string;
           updated_at?: string | null;
-          username?: string | null;
-          website?: string | null;
-          user_id: string;
+          username?: string;
         };
       };
       reactions: {
@@ -186,6 +230,8 @@ export interface Database {
           commitment_id: number | null;
           created_at: string | null;
           id: number;
+          is_archived: boolean;
+          is_clicked: boolean;
           type: string | null;
           user_id: string | null;
         };
@@ -193,6 +239,8 @@ export interface Database {
           commitment_id?: number | null;
           created_at?: string | null;
           id?: number;
+          is_archived?: boolean;
+          is_clicked?: boolean;
           type?: string | null;
           user_id?: string | null;
         };
@@ -200,6 +248,8 @@ export interface Database {
           commitment_id?: number | null;
           created_at?: string | null;
           id?: number;
+          is_archived?: boolean;
+          is_clicked?: boolean;
           type?: string | null;
           user_id?: string | null;
         };

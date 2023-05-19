@@ -10,6 +10,13 @@ interface singleCommitmentsState {
 const initialState: singleCommitmentsState = {
   value: {
     badge_level: 1,
+    challenge: {
+      category: {
+        name: "",
+      },
+      category_id: 0,
+      name: "",
+    },
     challenge_id: 0,
     created_at: null,
     frequency: "",
@@ -26,13 +33,7 @@ const initialState: singleCommitmentsState = {
     timeframe: "",
     updated_at: null,
     user_id: "",
-    challenge: {
-      category: {
-        name: "",
-      },
-      category_id: 0,
-      name: "",
-    },
+    xp_counters: 0,
   },
 };
 

@@ -7,7 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import Reaction from "../../profile/AllReactions";
@@ -25,12 +25,24 @@ const SingleCommitment = () => {
   const { id } = useParams();
   const toast = useToast();
   const navigate = useNavigate();
+  const [commitment, setCommitment] = useState<any>({})
+  const fetchedCommitment = useAppSelector(selectCommitment)
+  
+  useEffect(() => {
+    const fetchCommitment = async () => {
+      try {
+        await dispatch(fetchSingleCommitmentAsync(Number(id)));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCommitment();
+  }, [dispatch, id, isOpen]);
 
   useEffect(() => {
-    dispatch(fetchSingleCommitmentAsync(id));
-  }, [dispatch, id]);
-
-  const selectedCommitment = useAppSelector(selectCommitment);
+    setCommitment(fetchedCommitment);
+  }, [fetchedCommitment]);
+  
   const {
     badge_level,
     challenge,
@@ -39,37 +51,47 @@ const SingleCommitment = () => {
     is_up_to_date,
     reward,
     timeframe,
-  } = selectedCommitment;
+  } = commitment;
 
   const dayFrequency = (frequency: string) => {
     const days: string[] = [];
     const frequencyArray = frequency?.split("");
     frequencyArray?.forEach((day) => {
-      if (day === "M") {
+      if (day === "0") {
+        days.push("Sunday");
+      }
+      if (day === "1") {
         days.push("Monday");
       }
-      if (day === "T") {
+      if (day === "2") {
         days.push("Tuesday");
       }
-      if (day === "W") {
+      if (day === "3") {
         days.push("Wednesday");
       }
-      if (day === "H") {
+      if (day === "4") {
         days.push("Thursday");
       }
-      if (day === "F") {
+      if (day === "5") {
         days.push("Friday");
       }
-      if (day === "S") {
+      if (day === "6") {
         days.push("Saturday");
-      }
-      if (day === "U") {
-        days.push("Sunday");
       }
     });
     const allDays = days.join(", ");
     return <Text>{`Frequency: ${allDays}`}</Text>;
   };
+
+  const time = (timeframe: string) => {
+    if (timeframe === "12") {
+      return <Text>Time of day: Morning (4am-12pm)</Text>;
+    } else if (timeframe === "20") {
+      return <Text>Time of day: Afternoon (12pm-8pm)</Text>;
+    } else if (timeframe === "4") {
+      return <Text>Time of day: Night (8pm-4am)</Text>;
+    }
+  }
 
   const handleDelete = async (id: number) => {
     await dispatch(deleteCommitmentAsync(id));
@@ -81,48 +103,49 @@ const SingleCommitment = () => {
   };
 
   return (
-    <>
-      <Box display="flex" alignItems="center">
-        <Heading as="h1">{challenge.name}&nbsp;&nbsp;</Heading>
-        <RenderMedal level={badge_level} />
-      </Box>
-      <Heading as="h2" size="md">
-        Category:&nbsp;&nbsp;
-        <Link to={`/challenges/categories/${challenge.category.name}`}>
-          {challenge.category.name}
-        </Link>
-      </Heading>
-      {frequency && frequency.length ? dayFrequency(frequency) : null}
-      <Text>Time of day: {timeframe}</Text>
-      {goals && goals.length ? <Text>Goals: {goals}</Text> : null}
-      {reward && reward.name ? <Text>Reward: {reward.name}</Text> : null}
-      <br />
-      {is_up_to_date ? (
-        <Text fontWeight="bold">You are up to date on your challenge!</Text>
-      ) : (
-        <Text fontWeight="bold">You behind on your challenge</Text>
-      )}
-      <br />
-      <Box>
-        <Button margin="10px" bgColor="orange.200" onClick={onOpen}>
-          <EditIcon />
-        </Button>
-        <Button
-          margin="10px"
-          bgColor="red.200"
-          onClick={() => handleDelete(selectedCommitment.id)}
-        >
-          <DeleteIcon />
-        </Button>
-      </Box>
-      <Reaction />
-      <EditCommitment
-        isOpen={isOpen}
-        onClose={onClose}
-        selectedCommitment={selectedCommitment}
-        handleDelete={handleDelete}
-      />
-    </>
+    challenge && challenge.name
+    ? <>
+        <Box display="flex" alignItems="center">
+          <Heading as="h1">{challenge.name}&nbsp;&nbsp;</Heading>
+          <RenderMedal level={badge_level} />
+        </Box>
+        <Heading as="h2" size="md">
+          Category:&nbsp;&nbsp;
+          <Link to={`/challenges/categories/${challenge.category.name}`}>
+            {challenge.category.name}
+          </Link>
+        </Heading>
+        {frequency && frequency.length ? dayFrequency(frequency) : null}
+        {timeframe && timeframe.length ? time(timeframe) : null}
+        {goals && goals.length ? <Text>Goals: {goals}</Text> : null}
+        {reward && reward.name ? <Text>Reward: {reward.name}</Text> : null}
+        <br />
+        {is_up_to_date
+          ? <Text fontWeight="bold">You are up to date on your challenge!</Text>
+          : <Text fontWeight="bold">You behind on your challenge</Text>
+        }
+        <br />
+        <Box>
+          <Button margin="10px" bgColor="orange.200" onClick={onOpen}>
+            <EditIcon />
+          </Button>
+          <Button
+            margin="10px"
+            bgColor="red.200"
+            onClick={() => handleDelete(commitment.id)}
+          >
+            <DeleteIcon />
+          </Button>
+        </Box>
+        <Reaction />
+        <EditCommitment
+          isOpen={isOpen}
+          onClose={onClose}
+          selectedCommitment={commitment}
+          handleDelete={handleDelete}
+        />
+      </>
+    : null
   );
 };
 

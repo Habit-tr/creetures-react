@@ -5,11 +5,9 @@ import AllChallenges from "./challenges/AllChallenges";
 import SingleChallenge from "./challenges/SingleChallenge";
 import AllCategories from "./challenges/categories/AllCategories";
 import SingleCategory from "./challenges/categories/SingleCategory";
-import AddCommitment from "./challenges/commitments/AddCommitment";
 import AllCommitments from "./challenges/commitments/AllCommitments";
 import SingleCommitment from "./challenges/commitments/SingleCommitment";
 import Footer from "./footer/Footer";
-import Navbar from "./navbar/Navbar";
 import CycleTest from "./profile/CycleTest";
 import Friends from "./profile/Friends";
 import Profile from "./profile/Profile";
@@ -38,7 +36,6 @@ const DashboardRoutes = () => {
             path="/challenges/categories/:id"
             element={<SingleCategory />}
           />
-          <Route path="/challenges/:id/commit" element={<AddCommitment />} />
         </Routes>
       </Box>
       <Footer />

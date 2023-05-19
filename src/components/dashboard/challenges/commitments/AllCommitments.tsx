@@ -9,7 +9,14 @@ const AllCommitments = () => {
   const commitments = useAppSelector(selectCommitments);
 
   useEffect(() => {
-    dispatch(fetchAllCommitmentsAsync());
+    async function fetchData() {
+      try {
+        dispatch(fetchAllCommitmentsAsync());
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchData();
   }, [dispatch]);
 
   if (!commitments || commitments.length === 0) {
@@ -18,11 +25,17 @@ const AllCommitments = () => {
 
   return (
     <>
-      <Heading>My Commitments</Heading>
-      <Flex direction='row' maxW='900px' wrap='wrap'>
-        {commitments.map(commitment => (
-          <CommitmentCard key={commitment.id} commitment={commitment} />
-        ))}
+      <Heading m='10px'>My Commitments</Heading>
+      <Flex 
+        m='10px'
+        maxW='900px'
+        direction='row'
+        wrap='wrap'>
+        {commitments && commitments.length
+          ? commitments.map(commitment => (
+            <CommitmentCard key={commitment.id} commitment={commitment} />
+          ))
+          : null}
       </Flex>
     </>
   );

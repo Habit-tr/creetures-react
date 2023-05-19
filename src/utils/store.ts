@@ -10,6 +10,7 @@ import singleRewardReducer from "../components/dashboard/profile/singleRewardSli
 import allReactionsReducer from "../components/dashboard/profile/AllReactionsSlice";
 import friendsReducer from "../components/dashboard/profile/FriendsSlice";
 import profilesReducer from '../components/dashboard/profile/Single-All-ProfilesSlice'
+import sharedUsersReducer from '../components/dashboard/profile/sharedUsersSlice';
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
@@ -27,6 +28,7 @@ const store = configureStore({
     allReactions: allReactionsReducer,
     friends: friendsReducer,
     profiles: profilesReducer,
+    sharedUsers: sharedUsersReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // if we install the logger, uncomment this line
 });
