@@ -35,9 +35,9 @@ const EditCommitment = ({
 }: EditCommitmentProps) => {
   const [commitment, setCommitment] = useState<any>(selectedCommitment);
   const [days, setDays] = useState<any>("");
-  const [goals, setGoals] = useState<any>(selectedCommitment.goals);
-  const [rewardId, setRewardId] = useState<any>(selectedCommitment.reward_id);
-  const [timeframe, setTimeframe] = useState<any>(selectedCommitment.timeframe);
+  const [goals, setGoals] = useState<any>("");
+  const [rewardId, setRewardId] = useState<any>("");
+  const [timeframe, setTimeframe] = useState<any>("");
   const dispatch = useAppDispatch();
   const toast = useToast();
 
@@ -46,7 +46,7 @@ const EditCommitment = ({
     setGoals(selectedCommitment.goals);
     setRewardId(selectedCommitment.reward_id);
     setTimeframe(selectedCommitment.timeframe);
-    setDays('');
+    setDays("");
   }, [selectedCommitment]);
 
   useEffect(() => {
@@ -101,6 +101,7 @@ const EditCommitment = ({
       goals,
       reward_id: rewardId,
       timeframe,
+      updated_at: new Date(),
     };
     const returnedCommitment = await dispatch(
       editCommitmentAsync(updatedCommitment)

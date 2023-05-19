@@ -78,21 +78,23 @@ const SingleChallenge = () => {
         <Flex>
           {fetchedSharedUsers && fetchedSharedUsers.length
             ? fetchedSharedUsers.map((user) => (
-              <Card
-                key={user.id}
-                w="100px"
-                h="100px"
-                p="5px"
-                border="1px solid black"
-                m="10px"
-                alignItems="center"
-                justifyContent="center">
-                {user.profile.avatar_url
-                  ? <Avatar name={`${user.profile.username}`} src={user.profile.avatar_url} />
-                  : null
-                }
-                <Text>{user.profile.username}</Text>
-              </Card>
+              // This route isn't set up yet, but should link to a user's profile
+              <Link to={`/profile/${user.user_id}`} key={user.user_id}>
+                <Card
+                  w="100px"
+                  h="100px"
+                  p="5px"
+                  border="1px solid black"
+                  m="10px"
+                  alignItems="center"
+                  justifyContent="center">
+                    {user.profile.avatar_url
+                      ? <Avatar name={`${user.profile.username}`} src={user.profile.avatar_url} />
+                      : null
+                    }
+                  <Text>{user.profile.username}</Text>
+                </Card>
+              </Link>
             ))
             : <Text>No one has committed to this challenge.</Text>
             }
