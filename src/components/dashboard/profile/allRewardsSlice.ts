@@ -75,6 +75,31 @@ export const deleteRewardAsync: any = createAsyncThunk(
   },
 );
 
+// Separate type for the ID
+interface updateRewardId {
+  id: number;
+}
+
+// Use the `Update` type for the fields to update
+type updateRewardProps = updateRewardId & Database['public']['Tables']['rewards']['Update'];
+
+export const updateRewardAsync: any = createAsyncThunk(
+  'updateRewardAsync',
+  async ({ id, ...fieldsToUpdate }: updateRewardProps) => {
+    const { data, error } = await supabase
+      .from("rewards")
+      .update(fieldsToUpdate)
+      .eq("id", id);
+    if (error) {
+      throw error;
+    }
+    if (!data) {
+      throw new Error('Failed to update reward');
+    }
+    return data[0];  // data is an array, so return the first element
+  },
+);
+
 const allRewardsSlice = createSlice({
   name: "allRewards",
   initialState,
@@ -98,6 +123,17 @@ const allRewardsSlice = createSlice({
         state.value = state.value.filter(
           (reward) => reward.id !== action.payload.id,
         );
+      },
+    );
+    builder.addCase(
+      updateRewardAsync.fulfilled,
+      (state, action: PayloadAction<Database['public']['Tables']['rewards']['Row']>) => {
+        const index = state.value.findIndex(
+          (reward) => reward.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.value[index] = action.payload;
+        }
       },
     );
   },
