@@ -5,17 +5,10 @@ import {
   Center,
   Flex,
   Heading,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
@@ -152,7 +145,7 @@ const Profile = () => {
             </Card>
           ))}
       </Flex>
-      <Table>
+      {/* <Table>
         <Thead>
           <Tr>
             <Th></Th>
@@ -191,7 +184,7 @@ const Profile = () => {
             <Td></Td>
           </Tr>
         </Tbody>
-      </Table>
+      </Table> */}
 
       {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
       <EditProfile user={currentUser} isOpen={isOpen} onClose={onClose} />
