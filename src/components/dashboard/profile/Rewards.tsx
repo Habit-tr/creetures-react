@@ -5,6 +5,7 @@ import { fetchAllRewardsAsync, deleteRewardAsync, selectRewards } from "./allRew
 import AddReward from "./AddReward";
 import DeleteAlert from "./DeleteAlert";
 import { Database } from "../../../utils/supabaseTypes";
+import { EditIcon } from "@chakra-ui/icons";
 
 const Rewards = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,7 +53,7 @@ const Rewards = () => {
                 <Td>{reward.name}</Td>
                 <Td>{reward.description}</Td>
                 <Td>
-                  <Button onClick={() => { setSelectedReward(reward); onOpen(); }}>Edit</Button>
+                  <Button colorScheme="blue" onClick={() => { setSelectedReward(reward); onOpen(); }}><EditIcon /></Button>
                   <DeleteAlert onDelete={() => handleDelete(reward.id)}/>
                 </Td>
               </Tr>
