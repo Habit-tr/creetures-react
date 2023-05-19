@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
@@ -10,6 +10,7 @@ import {
 
 const BuddyStatusCard = () => {
   const [commitment, setCommitment] = useState<any>({});
+  const [reactions, setReactions] = useState<any>({});
 
   const userId = "ea51ded3-1ebc-4ac6-8089-c3981368a08b";
   const challengeId = 5;
@@ -25,6 +26,7 @@ const BuddyStatusCard = () => {
   // };
 
   useEffect(() => {
+    console.log("useEffect");
     const fetchCommitmentId = async (challengeId: number) => {
       let { data: fetchedCommitment, error } = await supabase
         .from("commitments")
@@ -38,9 +40,18 @@ const BuddyStatusCard = () => {
     const fetchProfile = async ({ userId }: { userId: string }) => {
       await dispatch(fetchSingleProfileAsync({ id: userId }));
     };
+    const fetchReactions = async (id: any) => {
+      let { data: fetchedReactions, error } = await supabase
+        .from("reactions")
+        .select(`*, reactor: profiles(username, avatar_url)`)
+        .eq("commitment_id", id)
+        .eq("is_archived", false);
+      setReactions(fetchedReactions);
+    };
     fetchCommitmentId(challengeId);
     fetchProfile({ userId });
-  }, [dispatch]);
+    fetchReactions(commitment.id);
+  }, [dispatch, commitment.id]);
 
   const profile = useAppSelector(selectSingleProfile);
 
@@ -50,18 +61,24 @@ const BuddyStatusCard = () => {
   //maybe have their badge?
 
   return (
-    <Flex direction="column">
-      <Heading>BuddyStatusCard</Heading>
-      <Avatar />
-      <Button m="20px" width="120px">
-        REACTION
-      </Button>
-      <Text>ChallengeId: {challengeId}</Text>
+    <>
+      <Box width="90px" border="1px black solid">
+        <Center flexDirection="column">
+          <Avatar src={profile.avatar_url} />
+
+          <Heading size="md">{profile.username}</Heading>
+
+          <Button p="0px">🙌 0</Button>
+          <Button p="0px">👉 3</Button>
+        </Center>
+      </Box>
+      {/* <Text>ChallengeId: {challengeId}</Text>
       <pre>{JSON.stringify(commitment)}</pre>
       <Text>UserId: {userId}</Text>
       <pre>{JSON.stringify(profile)}</pre>
       <Text>CurrentUserId: {currentUserId}</Text>
-    </Flex>
+      <pre>{JSON.stringify(reactions)}</pre> */}
+    </>
   );
 };
 
