@@ -168,6 +168,7 @@ export default function NavBar() {
           <Button rounded={"full"} variant={"link"} cursor={"pointer"} minW={0}>
             <Avatar
               size={"lg"}
+              bg={'#003600'}
               src={
                 "https://gravatar.com/avatar/f5fafa6c888f5875a5fc75609d69b6ef?s=400&d=robohash&r=x"
               }

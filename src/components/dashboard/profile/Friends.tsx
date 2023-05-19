@@ -1,61 +1,38 @@
-import { Flex, Heading, Text, Box, Spacer, HStack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
-import { fetchFriendsAsync, selectFriends } from './FriendsSlice';
-import FriendsCard from './FriendsCard';
-import AddFriend from './AddFriend';
-import AllProfiles from './AllProfiles';
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 
-const Friends = () => {
+import { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector} from "../../../utils/reduxHooks";
+import { fetchAllProfilesAsync, selectAllProfiles } from "./AllProfilesSlice";
+import { fetchSingleProfileAsync, selectSingleProfile } from "./SingleProfileSlice";
+
+
+const FriendsPage = ()=> {
   const dispatch = useAppDispatch();
-
-  const [friendslist, setFriendslist] = useState<boolean>(false);
+  const { id } = useParams();
 
   useEffect(() => {
-    dispatch(fetchFriendsAsync());
-  }, [dispatch]);
+    dispatch(fetchSingleProfileAsync(id));
+  }, [dispatch, id]);
 
-  const friends = useAppSelector(selectFriends);
+  const selectedProfile = useAppSelector(selectSingleProfile);
 
 
-  return (
+
+  return(
     <>
-    <HStack>
-
-    <Flex justifyContent="space-between" height="100vh" width="100vw" color='white'  >
-      <Box flex='1' bg='green.500' >
-        <Heading>My Friends</Heading>
-           <Box>
-              {!friends}
-              <Text>No Friends Yet? Make some Friends and Get inspried...</Text>
-           </Box>
-      </Box>
-
-      <Box flex='1' bg='tomato'>
-        <Heading>Find New Friends</Heading>
-        <Box >
-           <AllProfiles/>
-        </Box>
-      </Box>
-    </Flex>
-    </HStack>
-
+    {selectedProfile.id}
 
 
     </>
-  );
+  )
+}
 
-};
-export default Friends;
-
-
-// {/* <Box  bg='tomato'>
-// <Heading>Find New Friends</Heading>
-// <Box >
-//    {friends && friends.length ? (
-//    <Flex direction='row' maxW='1000px' wrap='wrap' justifyContent='center'>
-//    {friends.map(friend => <FriendCard key={friend.id} friend={friend} />)}
-//    </Flex>
-//    ) : null}
-// </Box>
-// </Box> */}
+export default FriendsPage;

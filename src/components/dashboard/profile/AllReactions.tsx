@@ -43,7 +43,7 @@ const Reaction: React.FC = () => {
         <Center>
            <Box p={6}>
            <Stack spacing={0} align={'center'} mb={5}>
-            <Text color={'black'}>High Five!</Text>
+
            </Stack>
                <Button bg="transparent" onClick={()=> setTotalHighfives(totalHighfives + 1)}>
                <img style={{ height: '40px' }} className="highfive" src={highfive} alt="highfive" />
@@ -53,7 +53,7 @@ const Reaction: React.FC = () => {
 
            <Box p={6}>
            <Stack spacing={0} align={'center'} mb={5}>
-            <Text color={'black'}>Poke!</Text>
+            
            </Stack>
                <Button bg="transparent" onClick={()=> setTotalNudges(totalNudges + 1)}>
                <img style={{ height: '30px' }} className="point" src={point} alt="point"/>

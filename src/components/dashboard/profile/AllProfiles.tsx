@@ -7,7 +7,9 @@ import {
 import {
   fetchAllProfilesAsync,
   selectAllProfiles,
-} from "./Single-All-ProfilesSlice";
+} from "./AllProfilesSlice";
+
+
 
 const AllProfiles = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +21,7 @@ const AllProfiles = () => {
   useEffect(() => {
     dispatch(fetchAllProfilesAsync());
   }, [dispatch]);
+  // console.log('these are the profiles', profiles)
 
   useEffect(() => {
     dispatch(fetchAllCommitmentsAsync());
@@ -26,6 +29,7 @@ const AllProfiles = () => {
 
   return (
     <>
+
       {profiles.map((profile) => {
         const matched = commitments.find(
           (commitment) => commitment.user_id === profile.id,

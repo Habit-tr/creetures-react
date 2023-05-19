@@ -31,23 +31,23 @@ export const fetchAllProfilesAsync: any = createAsyncThunk(
 );
 
 ////// FETCH SINGLE PROFILE //////
-export const fetchSingleProfileAsync: any = createAsyncThunk(
-  "fetchSingleProfileAsync",
-  async ({ id }: any) => {
-    try {
-      const { data } = await supabase
-        .from("profiles")
-        .select(
-          `*, commitments: commitments(badge_level, challenge: challenges(name))`, //may need policy update
-        )
-        .match({ id: id })
-        .single();
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
-  },
-);
+// export const fetchSingleProfileAsync: any = createAsyncThunk(
+//   "fetchSingleProfileAsync",
+//   async ({ id }: any) => {
+//     try {
+//       const { data } = await supabase
+//         .from("profiles")
+//         .select(
+//           `*, commitments: commitments(badge_level, challenge: challenges(name), reactions: id )`, //may need policy update
+//         )
+//         .match({ id: id })
+//         .single();
+//       return data;
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   },
+// );
 
 ////// REDUCER //////
 const profilesSlice = createSlice({
@@ -66,17 +66,17 @@ const profilesSlice = createSlice({
         state.value.allProfiles = action.payload;
       },
     );
-    builder.addCase(
-      fetchSingleProfileAsync.fulfilled,
-      (
-        state,
-        action: PayloadAction<
-          Database["public"]["Tables"]["profiles"]["Row"][]
-        >,
-      ) => {
-        state.value.singleProfile = action.payload;
-      },
-    );
+    // builder.addCase(
+    //   fetchSingleProfileAsync.fulfilled,
+    //   (
+    //     state,
+    //     action: PayloadAction<
+    //       Database["public"]["Tables"]["profiles"]["Row"][]
+    //     >,
+    //   ) => {
+    //     state.value.singleProfile = action.payload;
+    //   },
+    // );
   },
 });
 
@@ -84,8 +84,8 @@ export const selectAllProfiles = (state: RootState) => {
   return state.profiles.value.allProfiles;
 };
 
-export const selectSingleProfile = (state: RootState) => {
-  return state.profiles.value.singleProfile;
-};
+// export const selectSingleProfile = (state: RootState) => {
+//   return state.profiles.value.singleProfile;
+// };
 
 export default profilesSlice.reducer;

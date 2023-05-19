@@ -21,10 +21,7 @@ import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
 import RenderMedal from "../challenges/RenderMedal";
 import EditProfileModal from "./EditProfileModal";
-import {
-  fetchSingleProfileAsync,
-  selectSingleProfile,
-} from "./Single-All-ProfilesSlice";
+import { fetchSingleProfileAsync, selectSingleProfile } from "./SingleProfileSlice";
 
 const Profile = () => {
   const { currentUser } = useAuth();

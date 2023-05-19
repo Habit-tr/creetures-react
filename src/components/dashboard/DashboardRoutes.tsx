@@ -11,7 +11,7 @@ import SingleCommitment from "./challenges/commitments/SingleCommitment";
 import Footer from "./footer/Footer";
 import Navbar from "./navbar/Navbar";
 import CycleTest from "./profile/CycleTest";
-import Friends from "./profile/Friends";
+import FriendsPage from "./profile/Friends";
 import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
@@ -26,7 +26,7 @@ const DashboardRoutes = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/cycle/:day" element={<CycleTest />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/friends" element={<Friends />} />
+          <Route path="/friends" element={<FriendsPage />} />
           <Route path="/commitments" element={<AllCommitments />} />
           <Route path="/commitments/:id" element={<SingleCommitment />} />
           <Route path="/rewards" element={<Rewards />} />

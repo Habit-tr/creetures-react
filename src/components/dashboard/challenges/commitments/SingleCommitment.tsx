@@ -31,6 +31,7 @@ const SingleCommitment = () => {
   }, [dispatch, id]);
 
   const selectedCommitment = useAppSelector(selectCommitment);
+  console.log('Before',selectedCommitment)
   const {
     badge_level,
     challenge,
@@ -40,6 +41,7 @@ const SingleCommitment = () => {
     reward,
     timeframe,
   } = selectedCommitment;
+  console.log('After',selectedCommitment)
 
   const dayFrequency = (frequency: string) => {
     const days: string[] = [];
