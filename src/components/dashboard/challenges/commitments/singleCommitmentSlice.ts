@@ -68,6 +68,7 @@ export const editCommitmentAsync: any = createAsyncThunk(
           goals: updatedCommitment.goals,
           reward_id: updatedCommitment.reward_id,
           timeframe: updatedCommitment.timeframe,
+          updated_at: updatedCommitment.updated_at,
         })
         .eq("id", updatedCommitment.id)
         .select()

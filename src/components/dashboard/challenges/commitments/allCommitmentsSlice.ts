@@ -36,12 +36,6 @@ export const postNewCommitmentAsync: any = createAsyncThunk(
     user_id,
   }: Database["public"]["Tables"]["commitments"]["Insert"]) => {
     try {
-      console.log("challenge_id: ", challenge_id);
-      console.log("frequency: ", frequency);
-      console.log("goals: ", goals);
-      console.log("reward_id: ", reward_id);
-      console.log("timeframe: ", timeframe);
-      console.log("user_id: ", user_id);
       const { data } = await supabase
         .from("commitments")
         .insert({

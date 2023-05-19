@@ -38,7 +38,6 @@ const AllChallenges = () => {
   const allCategories = useAppSelector(selectCategories);
 
   useEffect(() => {
-    console.log("fetching all challenges");
     async function fetchData() {
       try {
         dispatch(fetchAllCategoriesAsync());
