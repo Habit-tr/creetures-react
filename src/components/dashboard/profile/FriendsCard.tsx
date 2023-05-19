@@ -21,11 +21,19 @@ interface FriendsCardProps {
   profiles:Database["public"]["Tables"]["profiles"]["Row"]
 }
 
+<<<<<<< HEAD
 const FriendsCard = ({ profiles }: FriendsCardProps) => {
   const { username, user_id, full_name } = profiles;
+=======
+
+const FriendsCard = ({ friend }: FriendsCardProps) => {
+  const { id, username, avatar_url } = friend;
+
+>>>>>>> main
   return (
     // <Link to={`/friends/${user_id}`}>
 
+<<<<<<< HEAD
     <Center py={12}>
       {username}
       <Box
@@ -36,6 +44,13 @@ const FriendsCard = ({ profiles }: FriendsCardProps) => {
         boxShadow={'xl'}
         rounded={'md'}
         overflow={'hidden'}>
+=======
+  <Text fontSize="20px" >
+    {username}
+    {id}
+  </Text>
+  <Button>
+>>>>>>> main
 
         <Flex justify={'center'} mt={3}>
           <Avatar

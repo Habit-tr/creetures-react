@@ -13,6 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 import Reaction from "./profile/AllReactions";
 import DashboardTable from "./DashboardTable";
 import { fetchAllCommitmentsAsync, selectCommitments } from "./challenges/commitments/allCommitmentsSlice";
+import FriendsSidebar from "./FriendsSidebar";
 
 const Dashboard = () => {
   const [user, setUser] = useState({ email: "" });
@@ -64,32 +65,7 @@ const Dashboard = () => {
           >
             TODAY'S COMMITMENTS
           </Heading>
-          <Text>
-            Display a mini battle pass view here with today's commitments and
-            rewards and maybe also tomorrow's.
-          </Text>
           <Flex justifyContent="center" alignItems="center">
-            <Link to="/challenges">
-              <Text cursor="pointer" margin="20px">
-                <Button
-                  bgColor="green.200"
-                  color="black"
-                  onClick={() => navigate("/challenges")}
-                >
-                  Challenges
-                </Button>
-              </Text>
-            </Link>
-            <Link to="/rewards">
-              <Button
-                bgColor="yellow.200"
-                color="black"
-                margin="10px"
-                onClick={() => navigate("/rewards")}
-              >
-                Rewards
-              </Button>
-            </Link>
           </Flex>
           <DashboardTable commitments={commitments}/>
           {/* <Table>
@@ -127,31 +103,7 @@ const Dashboard = () => {
           </Table> */}
         </Box>
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
-        <Box
-          w="275px"
-          h="440px"
-          border="2px black solid"
-          margin="20px"
-          padding="10px"
-        >
-          <Heading
-            size="md"
-            mb="20px"
-            color="purple.500"
-            cursor="pointer"
-            onClick={() => navigate("/friends")}
-          >
-            FELLOW CREETURES
-          </Heading>
-          <Text mb="10px">
-            Sort top friends by # of shared challenges commited to. Show avatar,
-            most recent check-in, highfives and nudges.
-          </Text>
-          <Text mb="10px">Andrew nudged Ben!</Text>
-          <Text mb="10px">Jack high-fived Simin!</Text>
-          <Text mb="10px">Danny committed to a new challenge!</Text>
-          <Reaction />
-        </Box>
+        <FriendsSidebar />
       </Flex>
     </>
   );

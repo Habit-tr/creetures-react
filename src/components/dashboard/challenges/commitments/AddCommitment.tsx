@@ -2,14 +2,20 @@ import {
   Box,
   Button,
   Checkbox,
-  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Select,
   Text,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { useAuth } from "../../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import { Database } from "../../../../utils/supabaseTypes";
@@ -17,29 +23,31 @@ import {
   fetchAllRewardsAsync,
   selectRewards,
 } from "../../profile/allRewardsSlice";
-import {
-  fetchSingleChallengeAsync,
-  selectChallenge,
-} from "../singleChallengeSlice";
 import { postNewCommitmentAsync } from "./allCommitmentsSlice";
+import { postSharedUsersAsync } from '../../profile/sharedUsersSlice';
 
-const AddCommitment = () => {
+interface AddCommitmentProps {
+  isOpen: boolean;
+  onClose: () => void;
+  challenge: Database["public"]["Tables"]["challenges"]["Insert"];
+};
+
+const AddCommitment = ({
+  isOpen,
+  onClose,
+  challenge,
+}: AddCommitmentProps) => {
   const dispatch = useAppDispatch();
-  const { id } = useParams();
   const { session } = useAuth();
   const user = session.session.user;
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(fetchSingleChallengeAsync(id));
       await dispatch(fetchAllRewardsAsync());
-      setIsLoading(false);
     };
     fetchData();
-  }, [dispatch, id]);
+  }, [dispatch]);
 
-  const challenge = useAppSelector(selectChallenge);
   const rewards = useAppSelector(selectRewards);
 
   const nullReward = {
@@ -62,7 +70,7 @@ const AddCommitment = () => {
   const rewardList = (
     rewards: Database["public"]["Tables"]["rewards"]["Row"][],
   ) => {
-    const selectableRewards = ["Select reward (Optional)"];
+    const selectableRewards = ["Select reward"];
     rewards.forEach((reward) => {
       selectableRewards.push(reward.name);
     });
@@ -73,23 +81,26 @@ const AddCommitment = () => {
     if (days.includes(dayChar)) {
       const newString = days.replace(dayChar, "");
       setDays(newString);
-    }
-    if (!days.includes(dayChar)) {
+    } else {
       const newString = days + dayChar;
       setDays(newString);
     }
   };
 
   const handleTimeframeSelect = (time: string) => {
-    if (time === "Select time frame") {
-      setTimeframe("");
+    if (time === "Morning (4am-12pm)") {
+      setTimeframe("12");
+    } else if (time === "Afternoon (12pm-8pm)") {
+      setTimeframe("20");
+    } else if (time === "Night (8pm-4am)") {
+      setTimeframe("4");
     } else {
-      setTimeframe(time);
+      setTimeframe("");
     }
   };
 
   const handleRewardSelect = (rewardName: string) => {
-    if (rewardName === "Select reward (Optional)") {
+    if (rewardName === "Select reward") {
       setReward(nullReward);
     } else {
       let selectedReward: any = rewards.find(
@@ -103,48 +114,79 @@ const AddCommitment = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    dispatch(
-      postNewCommitmentAsync({
-        challenge_id: id,
-        frequency: days,
-        goals,
-        reward_id: reward.id,
-        timeframe,
+    if (reward.id) {
+      await dispatch(
+        postNewCommitmentAsync({
+          challenge_id: challenge.id,
+          frequency: days,
+          goals,
+          reward_id: reward.id,
+          timeframe,
+          user_id: user.id,
+        }),
+      );
+    } else {
+      await dispatch(
+        postNewCommitmentAsync({
+          challenge_id: challenge.id,
+          frequency: days,
+          goals,
+          reward_id: null,
+          timeframe,
+          user_id: user.id,
+        }),
+      );
+    }
+    // postSharedUsersAsync isn't working *MOST OF THE TIME* -- was briefly working but stopped
+    await dispatch(
+      postSharedUsersAsync({
+        challenge_id: challenge.id,
         user_id: user.id,
       }),
     );
     toast({
       title: "Committed to challenge!",
     });
+    setDays("");
+    setTimeframe("");
+    setGoals("");
+    setReward(nullReward);
+    onClose();
     navigate("/commitments");
   };
 
   return (
-    <>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          {challenge && challenge.name ? (
-            <Heading mb="20px">Commit to {challenge.name} challenge</Heading>
-          ) : (
-            <Heading mb="20px">Commit to this challenge</Heading>
-          )}
-          <Text>Please select the days you'd like to commit:</Text>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        {challenge && challenge.name
+          ? <ModalHeader bgColor='green.200'>
+              Commit to {challenge.name.toUpperCase()} Challenge
+            </ModalHeader>
+          : <ModalHeader bgColor='green.200'>
+              Commit to this challenge
+            </ModalHeader>}
+        <ModalCloseButton />
+        <ModalBody>
+          <Text mt="20px" mb="20px">
+            Please select the days you'd like to commit:
+          </Text>
           <Box mb="20px">
-            <Checkbox onChange={() => handleDayClick("M")} /> Mon{" "}
-            <Checkbox onChange={() => handleDayClick("T")} /> Tue{" "}
-            <Checkbox onChange={() => handleDayClick("W")} /> Wed{" "}
-            <Checkbox onChange={() => handleDayClick("H")} /> Thurs{" "}
-            <Checkbox onChange={() => handleDayClick("F")} /> Fri{" "}
-            <Checkbox onChange={() => handleDayClick("S")} /> Sat{" "}
-            <Checkbox onChange={() => handleDayClick("U")} /> Sun
+            <Checkbox onChange={() => handleDayClick("0")} /> Sun{"  "}
+            <Checkbox onChange={() => handleDayClick("1")} /> Mon{"  "}
+            <Checkbox onChange={() => handleDayClick("2")} /> Tue{"  "}
+            <Checkbox onChange={() => handleDayClick("3")} /> Wed{"  "}
+            <Checkbox onChange={() => handleDayClick("4")} /> Thurs{"  "}
+            <Checkbox onChange={() => handleDayClick("5")} /> Fri{"  "}
+            <Checkbox onChange={() => handleDayClick("6")} /> Sat
           </Box>
-          <Box>
+          <Box mb="20px">
+            Time Frame:
             <Select
               w="260px"
               mb="20px"
               onChange={(e) => handleTimeframeSelect(e.target.value)}
+              // value={timeframe}
             >
               <option>Select time frame</option>
               <option>Morning (4am-12pm)</option>
@@ -160,6 +202,7 @@ const AddCommitment = () => {
             />
           </Box>
           <Box>
+            Reward (Optional):
             <Select
               w="260px"
               mb="20px"
@@ -172,17 +215,19 @@ const AddCommitment = () => {
                 : null}
             </Select>
           </Box>
+        </ModalBody>
+        <ModalFooter>
           <Button
             isDisabled={!days || !timeframe}
             bgColor="green.200"
-            mb="20px"
+            mr={3}
             onClick={handleSubmit}
           >
-            Commit to this Challenge
+            Commit to Challenge
           </Button>
-        </>
-      )}
-    </>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

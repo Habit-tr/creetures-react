@@ -15,15 +15,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from '../../../../utils/reduxHooks';
+import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import { Database } from "../../../../utils/supabaseTypes";
-import { editCommitmentAsync } from './singleCommitmentSlice';
-import { fetchAllRewardsAsync, selectRewards } from '../../profile/allRewardsSlice';
+import { editCommitmentAsync } from "./singleCommitmentSlice";
+import { fetchAllRewardsAsync, selectRewards } from "../../profile/allRewardsSlice";
 
 interface EditCommitmentProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedCommitment: Database['public']['Tables']['commitments']['Update'];
+  selectedCommitment: Database["public"]["Tables"]["commitments"]["Update"];
   handleDelete: (id: number) => Promise<void>;
 };
 
@@ -33,8 +33,8 @@ const EditCommitment = ({
   selectedCommitment,
   handleDelete,
 }: EditCommitmentProps) => {
-  const [commitment, setCommitment] = useState<any>(selectedCommitment)
-  const [days, setDays] = useState<any>('');
+  const [commitment, setCommitment] = useState<any>(selectedCommitment);
+  const [days, setDays] = useState<any>("");
   const [goals, setGoals] = useState<any>(selectedCommitment.goals);
   const [rewardId, setRewardId] = useState<any>(selectedCommitment.reward_id);
   const [timeframe, setTimeframe] = useState<any>(selectedCommitment.timeframe);
@@ -42,45 +42,51 @@ const EditCommitment = ({
   const toast = useToast();
 
   useEffect(() => {
+    setCommitment(selectedCommitment);
+    setGoals(selectedCommitment.goals);
+    setRewardId(selectedCommitment.reward_id);
+    setTimeframe(selectedCommitment.timeframe);
+    setDays('');
+  }, [selectedCommitment]);
+
+  useEffect(() => {
     dispatch(fetchAllRewardsAsync());
   }, [dispatch]);
 
   const rewards = useAppSelector(selectRewards);
 
-  const rewardList = (rewards: Database['public']['Tables']['rewards']['Row'][]) => {
-    const selectableRewards = ['Select reward (Optional)'];
+  const rewardList = (rewards: Database["public"]["Tables"]["rewards"]["Row"][]) => {
+    const selectableRewards = ["Select reward"];
     rewards.forEach(reward => {
       selectableRewards.push(reward.name);
-    })
+    });
     return selectableRewards;
   };
 
   const handleDayClick = (dayChar: string) => {
-    console.log('commitment:', commitment);
-    console.log('days: ', days);
-    console.log('goals: ', goals);
-    console.log('rewardId: ', rewardId);
-    console.log('timeframe: ', timeframe);
     if (days.includes(dayChar)) {
-      const newString = days.replace(dayChar, '');
+      const newString = days.replace(dayChar, "");
       setDays(newString);
-    }
-    if (!days.includes(dayChar)) {
+    } else {
       const newString = days + dayChar;
       setDays(newString);
     }
   };
 
   const handleTimeframeSelect = (time: string) => {
-    if (time === 'Select time frame') {
-      setTimeframe('');
+    if (time === "Morning (4am-12pm)") {
+      setTimeframe("12");
+    } else if (time === "Afternoon (12pm-8pm)") {
+      setTimeframe("20");
+    } else if (time === "Night (8pm-4am)") {
+      setTimeframe("4");
     } else {
-      setTimeframe(time);
+      setTimeframe("");
     }
-  }
+  };
 
   const handleRewardSelect = (rewardName: string) => {
-    if (rewardName === 'Select reward (Optional)') {
+    if (rewardName === "Select reward") {
       setRewardId(null);
     } else {
       let selectedReward: any = rewards.find(reward => reward.name === rewardName);
@@ -97,7 +103,7 @@ const EditCommitment = ({
       timeframe,
     };
     const returnedCommitment = await dispatch(
-      editCommitmentAsync(updatedCommitment),
+      editCommitmentAsync(updatedCommitment)
     );
     setCommitment(returnedCommitment);
     toast({
@@ -107,68 +113,81 @@ const EditCommitment = ({
   };
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader bgColor="orange.200">Edit Your Commitment</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>Please select the days you'd like to commit:</Text>
-            <Box mb='20px'>
-              <Checkbox onChange={() => handleDayClick('M')} /> Mon{' '}
-              <Checkbox onChange={() => handleDayClick('T')} /> Tue{' '}
-              <Checkbox onChange={() => handleDayClick('W')} /> Wed{' '}
-              <Checkbox onChange={() => handleDayClick('H')} /> Thurs{' '}
-              <Checkbox onChange={() => handleDayClick('F')} /> Fri{' '}
-              <Checkbox onChange={() => handleDayClick('S')} /> Sat{' '}
-              <Checkbox onChange={() => handleDayClick('U')} /> Sun
-            </Box>
-            <Box>
-              <Select w='260px' mb='20px' onChange={(e) => handleTimeframeSelect(e.target.value)}>
-                <option>Select time frame</option>
-                <option>Morning (4am-12pm)</option>
-                <option>Afternoon (12pm-8pm)</option>
-                <option>Night (8pm-4am)</option>
-              </Select>
-            </Box>
-            <Box mb='20px'>
-              Goals (Optional):
-              <Textarea
-                value={goals}
-                onChange={(e) => setGoals(e.target.value)}
-              />
-            </Box>
-            <Box>
-              <Select w='260px' mb='20px' onChange={(e) => handleRewardSelect(e.target.value)}>
-                {rewards && rewards.length
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader bgColor="orange.200">
+          Edit Your Commitment
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Text mt="20px" mb="20px">
+            Please select the days you'd like to commit:
+          </Text>
+          <Box mb="20px">
+            <Checkbox onChange={() => handleDayClick("0")} /> Sun{" "}
+            <Checkbox onChange={() => handleDayClick("1")} /> Mon{" "}
+            <Checkbox onChange={() => handleDayClick("2")} /> Tue{" "}
+            <Checkbox onChange={() => handleDayClick("3")} /> Wed{" "}
+            <Checkbox onChange={() => handleDayClick("4")} /> Thurs{" "}
+            <Checkbox onChange={() => handleDayClick("5")} /> Fri{" "}
+            <Checkbox onChange={() => handleDayClick("6")} /> Sat
+          </Box>
+          <Box mb="20px">
+            Time Frame:
+            <Select
+              w="260px"
+              mb="20px"
+              onChange={(e) => handleTimeframeSelect(e.target.value)}
+              value={timeframe}
+            >
+              <option>Select time frame</option>
+              <option>Morning (4am-12pm)</option>
+              <option>Afternoon (12pm-8pm)</option>
+              <option>Night (8pm-4am)</option>
+            </Select>
+          </Box>
+          <Box mb="20px">
+            Goals (Optional):
+            <Textarea
+              value={goals}
+              onChange={(e) => setGoals(e.target.value)}
+            />
+          </Box>
+          <Box>
+            Reward (Optional):
+            <Select
+              w="260px"
+              mb="20px"
+              onChange={(e) => handleRewardSelect(e.target.value)}
+            >
+              {rewards && rewards.length
                 ? rewardList(rewards).map((reward, idx) => (
-                  <option key={idx}>{reward}</option>
-                ))
+                    <option key={idx}>{reward}</option>
+                  ))
                 : null}
-              </Select>
-            </Box>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              bgColor="red.200"
-              mr={3}
-              onClick={() => handleDelete(commitment.id)}
-            >
-              Delete
-            </Button>
-            <Button
-              isDisabled={!days || !timeframe}
-              bgColor="green.200"
-              mr={3}
-              onClick={() => handleEdit()}
-            >
-              Save
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+            </Select>
+          </Box>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            bgColor="red.200"
+            mr={3}
+            onClick={() => handleDelete(commitment.id)}
+          >
+            Delete
+          </Button>
+          <Button
+            isDisabled={!days || !timeframe}
+            bgColor="green.200"
+            mr={3}
+            onClick={() => handleEdit()}
+          >
+            Save
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 
