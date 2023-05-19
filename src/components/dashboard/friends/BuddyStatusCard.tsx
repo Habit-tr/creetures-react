@@ -8,12 +8,17 @@ import {
   selectSingleProfile,
 } from "../profile/Single-All-ProfilesSlice";
 
-const BuddyStatusCard = () => {
+interface BuddyStatusCardProps {
+  challengeId: number;
+  userId: string;
+}
+
+const BuddyStatusCard = ({ challengeId, userId }: BuddyStatusCardProps) => {
   const [commitment, setCommitment] = useState<any>({});
   const [reactions, setReactions] = useState<any>({});
 
-  const userId = "ea51ded3-1ebc-4ac6-8089-c3981368a08b";
-  const challengeId = 5;
+  // const userId = "ea51ded3-1ebc-4ac6-8089-c3981368a08b";
+  // const challengeId = 5;
 
   const { currentUser } = useAuth();
   const currentUserId = currentUser.id;
@@ -28,18 +33,26 @@ const BuddyStatusCard = () => {
   useEffect(() => {
     console.log("useEffect");
     const fetchCommitmentId = async (challengeId: number) => {
-      let { data: fetchedCommitment, error } = await supabase
-        .from("commitments")
-        .select(`*`)
-        .eq("challenge_id", challengeId)
-        .eq("user_id", userId)
-        .eq("is_active", true)
-        .single();
+      let { data: fetchedCommitment } = await supabase
+      .from("commitments")
+      .select(`*`)
+      .eq("challenge_id", challengeId)
+      .eq("user_id", userId)
+      .eq("is_active", true)
+      .single();
       setCommitment(fetchedCommitment);
     };
+    fetchCommitmentId(challengeId);
+  }, []);
+
+  useEffect(() => {
     const fetchProfile = async ({ userId }: { userId: string }) => {
       await dispatch(fetchSingleProfileAsync({ id: userId }));
     };
+    fetchProfile({ userId });
+  }, []);
+
+  useEffect(() => {
     const fetchReactions = async (id: any) => {
       let { data: fetchedReactions, error } = await supabase
         .from("reactions")
@@ -48,10 +61,8 @@ const BuddyStatusCard = () => {
         .eq("is_archived", false);
       setReactions(fetchedReactions);
     };
-    fetchCommitmentId(challengeId);
-    fetchProfile({ userId });
     fetchReactions(commitment.id);
-  }, [dispatch, commitment.id]);
+  }, []);
 
   const profile = useAppSelector(selectSingleProfile);
 

@@ -13,7 +13,6 @@ export const fetchAllCommitmentsAsync: any = createAsyncThunk(
   "fetchAllCommitmentsAsync",
   async (userId: string) => {
     try {
-      console.log("userId", userId);
       const { data: fetchedCommitments } = await supabase
         .from("commitments")
         .select(
