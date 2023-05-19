@@ -52,7 +52,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     "4": [],
   };
 
-  commitments.forEach((commitment) => {
+  commitments?.forEach((commitment) => {
     const committedToday = checkDay(commitment);
     const timeframe = commitment.timeframe as '12' | '20' | '4';
     if (commitmentCategories.hasOwnProperty(timeframe) && committedToday) {
