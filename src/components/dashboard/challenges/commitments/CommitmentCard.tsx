@@ -20,7 +20,7 @@ const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
         justify="center"
       >
         <Text fontSize="20px" align="center">
-          {challenge.name}
+          {challenge?.name}
         </Text>
         <Text fontSize="10px" align="center">
           Badge level: {badge_level}

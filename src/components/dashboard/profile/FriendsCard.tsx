@@ -10,7 +10,7 @@ interface FriendsCardProps {
 
 
 const FriendsCard = ({ friend }: FriendsCardProps) => {
-  const { user_id, username, avatar_url } = friend;
+  const { id, username, avatar_url } = friend;
 
   return (
     <>
@@ -29,7 +29,7 @@ const FriendsCard = ({ friend }: FriendsCardProps) => {
 
   <Text fontSize="20px" >
     {username}
-    {user_id}
+    {id}
   </Text>
   <Button>
 

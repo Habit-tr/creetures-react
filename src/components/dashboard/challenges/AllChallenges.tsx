@@ -25,7 +25,7 @@ import {
 
 const AllChallenges = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-  const [showOnlyMine, setShowOnlyMine] = useState<boolean>(true);
+  const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
