@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import DashboardTable from "./DashboardTable";
-import FriendsSidebar from "./FriendsSidebar";
+import FriendsSidebar from "./friends/FriendsSidebar";
 import {
   fetchAllCommitmentsAsync,
   selectCommitments,
