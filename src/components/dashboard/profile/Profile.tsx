@@ -13,6 +13,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
 import FriendsSidebar from "../FriendsSidebar";
 import RenderMedal from "../challenges/RenderMedal";
-import EditProfileModal from "./EditProfileModal";
+import EditProfile from "./EditProfile";
 import {
   fetchSingleProfileAsync,
   selectSingleProfile,
@@ -32,6 +33,7 @@ const Profile = () => {
   const [currentUserUrl, setCurrentUserUrl] = useState("");
   const [reactions, setReactions] = useState<any>([]);
   const [rewards, setRewards] = useState<any>([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useAppDispatch();
 
@@ -73,28 +75,28 @@ const Profile = () => {
         <Card
           padding="10px"
           height="100px"
-          width="120px"
+          width="160px"
           justifyContent="center"
         >
           <Center>
-            🙌{" "}
             {
               reactions.filter((reaction: any) => reaction.type === "highfive")
                 .length
-            }
+            }{" "}
+            🙌 Earned
           </Center>
           <Center>
-            👉{" "}
             {
               reactions.filter((reaction: any) => reaction.type === "nudge")
                 .length
-            }
+            }{" "}
+            👉 Earned
           </Center>
           <Center>
-            🎁{" "}
             {rewards.reduce((accumulator: any, currentValue: any) => {
               return accumulator + currentValue.times_redeemed;
-            }, 0)}
+            }, 0)}{" "}
+            🎁 Claimed
           </Center>
         </Card>
         {profileData &&
@@ -119,7 +121,7 @@ const Profile = () => {
           <Text>username: {profileData.username}</Text>
           <Text>Full Name: {profileData.full_name}</Text>
           <Text>Email: {`${currentUser.email}`}</Text>
-          <Button margin="10px" bgColor="purple.200">
+          <Button margin="10px" bgColor="purple.200" onClick={() => onOpen()}>
             Edit Settings
           </Button>
           {/* {JSON.stringify(rewards)} */}
@@ -167,7 +169,7 @@ const Profile = () => {
         </Tbody>
       </Table>
       {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
-      <EditProfileModal />
+      <EditProfile user={currentUser} isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };
