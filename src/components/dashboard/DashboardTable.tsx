@@ -30,13 +30,12 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
   const getCurrentDay = () => {
     const date = new Date();
-    const daysOfWeek = ["U", "M", "T", "W", "H", "F", "S"];
-    return daysOfWeek[date.getDay()];
+    return String(date.getDay());
   };
 
   const checkDay = (commitment: Database["public"]["Tables"]["commitments"]["Row"]) => {
     const today = getCurrentDay();
-    if (commitment.frequency.indexOf(today) !== -1) {
+    if (commitment.frequency.includes(today)) {
       return true;
     } else {
       return false;
@@ -47,15 +46,15 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     setCheckedCommitments((prevChecked) => ({ ...prevChecked, [commitmentId]: isChecked }));
   };
 
-  const commitmentCategories: Record<"Morning (4am-12pm)" | "Afternoon (12pm-8pm)" | "Night (8pm-4am)", JSX.Element[]> = {
-    "Morning (4am-12pm)": [],
-    "Afternoon (12pm-8pm)": [],
-    "Night (8pm-4am)": [],
+  const commitmentCategories: Record<"12" | "20" | "4", JSX.Element[]> = {
+    "12": [],
+    "20": [],
+    "4": [],
   };
 
   commitments.forEach((commitment) => {
     const committedToday = checkDay(commitment);
-    const timeframe = commitment.timeframe as "Morning (4am-12pm)" | "Afternoon (12pm-8pm)" | "Night (8pm-4am)";
+    const timeframe = commitment.timeframe as '12' | '20' | '4';
     if (commitmentCategories.hasOwnProperty(timeframe) && committedToday) {
       commitmentCategories[timeframe].push(
         <Tr key={commitment.id}>
@@ -109,7 +108,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
                     <Th textAlign="center">Redeem</Th>
                   </Tr>
                 </Thead>
-                <Tbody>{commitmentCategories["Morning (4am-12pm)"]}</Tbody>
+                <Tbody>{commitmentCategories["12"]}</Tbody>
               </Table>
             </TabPanel>
             <TabPanel>
@@ -121,7 +120,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
                     <Th textAlign="center">Redeem</Th>
                   </Tr>
                 </Thead>
-                <Tbody>{commitmentCategories["Afternoon (12pm-8pm)"]}</Tbody>
+                <Tbody>{commitmentCategories["20"]}</Tbody>
               </Table>
             </TabPanel>
             <TabPanel>
@@ -133,7 +132,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
                     <Th textAlign="center">Redeem</Th>
                   </Tr>
                 </Thead>
-                <Tbody>{commitmentCategories["Night (8pm-4am)"]}</Tbody>
+                <Tbody>{commitmentCategories["4"]}</Tbody>
               </Table>
             </TabPanel>
           </TabPanels>
@@ -144,4 +143,3 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 };
 
 export default DashboardTable;
-
