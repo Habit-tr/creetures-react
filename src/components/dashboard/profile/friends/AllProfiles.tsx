@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import {
   fetchAllCommitmentsAsync,
   selectCommitments,
-} from "../challenges/commitments/allCommitmentsSlice";
+} from "../../challenges/commitments/allCommitmentsSlice";
 import {
   fetchAllProfilesAsync,
   selectAllProfiles,
-} from "./Single-All-ProfilesSlice";
+} from "../Single-All-ProfilesSlice";
 
 const AllProfiles = () => {
   const dispatch = useAppDispatch();

@@ -7,13 +7,13 @@ import AllCategories from "./challenges/categories/AllCategories";
 import SingleCategory from "./challenges/categories/SingleCategory";
 import AllCommitments from "./challenges/commitments/AllCommitments";
 import SingleCommitment from "./challenges/commitments/SingleCommitment";
+import NavBar from "./components/NavBar";
 import Footer from "./footer/Footer";
 import CycleTest from "./profile/CycleTest";
-import Friends from "./profile/Friends";
 import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
-import NavBar from "./components/NavBar";
+import Friends from "./profile/friends/Friends";
 
 const DashboardRoutes = () => {
   return (

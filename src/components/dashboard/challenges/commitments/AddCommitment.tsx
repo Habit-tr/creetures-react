@@ -23,20 +23,16 @@ import {
   fetchAllRewardsAsync,
   selectRewards,
 } from "../../profile/allRewardsSlice";
+import { postSharedUsersAsync } from "../../profile/friends/sharedUsersSlice";
 import { postNewCommitmentAsync } from "./allCommitmentsSlice";
-import { postSharedUsersAsync } from '../../profile/sharedUsersSlice';
 
 interface AddCommitmentProps {
   isOpen: boolean;
   onClose: () => void;
   challenge: Database["public"]["Tables"]["challenges"]["Insert"];
-};
+}
 
-const AddCommitment = ({
-  isOpen,
-  onClose,
-  challenge,
-}: AddCommitmentProps) => {
+const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const dispatch = useAppDispatch();
   const { session } = useAuth();
   const user = session.session.user;
@@ -159,13 +155,15 @@ const AddCommitment = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {challenge && challenge.name
-          ? <ModalHeader bgColor='green.200'>
-              Commit to {challenge.name.toUpperCase()} Challenge
-            </ModalHeader>
-          : <ModalHeader bgColor='green.200'>
-              Commit to this challenge
-            </ModalHeader>}
+        {challenge && challenge.name ? (
+          <ModalHeader bgColor="green.200">
+            Commit to {challenge.name.toUpperCase()} Challenge
+          </ModalHeader>
+        ) : (
+          <ModalHeader bgColor="green.200">
+            Commit to this challenge
+          </ModalHeader>
+        )}
         <ModalCloseButton />
         <ModalBody>
           <Text mt="20px" mb="20px">

@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Input,
@@ -25,7 +26,6 @@ const EditProfile = ({ user, isOpen, onClose }: EditProfileProps) => {
   const [currentUserUrl, setCurrentUserUrl] = useState("");
   const [username, setUsername] = useState("");
   const { currentUser } = useAuth();
-
   useEffect(() => {
     const { data } = supabase.storage
       .from("profilePictures")
@@ -88,6 +88,7 @@ const EditProfile = ({ user, isOpen, onClose }: EditProfileProps) => {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </Box>
+            <Avatar src={currentUserUrl} />
             <Input
               type="file"
               id="files"

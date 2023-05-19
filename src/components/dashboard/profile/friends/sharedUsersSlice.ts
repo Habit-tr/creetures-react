@@ -1,7 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { RootState } from "../../../utils/store";
-import supabase from "../../../utils/supabaseClient";
-import { Database } from "../../../utils/supabaseTypes";
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+  Slice,
+} from "@reduxjs/toolkit";
+import { RootState } from "../../../../utils/store";
+import supabase from "../../../../utils/supabaseClient";
+import { Database } from "../../../../utils/supabaseTypes";
 
 interface sharedUsersState {
   value: Database["public"]["Tables"]["challenge_users"]["Row"][];
@@ -15,8 +20,10 @@ export const fetchSharedUsersAsync: any = createAsyncThunk(
     try {
       const { data: users } = await supabase
         .from("challenge_users")
-        .select("*, challenge: challenges(name), profile: profiles(username, avatar_url)")
-        .eq("challenge_id", challengeId)
+        .select(
+          "*, challenge: challenges(name), profile: profiles(username, avatar_url)",
+        )
+        .eq("challenge_id", challengeId);
       return users;
     } catch (err) {
       console.error(err);
@@ -26,7 +33,10 @@ export const fetchSharedUsersAsync: any = createAsyncThunk(
 
 export const postSharedUsersAsync: any = createAsyncThunk(
   "postSharedUsers",
-  async ({ challenge_id, user_id }: Database["public"]["Tables"]["challenge_users"]["Insert"]) => {
+  async ({
+    challenge_id,
+    user_id,
+  }: Database["public"]["Tables"]["challenge_users"]["Insert"]) => {
     try {
       const { data } = await supabase
         .from("commitments")
@@ -35,7 +45,7 @@ export const postSharedUsersAsync: any = createAsyncThunk(
           user_id,
         })
         .select();
-        console.log("data: ", data);
+      console.log("data: ", data);
       return data;
     } catch (err) {
       console.error(err);
@@ -50,13 +60,23 @@ const sharedUsersSlice: Slice<sharedUsersState> = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       fetchSharedUsersAsync.fulfilled,
-      (state, action: PayloadAction<Database["public"]["Tables"]["challenge_users"]["Row"][]>) => {
+      (
+        state,
+        action: PayloadAction<
+          Database["public"]["Tables"]["challenge_users"]["Row"][]
+        >,
+      ) => {
         state.value = action.payload;
       },
     );
     builder.addCase(
       postSharedUsersAsync.fulfilled,
-      (state, action: PayloadAction<Database["public"]["Tables"]["challenge_users"]["Row"]>) => {
+      (
+        state,
+        action: PayloadAction<
+          Database["public"]["Tables"]["challenge_users"]["Row"]
+        >,
+      ) => {
         state.value.push(action.payload);
       },
     );
