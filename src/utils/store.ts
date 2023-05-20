@@ -11,6 +11,7 @@ import allReactionsReducer from "../components/dashboard/profile/AllReactionsSli
 import friendsReducer from "../components/dashboard/profile/FriendsSlice";
 import profilesReducer from '../components/dashboard/profile/Single-All-ProfilesSlice'
 import sharedUsersReducer from '../components/dashboard/profile/sharedUsersSlice';
+import allEarnedRewardsReducer from "../components/dashboard/profile/allEarnedRewardsSlice";
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
@@ -29,6 +30,7 @@ const store = configureStore({
     friends: friendsReducer,
     profiles: profilesReducer,
     sharedUsers: sharedUsersReducer,
+    allEarnedRewards: allEarnedRewardsReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // if we install the logger, uncomment this line
 });

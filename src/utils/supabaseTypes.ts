@@ -199,6 +199,32 @@ export interface Database {
           time?: string | null;
         };
       };
+      earned_rewards: {
+        Row: {
+          commitment_id: number | null
+          created_at: string | null
+          date_redeemed: string | null
+          id: number
+          is_redeemed: boolean | null
+          reward_id: number | null
+        }
+        Insert: {
+          commitment_id?: number | null
+          created_at?: string | null
+          date_redeemed?: string | null
+          id?: number
+          is_redeemed?: boolean | null
+          reward_id?: number | null
+        }
+        Update: {
+          commitment_id?: number | null
+          created_at?: string | null
+          date_redeemed?: string | null
+          id?: number
+          is_redeemed?: boolean | null
+          reward_id?: number | null
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null;

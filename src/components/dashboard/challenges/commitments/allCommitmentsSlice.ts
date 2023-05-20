@@ -11,13 +11,14 @@ const initialState: allCommitmentsState = { value: [] };
 
 export const fetchAllCommitmentsAsync: any = createAsyncThunk(
   "fetchAllCommitmentsAsync",
-  async () => {
+  async (userId: string) => {
     try {
       const { data: fetchedCommitments } = await supabase
         .from("commitments")
         .select(
           "*, challenge: challenges(name), reward: rewards(is_clicked, name)",
-        );
+        )
+        .eq("user_id", userId);
       return fetchedCommitments;
     } catch (err) {
       console.error(err);

@@ -20,6 +20,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
   const dispatch = useAppDispatch();
+  const { currentUser } = useAuth();
 
   const commitments = useAppSelector(selectCommitments)
 
@@ -29,8 +30,8 @@ const Dashboard = () => {
   }, [session.session.user]);
 
   useEffect(() => {
-    dispatch(fetchAllCommitmentsAsync());
-  }, [dispatch]);
+    dispatch(fetchAllCommitmentsAsync(currentUser.id));
+  }, [dispatch, currentUser.id]);
 
   function navigateProf() {
     navigate("/profile");
