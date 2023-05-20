@@ -1,41 +1,41 @@
-import { Card, CardBody, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
-import {
-  fetchActualSharedUsersAsync,
-  selectSharedUsers,
-} from "../profile/friends/sharedUsersSlice";
-import TestStatusCard from "./TestStatusCard";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import supabase from "../../../utils/supabaseClient";
+import BuddyStatusCard from "./BuddyStatusCard";
 
 const ChallengeBuddiesCard = ({ challengeId }: { challengeId: number }) => {
-  const dispatch = useAppDispatch();
-  const fetchedBuddies = useAppSelector(selectSharedUsers);
+  const [fetchedBuddies, setFetchedBuddies] = useState<any>({});
 
   useEffect(() => {
     const fetchBuddies = async () => {
-      const { data } = await dispatch(fetchActualSharedUsersAsync(challengeId));
-      console.log(data);
+      const { data: commitments } = await supabase
+        .from("commitments")
+        .select("*, profile: profiles(*), challenge: challenges(name)")
+        .eq("challenge_id", challengeId)
+        .eq("is_active", true);
+      setFetchedBuddies(commitments);
+      console.log(commitments);
     };
     fetchBuddies();
-  }, [dispatch, challengeId]);
+  }, [challengeId]);
 
   return fetchedBuddies && fetchedBuddies.length ? (
-    <Card
-      margin="10px"
-      w="90%"
-      border="1px black solid"
-      color="black"
-      bgGradient="linear(to-b, gray.100, gray.300)"
+    <Box
+    // margin="0px"
+    // mb="10px"
+    // border="1px black solid"
+    // color="black"
+    // bgGradient="linear(to-b, gray.100, gray.300)"
     >
-      <CardBody>
-        <Heading mb="0px" size="md">
-          {fetchedBuddies[0].challenge.name.toUpperCase()}
-        </Heading>
-        {fetchedBuddies.map((buddy) => (
-          <TestStatusCard key={buddy.user_id} commitment={buddy} />
+      <Heading mb="0px" size="md">
+        {fetchedBuddies[0].challenge.name.toUpperCase()}
+      </Heading>
+      <Flex direction="column">
+        {fetchedBuddies.map((buddy: any) => (
+          <BuddyStatusCard key={buddy.user_id} commitment={buddy} />
         ))}
-      </CardBody>
-    </Card>
+      </Flex>
+    </Box>
   ) : null;
 };
 

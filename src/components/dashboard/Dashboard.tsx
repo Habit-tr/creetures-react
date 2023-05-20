@@ -1,56 +1,28 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import DashboardTable from "./DashboardTable";
-import FriendsSidebar from "./friends/FriendsSidebar";
 import {
   fetchAllCommitmentsAsync,
   selectCommitments,
 } from "./challenges/commitments/allCommitmentsSlice";
+import FriendsSidebar from "./friends/FriendsSidebar";
 
 const Dashboard = () => {
-  const [user, setUser] = useState({ email: "" });
   const navigate = useNavigate();
-  const { session } = useAuth();
   const dispatch = useAppDispatch();
 
   const commitments = useAppSelector(selectCommitments);
 
   useEffect(() => {
-    const fetchedUser = session.session.user;
-    setUser(fetchedUser);
-  }, [session.session.user]);
-
-  useEffect(() => {
     dispatch(fetchAllCommitmentsAsync());
   }, [dispatch]);
 
-  function navigateProf() {
-    navigate("/profile");
-  }
-
   return (
     <>
-      <Flex justifyContent="space-between">
-        <Box>
-          <Heading>{user.email}'s Dashboard</Heading>
-        </Box>
-        <Box>
-          <Button bgColor="purple.200" onClick={navigateProf}>
-            My Profile
-          </Button>
-        </Box>
-      </Flex>
-      <Flex direction="row" flexWrap="wrap">
-        <Box
-          w="550px"
-          h="440px"
-          border="2px black solid"
-          margin="20px"
-          padding="10px"
-        >
+      <Flex direction="row">
+        <Box w="55%" margin="20px" padding="10px">
           <Heading
             size="md"
             mb="20px"
@@ -97,7 +69,12 @@ const Dashboard = () => {
           </Table> */}
         </Box>
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
-        <FriendsSidebar />
+        <Box w="40%" margin="20px" padding="10px">
+          <Heading size="md" mb="20px" color="purple.500">
+            FELLOW CREETURES OF HABIT
+          </Heading>
+          <FriendsSidebar />
+        </Box>
       </Flex>
     </>
   );
