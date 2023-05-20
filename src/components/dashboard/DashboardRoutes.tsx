@@ -15,6 +15,7 @@ import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
 import Friends from "./profile/friends/Friends";
+import BuddyProfile from "./profile/BuddyProfile";
 
 const DashboardRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const DashboardRoutes = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/cycle/:day" element={<CycleTest />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<BuddyProfile />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/buddy" element={<FriendsSidebar />} />
           <Route path="/commitments" element={<AllCommitments />} />
