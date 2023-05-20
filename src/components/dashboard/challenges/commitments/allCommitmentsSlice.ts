@@ -19,7 +19,6 @@ export const fetchAllCommitmentsAsync: any = createAsyncThunk(
           "*, challenge: challenges(name), reward: rewards(is_clicked, name)",
         )
         .eq("user_id", userId);
-      console.log("fetchedCommitments: ", fetchedCommitments);
       return fetchedCommitments;
     } catch (err) {
       console.error(err);
