@@ -31,6 +31,22 @@ export const fetchSharedUsersAsync: any = createAsyncThunk(
   },
 );
 
+export const fetchActualSharedUsersAsync: any = createAsyncThunk(
+  "fetchActualSharedUsers",
+  async (challengeId) => {
+    try {
+      const { data: commitments } = await supabase
+        .from("commitments")
+        .select("*, profile: profiles(*), challenge: challenges(name)")
+        .eq("challenge_id", challengeId)
+        .eq("is_active", true);
+      return commitments;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+);
+
 export const postSharedUsersAsync: any = createAsyncThunk(
   "postSharedUsers",
   async ({
@@ -66,6 +82,12 @@ const sharedUsersSlice: Slice<sharedUsersState> = createSlice({
           Database["public"]["Tables"]["challenge_users"]["Row"][]
         >,
       ) => {
+        state.value = action.payload;
+      },
+    );
+    builder.addCase(
+      fetchActualSharedUsersAsync.fulfilled,
+      (state, action: PayloadAction<any>) => {
         state.value = action.payload;
       },
     );

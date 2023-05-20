@@ -1,12 +1,10 @@
-import { Avatar, Box, Button, Center, Heading } from "@chakra-ui/react";
+import { Avatar, Box, Center, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
+import { useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
-import {
-  fetchSingleProfileAsync,
-  selectSingleProfile,
-} from "../profile/Single-All-ProfilesSlice";
+import { selectSingleProfile } from "../profile/Single-All-ProfilesSlice";
+import ReactionsToggle from "./ReactionsToggle";
 
 interface BuddyStatusCardProps {
   challengeId: number;
@@ -15,80 +13,50 @@ interface BuddyStatusCardProps {
 
 const BuddyStatusCard = ({ challengeId, userId }: BuddyStatusCardProps) => {
   const [commitment, setCommitment] = useState<any>({});
-  const [reactions, setReactions] = useState<any>({});
-
-  // const userId = "ea51ded3-1ebc-4ac6-8089-c3981368a08b";
-  // const challengeId = 5;
 
   const { currentUser } = useAuth();
   const currentUserId = currentUser.id;
-  const dispatch = useAppDispatch();
 
-  // const fetchProfile = async () => {
-  //   let { data: fetchedProfiles, error } = await supabase
-  //     .from("profiles")
-  //     .select(`*, commitment: is_up_to_date, badge_level, reactions: *`);
-  // };
+  const testChallengeId = 5;
+  const testUserId = "ea51ded3-1ebc-4ac6-8089-c3981368a08b";
 
   useEffect(() => {
-    console.log("useEffect");
-    const fetchCommitmentId = async (challengeId: number) => {
+    console.log("fetch commitments");
+    const fetchCommitment = async (challengeId: number) => {
       let { data: fetchedCommitment } = await supabase
-      .from("commitments")
-      .select(`*`)
-      .eq("challenge_id", challengeId)
-      .eq("user_id", userId)
-      .eq("is_active", true)
-      .single();
+        .from("commitments")
+        .select(`*, profile: profiles(*)`)
+        .eq("challenge_id", testChallengeId)
+        .eq("user_id", testUserId)
+        .eq("is_active", true)
+        .single();
       setCommitment(fetchedCommitment);
     };
-    fetchCommitmentId(challengeId);
-  }, []);
+    fetchCommitment(challengeId);
 
-  useEffect(() => {
-    const fetchProfile = async ({ userId }: { userId: string }) => {
-      await dispatch(fetchSingleProfileAsync({ id: userId }));
-    };
-    fetchProfile({ userId });
-  }, []);
-
-  useEffect(() => {
-    const fetchReactions = async (id: any) => {
-      let { data: fetchedReactions, error } = await supabase
-        .from("reactions")
-        .select(`*, reactor: profiles(username, avatar_url)`)
-        .eq("commitment_id", id)
-        .eq("is_archived", false);
-      setReactions(fetchedReactions);
-    };
-    fetchReactions(commitment.id);
-  }, []);
+    // console.log("fetch profile");
+    // const fetchProfile = async ({ userId }: { userId: string }) => {
+    //   await dispatch(fetchSingleProfileAsync({ id: userId }));
+    // };
+    // fetchProfile({ userId });
+  }, [challengeId, userId]);
 
   const profile = useAppSelector(selectSingleProfile);
-
-  //reactions
-  //if the auth user has an non-archived reaction to this commitment id
-
-  //maybe have their badge?
 
   return (
     <>
       <Box width="90px" border="1px black solid">
         <Center flexDirection="column">
           <Avatar src={profile.avatar_url} />
-
-          <Heading size="md">{profile.username}</Heading>
-
-          <Button p="0px">🙌 0</Button>
-          <Button p="0px">👉 3</Button>
+          <Text>{profile.username}</Text>
+          <ReactionsToggle commitId={commitment.id} />
         </Center>
       </Box>
-      {/* <Text>ChallengeId: {challengeId}</Text>
+      <Text>ChallengeId: {challengeId}</Text>
       <pre>{JSON.stringify(commitment)}</pre>
       <Text>UserId: {userId}</Text>
       <pre>{JSON.stringify(profile)}</pre>
       <Text>CurrentUserId: {currentUserId}</Text>
-      <pre>{JSON.stringify(reactions)}</pre> */}
     </>
   );
 };
