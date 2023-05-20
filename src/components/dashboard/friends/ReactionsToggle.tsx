@@ -1,5 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 import supabase from "../../../utils/supabaseClient";
 
 interface ReactionsToggleProps {
@@ -8,6 +9,10 @@ interface ReactionsToggleProps {
 
 const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
   const [reactions, setReactions] = useState<any>({});
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+  // const [totalReactions, setTotalReactions] = useState<number>(0); //use length to set
+
+  const { currentUser } = useAuth();
   useEffect(() => {
     console.log("fetch reactions");
     const fetchReactions = async () => {
@@ -23,11 +28,60 @@ const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
     fetchReactions();
   }, [commitId]);
 
+  // const userHasClicked =
+  //   reactions.filter(
+  //     (reaction: any) =>
+  //       reaction.user_id === currentUser.id && reaction.is_clicked === true,
+  //   ).length > 0;
+  // setIsClicked(userHasClicked);
+
+  useEffect(() => {}, [currentUser.id, reactions]);
+
+  const handleClick = async (reactionType: string) => {
+    const alreadyReacted =
+      reactions.filter((reaction: any) => reaction.user_id === currentUser.id)
+        .length > 0;
+    if (alreadyReacted) {
+      const myReaction = reactions.filter(
+        (reaction: any) => reaction.user_id === currentUser.id,
+      )[0];
+      const newClickedState = !myReaction.is_clicked;
+      const { data: updatedReaction } = await supabase
+        .from("reactions")
+        .update({ is_clicked: newClickedState })
+        .eq("user_id", currentUser.id)
+        .eq("commitment_id", reactions[0].commitment_id)
+        .select();
+      console.log("updated reaction = ", updatedReaction);
+      setIsClicked(newClickedState);
+    } else {
+      const { data } = await supabase
+        .from("reactions")
+        .insert([
+          {
+            user_id: currentUser.id,
+            commitment_id: commitId,
+            type: reactionType,
+            is_clicked: true,
+          },
+        ])
+        .select();
+      console.log("added reaction = ", data);
+      setIsClicked(true);
+      setReactions([...reactions, data]);
+    }
+  };
+
   return (
     <>
       {reactions && reactions.status && reactions.status.is_up_to_date ? (
-        <Text p="0px" m="2px">
-          🙌{" "}
+        <Text
+          cursor="pointer"
+          onClick={() => handleClick("highfive")}
+          p="0px"
+          m="2px"
+        >
+          🙌
           {reactions &&
             reactions.length &&
             reactions.filter(
@@ -36,7 +90,12 @@ const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
             ).length}
         </Text>
       ) : (
-        <Text p="0px" m="2px">
+        <Text
+          cursor="pointer"
+          onClick={() => handleClick("nudge")}
+          p="0px"
+          m="2px"
+        >
           👉
           {reactions &&
             reactions.length &&
@@ -46,7 +105,7 @@ const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
             ).length}
         </Text>
       )}
-      <pre>{JSON.stringify(reactions, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(reactions, null, 2)}</pre> */}
     </>
   );
 };
