@@ -12,6 +12,7 @@ import singleCategoryReducer from "../components/dashboard/challenges/categories
 import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
 import singleCommitmentReducer from "../components/dashboard/challenges/commitments/singleCommitmentSlice";
 import singleRewardReducer from "../components/dashboard/profile/singleRewardSlice";
+import allEarnedRewardsReducer from "../components/dashboard/profile/allEarnedRewardsSlice";
 // import logger from "redux-logger"; //optional install: npm i --save redux-logger
 
 const store = configureStore({
@@ -26,11 +27,13 @@ const store = configureStore({
     friends: friendsReducer,
     profiles: profilesReducer,
     sharedUsers: sharedUsersReducer,
+    allEarnedRewards: allEarnedRewardsReducer,
     singleCategory: singleCategoryReducer,
     singleChallenge: singleChallengeReducer,
     singleCommitment: singleCommitmentReducer,
     singleReward: singleRewardReducer,
     // singleProfile: singleProfileReducer,
+
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // if we install the logger, uncomment this line
 });

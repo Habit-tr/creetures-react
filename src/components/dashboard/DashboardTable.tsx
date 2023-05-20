@@ -1,5 +1,4 @@
 import {
-  Checkbox,
   Table,
   Tbody,
   Td,
@@ -16,10 +15,15 @@ import {
   Tabs,
   Flex,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { MdRedeem } from "react-icons/md";
 import { Database } from "../../utils/supabaseTypes";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
+import CommitmentButton from "./CommitmentButton";
+import { postNewEarnedRewardAsync } from "./profile/allEarnedRewardsSlice";
+import { fetchAllCommitmentsAsync, selectCommitments } from "./challenges/commitments/allCommitmentsSlice";
+import { editCommitmentAsync } from "./challenges/commitments/singleCommitmentSlice";
+import { useAuth } from "../../context/AuthContext";
 
 interface DashboardTableProps {
   commitments: Database["public"]["Tables"]["commitments"]["Row"][];
@@ -27,6 +31,41 @@ interface DashboardTableProps {
 
 const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const [checkedCommitments, setCheckedCommitments] = useState<Record<string, boolean>>({});
+  const dispatch = useAppDispatch();
+  const fetchedCommitments = useAppSelector(selectCommitments);
+  const [commitmentsFetched, setCommitmentsFetched] = useState(false);
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    const fetchCommitments = async () => {
+      await dispatch(fetchAllCommitmentsAsync(currentUser.id));
+      setCommitmentsFetched(true);  // after fetching set state to true
+    };
+
+    fetchCommitments();
+  }, [dispatch, currentUser.id]);
+
+  const checkClickedCommitments = useCallback(() => {
+    const clickedCommitments = fetchedCommitments.filter(commitment => commitment.is_clicked);
+    clickedCommitments.forEach((commitment) => {
+      setCheckedCommitments((prevState) => ({ ...prevState, [commitment.id]: true}));
+    });
+  }, [fetchedCommitments]);
+
+  useEffect(() => {
+    if(commitmentsFetched) {
+      checkClickedCommitments();
+    }
+  }, [commitmentsFetched, checkClickedCommitments]);
+
+  const handleCommitmentComplete = (commitmentId: number) => {
+    setCheckedCommitments((prevChecked) => ({ ...prevChecked, [commitmentId]: true }));
+    const commitment = commitments.find(commitment => commitment.id === commitmentId);
+    if (commitment && commitment.reward_id) {
+      dispatch(postNewEarnedRewardAsync({ commitment_id: commitment.id, reward_id: commitment.reward_id }));
+    }
+    dispatch(editCommitmentAsync({ id: commitmentId, is_clicked: true }));
+  };
 
   const getCurrentDay = () => {
     const date = new Date();
@@ -42,10 +81,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     }
   };
 
-  const handleCheckboxChange = (commitmentId: number, isChecked: boolean) => {
-    setCheckedCommitments((prevChecked) => ({ ...prevChecked, [commitmentId]: isChecked }));
-  };
-
   const commitmentCategories: Record<"12" | "20" | "4", JSX.Element[]> = {
     "12": [],
     "20": [],
@@ -59,28 +94,28 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       commitmentCategories[timeframe].push(
         <Tr key={commitment.id}>
           <Td>
-            <Checkbox
-              colorScheme="green"
-              onChange={(e) => handleCheckboxChange(commitment.id, e.target.checked)}
-            >
+            <Flex>
+              <CommitmentButton
+                commitmentId={commitment.id}
+                isCompleted={checkedCommitments[commitment.id] || false}
+                markAsComplete={handleCommitmentComplete}
+              />
               <Text textAlign="center">{commitment.challenge.name}</Text>
-            </Checkbox>
+            </Flex>
           </Td>
           {commitment.reward_id && (
             <Td>
-              <Text textAlign="center">{commitment.reward.name}</Text>
+              <Text textAlign="center">{commitment?.reward?.name}</Text>
             </Td>
           )}
           <Td>
             <Flex justifyContent="center" alignItems="center">
-              <Link to={`/rewards/${commitment.reward_id}`}>
-                <IconButton
-                  aria-label="Redeem"
-                  icon={<MdRedeem />}
-                  colorScheme="blue"
-                  isDisabled={!checkedCommitments[commitment.id]}
-                />
-              </Link>
+              <IconButton
+                aria-label="Redeem"
+                icon={<MdRedeem />}
+                colorScheme="blue"
+                isDisabled={!checkedCommitments[commitment.id]}
+              />
             </Flex>
           </Td>
         </Tr>

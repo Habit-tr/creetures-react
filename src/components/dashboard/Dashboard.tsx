@@ -12,12 +12,13 @@ import FriendsSidebar from "./friends/FriendsSidebar";
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { currentUser } = useAuth();
 
   const commitments = useAppSelector(selectCommitments);
 
   useEffect(() => {
-    dispatch(fetchAllCommitmentsAsync());
-  }, [dispatch]);
+    dispatch(fetchAllCommitmentsAsync(currentUser.id));
+  }, [dispatch, currentUser.id]);
 
   return (
     <>
