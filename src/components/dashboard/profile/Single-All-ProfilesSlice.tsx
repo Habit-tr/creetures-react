@@ -38,7 +38,7 @@ export const fetchSingleProfileAsync: any = createAsyncThunk(
       const { data } = await supabase
         .from("profiles")
         .select(
-          `*, commitments: commitments(badge_level, challenge: challenges(name))`, //may need policy update
+          `*, commitments: commitments(badge_level, id, user_id, challenge: challenges(name))`, //may need policy update
         )
         .match({ id: id })
         .single();

@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
-import RenderMedal from "../challenges/RenderMedal";
 import EditProfile from "./EditProfile";
+import ReactionBadgeCard from "./ReactionBadgeCard";
 import {
   fetchSingleProfileAsync,
   selectSingleProfile,
@@ -22,9 +22,9 @@ import {
 const Profile = () => {
   const { currentUser } = useAuth();
   const [currentUserUrl, setCurrentUserUrl] = useState("");
-  const [reactions, setReactions] = useState<any>([]);
-  const [rewards, setRewards] = useState<any>([]);
-  const [myReactions, setMyReactions] = useState<any>([]);
+  const [earnedReactions, setEarnedReactions] = useState<any>([]);
+  const [redeemedRewards, setRedeemedRewards] = useState<any>([]);
+  const [givenReactions, setGivenReactions] = useState<any>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useAppDispatch();
@@ -37,21 +37,23 @@ const Profile = () => {
       console.log("setting currentUser");
       setCurrentUserUrl(data.publicUrl);
       dispatch(fetchSingleProfileAsync({ id: currentUser.id }));
-      const { data: fetchedReactions } = await supabase
+      const { data: myFetchedEarnedReactions } = await supabase
         .from("reactions")
-        .select(`*, commitments!inner (user_id)`)
+        .select(`*, commitments!inner (id)`)
         .eq("commitments.user_id", currentUser.id);
-      setReactions(fetchedReactions);
-      const { data: myFetchedReactions } = await supabase
+      setEarnedReactions(myFetchedEarnedReactions);
+      const { data: myFetchedGivenReactions } = await supabase
         .from("reactions")
         .select(`*`)
         .eq(`user_id`, currentUser.id);
-      setMyReactions(myFetchedReactions);
+      setGivenReactions(myFetchedGivenReactions);
       const { data: fetchedRewards } = await supabase
-        .from("rewards")
-        .select("*")
-        .eq(`user_id`, currentUser.id);
-      setRewards(fetchedRewards);
+        .from("earned_rewards")
+        .select(`*, commitments!inner (id)`)
+        .eq(`commitments.user_id`, currentUser.id)
+        .eq(`is_redeemed`, true);
+
+      setRedeemedRewards(fetchedRewards);
     };
     fetchData();
   }, [dispatch, currentUser.id]);
@@ -72,27 +74,24 @@ const Profile = () => {
         <Card padding="10px" height="160px" width="30%" justifyContent="center">
           <Center>
             {
-              reactions.filter((reaction: any) => reaction.type === "highfive")
-                .length
+              earnedReactions.filter(
+                (reaction: any) => reaction.type === "highfive",
+              ).length
             }{" "}
             🙌 Earned
           </Center>
           <Center>
             {
-              reactions.filter((reaction: any) => reaction.type === "nudge")
-                .length
+              earnedReactions.filter(
+                (reaction: any) => reaction.type === "nudge",
+              ).length
             }{" "}
             👉 Earned
           </Center>
-          <Center>
-            {rewards.reduce((accumulator: any, currentValue: any) => {
-              return accumulator + currentValue.times_redeemed;
-            }, 0)}{" "}
-            🎁 Claimed
-          </Center>
+          <Center>{redeemedRewards.length} 🎁 Redeemed</Center>
           <Center>
             {
-              myReactions.filter(
+              givenReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
               ).length
             }{" "}
@@ -100,8 +99,9 @@ const Profile = () => {
           </Center>
           <Center>
             {
-              myReactions.filter((reaction: any) => reaction.type === "nudge")
-                .length
+              givenReactions.filter(
+                (reaction: any) => reaction.type === "nudge",
+              ).length
             }{" "}
             👉 Given
           </Center>
@@ -122,6 +122,7 @@ const Profile = () => {
           </Center>
         </Card>
       </Flex>
+      {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
       <Flex
         direction="row"
         wrap="wrap"
@@ -130,19 +131,8 @@ const Profile = () => {
       >
         {profileData &&
           profileData.commitments &&
-          profileData.commitments.map((commitment: any, i: number) => (
-            <Card
-              padding="10px"
-              height="100px"
-              width="120px"
-              key={i}
-              justifyContent="center"
-            >
-              <Center mb="10px">
-                <RenderMedal level={commitment.badge_level} />
-              </Center>
-              <Center fontSize="xs">{commitment.challenge.name}</Center>
-            </Card>
+          profileData.commitments.map((badge: any, i: number) => (
+            <ReactionBadgeCard key={badge.id} badge={badge} />
           ))}
       </Flex>
       {/* <Table>
