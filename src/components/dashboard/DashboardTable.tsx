@@ -1,36 +1,41 @@
 import {
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Text,
   Box,
+  Flex,
   IconButton,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
+  Table,
   Tabs,
-  Flex,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import { MdRedeem } from "react-icons/md";
-import { Database } from "../../utils/supabaseTypes";
-import { useState, useEffect, useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
-import CommitmentButton from "./CommitmentButton";
-import { postNewEarnedRewardAsync } from "./profile/allEarnedRewardsSlice";
-import { fetchAllCommitmentsAsync, selectCommitments } from "./challenges/commitments/allCommitmentsSlice";
-import { editCommitmentAsync } from "./challenges/commitments/singleCommitmentSlice";
 import { useAuth } from "../../context/AuthContext";
+import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
+import { Database } from "../../utils/supabaseTypes";
+import CommitmentButton from "./CommitmentButton";
+import {
+  fetchAllCommitmentsAsync,
+  selectCommitments,
+} from "./challenges/commitments/allCommitmentsSlice";
+import { editCommitmentAsync } from "./challenges/commitments/singleCommitmentSlice";
+import { postNewEarnedRewardAsync } from "./profile/allEarnedRewardsSlice";
 
 interface DashboardTableProps {
   commitments: Database["public"]["Tables"]["commitments"]["Row"][];
 }
 
 const DashboardTable = ({ commitments }: DashboardTableProps) => {
-  const [checkedCommitments, setCheckedCommitments] = useState<Record<string, boolean>>({});
+  const [checkedCommitments, setCheckedCommitments] = useState<
+    Record<string, boolean>
+  >({});
   const dispatch = useAppDispatch();
   const fetchedCommitments = useAppSelector(selectCommitments);
   const [commitmentsFetched, setCommitmentsFetched] = useState(false);
@@ -39,32 +44,55 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   useEffect(() => {
     const fetchCommitments = async () => {
       await dispatch(fetchAllCommitmentsAsync(currentUser.id));
-      setCommitmentsFetched(true);  // after fetching set state to true
+      setCommitmentsFetched(true); // after fetching set state to true
     };
 
     fetchCommitments();
   }, [dispatch, currentUser.id]);
 
   const checkClickedCommitments = useCallback(() => {
-    const clickedCommitments = fetchedCommitments.filter(commitment => commitment.is_clicked);
+    const clickedCommitments = fetchedCommitments.filter(
+      (commitment) => commitment.is_clicked,
+    );
     clickedCommitments.forEach((commitment) => {
-      setCheckedCommitments((prevState) => ({ ...prevState, [commitment.id]: true}));
+      setCheckedCommitments((prevState) => ({
+        ...prevState,
+        [commitment.id]: true,
+      }));
     });
   }, [fetchedCommitments]);
 
   useEffect(() => {
-    if(commitmentsFetched) {
+    if (commitmentsFetched) {
       checkClickedCommitments();
     }
   }, [commitmentsFetched, checkClickedCommitments]);
 
   const handleCommitmentComplete = (commitmentId: number) => {
-    setCheckedCommitments((prevChecked) => ({ ...prevChecked, [commitmentId]: true }));
-    const commitment = commitments.find(commitment => commitment.id === commitmentId);
+    setCheckedCommitments((prevChecked) => ({
+      ...prevChecked,
+      [commitmentId]: true,
+    }));
+    const commitment = commitments.find(
+      (commitment) => commitment.id === commitmentId,
+    );
     if (commitment && commitment.reward_id) {
-      dispatch(postNewEarnedRewardAsync({ commitment_id: commitment.id, reward_id: commitment.reward_id }));
+      dispatch(
+        postNewEarnedRewardAsync({
+          commitment_id: commitment.id,
+          reward_id: commitment.reward_id,
+        }),
+      );
     }
-    dispatch(editCommitmentAsync({ id: commitmentId, is_clicked: true }));
+    if (commitment) {
+      dispatch(
+        editCommitmentAsync({
+          id: commitmentId,
+          is_clicked: true,
+          xp_counters: commitment.xp_counters + 1,
+        }),
+      );
+    }
   };
 
   const getCurrentDay = () => {
@@ -72,7 +100,9 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     return String(date.getDay());
   };
 
-  const checkDay = (commitment: Database["public"]["Tables"]["commitments"]["Row"]) => {
+  const checkDay = (
+    commitment: Database["public"]["Tables"]["commitments"]["Row"],
+  ) => {
     const today = getCurrentDay();
     if (commitment.frequency.includes(today)) {
       return true;
@@ -89,7 +119,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
   commitments?.forEach((commitment) => {
     const committedToday = checkDay(commitment);
-    const timeframe = commitment.timeframe as '12' | '20' | '4';
+    const timeframe = commitment.timeframe as "12" | "20" | "4";
     if (commitmentCategories.hasOwnProperty(timeframe) && committedToday) {
       commitmentCategories[timeframe].push(
         <Tr key={commitment.id}>
@@ -118,7 +148,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
               />
             </Flex>
           </Td>
-        </Tr>
+        </Tr>,
       );
     }
   });
@@ -172,6 +202,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <pre>{JSON.stringify(commitments, null, 2)}</pre>
       </Box>
     </>
   );

@@ -8,6 +8,7 @@ import {
   selectCommitments,
 } from "./challenges/commitments/allCommitmentsSlice";
 import FriendsSidebar from "./friends/FriendsSidebar";
+import { useAuth } from "../../context/AuthContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();

@@ -1,21 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../utils/store";
 import supabase from "../../../utils/supabaseClient";
-import { Database } from '../../../utils/supabaseTypes';
+import { Database } from "../../../utils/supabaseTypes";
 
 interface allEarnedRewardsState {
-  value: Database['public']['Tables']['earned_rewards']['Row'][];
+  value: Database["public"]["Tables"]["earned_rewards"]["Row"][];
 }
 
 const initialState: allEarnedRewardsState = { value: [] };
 
 export const fetchAllEarnedRewardsAsync = createAsyncThunk(
-  'earnedRewards/fetchAllAsync',
+  "earnedRewards/fetchAllAsync",
   async () => {
     try {
       const { data } = await supabase
-      .from('earned_rewards')
-      .select('*, rewards (name, description)');
+        .from("earned_rewards")
+        .select("*, rewards (name, description)");
       return data;
     } catch (err) {
       console.error(err);
@@ -29,19 +29,19 @@ interface postNewEarnedRewardProps {
 }
 
 export const postNewEarnedRewardAsync = createAsyncThunk(
-  'postNewEarnedRewardAsync',
-  async({
+  "postNewEarnedRewardAsync",
+  async ({
     commitment_id,
     reward_id,
   }: postNewEarnedRewardProps) => {
     try {
       const { data } = await supabase
-      .from('earned_rewards')
-      .insert({
-        commitment_id: commitment_id,
-        reward_id: reward_id,
-      })
-      .select();
+        .from("earned_rewards")
+        .insert({
+          commitment_id: commitment_id,
+          reward_id: reward_id,
+        })
+        .select();
       return data;
     } catch (err) {
       console.error(err);
@@ -51,17 +51,17 @@ export const postNewEarnedRewardAsync = createAsyncThunk(
 
 interface deleteEarnedRewardProps {
   id: number | string;
-};
+}
 
 export const deleteEarnedRewardAsync = createAsyncThunk(
-  'deleteEarnedRewardAsync',
+  "deleteEarnedRewardAsync",
   async ({ id }: deleteEarnedRewardProps) => {
     try {
       const { data } = await supabase
-      .from('earned_rewards')
-      .delete()
-      .eq('id', id)
-      .select();
+        .from("earned_rewards")
+        .delete()
+        .eq("id", id)
+        .select();
       return data;
     } catch (err) {
       console.error(err);
@@ -73,26 +73,25 @@ interface UpdateEarnedRewardProps {
   id: number | string;
   is_redeemed: boolean;
   date_redeemed: string;
-};
+}
 
 export const updateEarnedRewardAsync = createAsyncThunk(
-  'updateEarnedRewardAsync',
+  "updateEarnedRewardAsync",
   async ({ id, is_redeemed, date_redeemed }: UpdateEarnedRewardProps) => {
     try {
       const { data } = await supabase
-        .from('earned_rewards')
+        .from("earned_rewards")
         .update({
           is_redeemed: is_redeemed,
-          date_redeemed: date_redeemed
+          date_redeemed: date_redeemed,
         })
-        .eq('id', id);
+        .eq("id", id);
       return data;
     } catch (err) {
       console.error(err);
     }
   },
 );
-
 
 const allEarnedRewardsSlice = createSlice({
   name: "allEarnedRewards",
@@ -109,7 +108,7 @@ const allEarnedRewardsSlice = createSlice({
       postNewEarnedRewardAsync.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.value.push(action.payload);
-      }
+      },
     );
     builder.addCase(
       deleteEarnedRewardAsync.fulfilled,
@@ -124,7 +123,9 @@ const allEarnedRewardsSlice = createSlice({
       (state, action: PayloadAction<any>) => {
         if (action.payload && Array.isArray(action.payload)) {
           const updatedReward = action.payload[0];
-          const index = state.value.findIndex(reward => reward.id === updatedReward.id);
+          const index = state.value.findIndex(
+            (reward) => reward.id === updatedReward.id,
+          );
           if (index >= 0) {
             state.value[index] = updatedReward;
           }
@@ -133,7 +134,6 @@ const allEarnedRewardsSlice = createSlice({
         }
       },
     );
-
   },
 });
 
