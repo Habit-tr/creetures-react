@@ -70,7 +70,7 @@ export const editCommitmentAsync: any = createAsyncThunk(
           timeframe: updatedCommitment.timeframe,
           is_clicked: updatedCommitment.is_clicked,
           updated_at: updatedCommitment.updated_at,
-
+          xp_counters: updatedCommitment.xp_counters,
         })
         .eq("id", updatedCommitment.id)
         .select()
