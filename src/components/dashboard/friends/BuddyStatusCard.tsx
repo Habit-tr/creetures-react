@@ -1,4 +1,5 @@
 import { Avatar, Flex, Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import ReactionsToggle from "./ReactionsToggle";
 
 const BuddyStatusCard = ({ commitment }: any) => {
@@ -11,12 +12,14 @@ const BuddyStatusCard = ({ commitment }: any) => {
       padding="5px"
     >
       <Flex width="30%">
-        <Avatar
-          height="35px"
-          width="35px"
-          bgColor="purple.100"
-          src={commitment.profile.avatar_url}
-        />
+        <Link to={`/profile/${commitment.profile.id}`}>
+          <Avatar
+            height="35px"
+            width="35px"
+            bgColor="purple.100"
+            src={commitment.profile.avatar_url}
+          />
+        </Link>
       </Flex>
       <Text width="40%">
         {commitment.profile.username}, {commitment.id}{" "}

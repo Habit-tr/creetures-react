@@ -1,16 +1,8 @@
-import {
-  Avatar,
-  Card,
-  Center,
-  Flex,
-  Heading,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Avatar, Card, Center, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
-import EditProfile from "./EditProfile";
 import ReactionBadgeCard from "./ReactionBadgeCard";
 import {
   fetchSingleProfileAsync,
@@ -23,7 +15,6 @@ const BuddyProfile = () => {
   const [earnedReactions, setEarnedReactions] = useState<any>([]);
   const [redeemedRewards, setRedeemedRewards] = useState<any>([]);
   const [givenReactions, setGivenReactions] = useState<any>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectSingleProfile);
@@ -110,7 +101,6 @@ const BuddyProfile = () => {
             <ReactionBadgeCard key={badge.id} badge={badge} />
           ))}
       </Flex>
-      <EditProfile user={currentUser} isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };
