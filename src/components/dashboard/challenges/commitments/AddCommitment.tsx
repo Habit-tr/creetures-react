@@ -23,23 +23,20 @@ import {
   fetchAllRewardsAsync,
   selectRewards,
 } from "../../profile/allRewardsSlice";
+import { postSharedUsersAsync } from "../../profile/friends/sharedUsersSlice";
 import { postNewCommitmentAsync } from "./allCommitmentsSlice";
-import { postSharedUsersAsync } from '../../profile/sharedUsersSlice';
 
 interface AddCommitmentProps {
   isOpen: boolean;
   onClose: () => void;
   challenge: Database["public"]["Tables"]["challenges"]["Insert"];
-};
+}
 
-const AddCommitment = ({
-  isOpen,
-  onClose,
-  challenge,
-}: AddCommitmentProps) => {
+const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const dispatch = useAppDispatch();
   const { session } = useAuth();
   const user = session.session.user;
+  const rewards = useAppSelector(selectRewards);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,8 +44,6 @@ const AddCommitment = ({
     };
     fetchData();
   }, [dispatch]);
-
-  const rewards = useAppSelector(selectRewards);
 
   const nullReward = {
     created_at: null,
@@ -159,13 +154,14 @@ const AddCommitment = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {challenge && challenge.name
-          ? <ModalHeader bgColor='green.200'>
+        {challenge && challenge.name 
+          ? <ModalHeader bgColor="green.200">
               Commit to {challenge.name.toUpperCase()} Challenge
             </ModalHeader>
-          : <ModalHeader bgColor='green.200'>
+          : <ModalHeader bgColor="green.200">
               Commit to this challenge
-            </ModalHeader>}
+            </ModalHeader>
+        }
         <ModalCloseButton />
         <ModalBody>
           <Text mt="20px" mb="20px">
@@ -218,9 +214,9 @@ const AddCommitment = ({
         </ModalBody>
         <ModalFooter>
           <Button
-            isDisabled={!days || !timeframe}
             bgColor="green.200"
             mr={3}
+            isDisabled={!days || !timeframe}
             onClick={handleSubmit}
           >
             Commit to Challenge

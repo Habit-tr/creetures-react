@@ -5,7 +5,6 @@ interface RenderMedalProps {
 }
 
 const RenderMedal = ({ level }: RenderMedalProps) => {
-
   let color = "tan";
   let gradientColor = "brown";
   if (level > 4) {
@@ -21,8 +20,7 @@ const RenderMedal = ({ level }: RenderMedalProps) => {
     <>
       <Flex>
         <Card
-          border="1px white solid"
-          outline="2px black solid"
+          border="2px white solid"
           height="40px"
           width="40px"
           rounded="100%"

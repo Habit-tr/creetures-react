@@ -3,21 +3,23 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../utils/reduxHooks';
 import { fetchAllCommitmentsAsync, selectCommitments } from './allCommitmentsSlice';
 import CommitmentCard from './CommitmentCard';
+import { useAuth } from '../../../../context/AuthContext';
 
 const AllCommitments = () => {
   const dispatch = useAppDispatch();
   const commitments = useAppSelector(selectCommitments);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        dispatch(fetchAllCommitmentsAsync());
+        await dispatch(fetchAllCommitmentsAsync(currentUser.id));
       } catch (err) {
         console.error(err);
       }
     }
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, currentUser.id]);
 
   if (!commitments || commitments.length === 0) {
     return <Text>You don't have any commitments, go make some!</Text>;

@@ -71,8 +71,6 @@ export const fetchAllReactionsAsync: any = createAsyncThunk(
     }
   )
 
-
-
   interface reactionsState {
     value: {
       commitment_id: number | null;
@@ -96,8 +94,6 @@ export const fetchAllReactionsAsync: any = createAsyncThunk(
       total_nudges: 0,
     },
   };
-
-
 
   const allReactionsSlice = createSlice({
     name: "reactions",
