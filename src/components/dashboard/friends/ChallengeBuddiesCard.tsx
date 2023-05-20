@@ -19,13 +19,7 @@ const ChallengeBuddiesCard = ({ challengeId }: { challengeId: number }) => {
   }, [challengeId]);
 
   return fetchedBuddies && fetchedBuddies.length ? (
-    <Box
-    // margin="0px"
-    // mb="10px"
-    // border="1px black solid"
-    // color="black"
-    // bgGradient="linear(to-b, gray.100, gray.300)"
-    >
+    <Box margin="0px" width="100%">
       <Heading mb="0px" size="md">
         {fetchedBuddies[0].challenge.name.toUpperCase()}
       </Heading>

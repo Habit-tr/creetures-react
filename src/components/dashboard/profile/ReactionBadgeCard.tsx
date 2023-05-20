@@ -28,7 +28,7 @@ const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
       </Center>
       {badge.user_id !== currentUser.id && (
         <Center>
-          <ReactionsToggle commitId={badge.id} />
+          <ReactionsToggle commitId={badge.id} status={badge.is_up_to_date} />
         </Center>
       )}
     </Card>

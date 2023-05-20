@@ -20,12 +20,7 @@ const BuddyProfile = () => {
   const currentUser = useAppSelector(selectSingleProfile);
   useEffect(() => {
     const fetchData = async () => {
-      console.log("buddy id in useEffect: ", buddy_id);
       await dispatch(fetchSingleProfileAsync({ id: buddy_id }));
-      // const { data } = supabase.storage
-      //   .from("profilePictures")
-      //   .getPublicUrl(`${currentUser.id}`);
-      // setCurrentUserUrl(data.publicUrl);
       const { data: myFetchedEarnedReactions } = await supabase
         .from("reactions")
         .select(`*, commitments!inner (id)`)
