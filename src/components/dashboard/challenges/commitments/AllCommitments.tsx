@@ -13,8 +13,7 @@ const AllCommitments = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        console.log("currentUser.id: ", currentUser.id);
-        dispatch(fetchAllCommitmentsAsync(currentUser.id));
+        await dispatch(fetchAllCommitmentsAsync(currentUser.id));
       } catch (err) {
         console.error(err);
       }

@@ -36,6 +36,7 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const dispatch = useAppDispatch();
   const { session } = useAuth();
   const user = session.session.user;
+  const rewards = useAppSelector(selectRewards);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +44,6 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
     };
     fetchData();
   }, [dispatch]);
-
-  const rewards = useAppSelector(selectRewards);
 
   const nullReward = {
     created_at: null,
@@ -155,15 +154,14 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {challenge && challenge.name ? (
-          <ModalHeader bgColor="green.200">
-            Commit to {challenge.name.toUpperCase()} Challenge
-          </ModalHeader>
-        ) : (
-          <ModalHeader bgColor="green.200">
-            Commit to this challenge
-          </ModalHeader>
-        )}
+        {challenge && challenge.name 
+          ? <ModalHeader bgColor="green.200">
+              Commit to {challenge.name.toUpperCase()} Challenge
+            </ModalHeader>
+          : <ModalHeader bgColor="green.200">
+              Commit to this challenge
+            </ModalHeader>
+        }
         <ModalCloseButton />
         <ModalBody>
           <Text mt="20px" mb="20px">
@@ -216,9 +214,9 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
         </ModalBody>
         <ModalFooter>
           <Button
-            isDisabled={!days || !timeframe}
             bgColor="green.200"
             mr={3}
+            isDisabled={!days || !timeframe}
             onClick={handleSubmit}
           >
             Commit to Challenge
