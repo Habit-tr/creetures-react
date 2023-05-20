@@ -1,15 +1,19 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
-import { Database } from '../../../utils/supabaseTypes';
-import { useAuth } from '../../../context/AuthContext';
-import { fetchAllCommitmentsAsync, selectCommitments } from '../challenges/commitments/allCommitmentsSlice';
-import ChallengeBuddiesCard from './ChallengeBuddiesCard';
+import { useEffect } from "react";
+import { useAuth } from "../../../context/AuthContext";
+import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
+import { Database } from "../../../utils/supabaseTypes";
+import {
+  fetchAllCommitmentsAsync,
+  selectCommitments,
+} from "../challenges/commitments/allCommitmentsSlice";
+import ChallengeBuddiesCard from "./ChallengeBuddiesCard";
 
 const FriendsSidebar = () => {
   const dispatch = useAppDispatch();
   const { currentUser } = useAuth();
-  let commitments: Database["public"]["Tables"]["commitments"]["Row"][] = useAppSelector(selectCommitments);
+  let commitments: Database["public"]["Tables"]["commitments"]["Row"][] =
+    useAppSelector(selectCommitments);
 
   useEffect(() => {
     async function fetchData() {
@@ -47,15 +51,18 @@ const FriendsSidebar = () => {
       <Text mb="10px">Jack high-fived Simin!</Text>
       <Text mb="10px">Danny committed to a new challenge!</Text>
       <Reaction /> */}
-      {commitments && commitments.length
-        ? commitments.map(commitment => (
+      {commitments && commitments.length ? (
+        commitments.map((commitment) => (
           <ChallengeBuddiesCard
             key={commitment.id}
             challengeId={commitment.challenge_id}
           />
         ))
-        : <Text>No buddies yet. Join some challenges and connect with other Creetures!</Text>
-      }
+      ) : (
+        <Text>
+          No buddies yet. Join some challenges and connect with other Creetures!
+        </Text>
+      )}
     </Box>
   );
 };
