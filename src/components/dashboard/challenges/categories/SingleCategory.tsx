@@ -20,7 +20,6 @@ const SingleCategory = () => {
   // setCategoryChallenges(category.challenges);
 
   useEffect(() => {
-    console.log("fetching a single category and its challenges");
     const fetchCategoryData = async (id: number) => {
       const fetchedCategoryData = await dispatch(fetchSingleCategoryAsync(id));
       return fetchedCategoryData;

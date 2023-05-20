@@ -24,7 +24,6 @@ const AllRewards = () => {
         <Flex direction="row" maxW="900px" wrap="wrap">
           {rewards.map((reward) => (
             <>
-              <pre>{JSON.stringify(reward, null, 2)}</pre>;
               <Button bgColor="purple.200" onClick={onOpen}>
                 <Link to={`/reward/${reward.id}`}>View reward</Link>
               </Button>

@@ -111,8 +111,6 @@ export default ChallengeCard;
 //           <Text fontSize="sm">Description: {challenge.description}</Text>
 //           <Text fontSize="sm">Category: {category?.name?.toUpperCase()}</Text>
 //           <Text fontSize="sm">Committed Users: ( ) ( ) ( )</Text>
-//           <pre>{JSON.stringify(challenge, null, 2)}</pre>
-//           <pre>{JSON.stringify(sharedUsers, null, 2)}</pre>
 //           {/* <Text fontSize="sm">Success Rate: tbd</Text> */}
 //           {/* don't show commitment button if already committed? make it say view Commitment? */}
 //           <Box mt="10px">

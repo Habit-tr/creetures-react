@@ -61,7 +61,6 @@ export const postSharedUsersAsync: any = createAsyncThunk(
           user_id,
         })
         .select();
-      console.log("data: ", data);
       return data;
     } catch (err) {
       console.error(err);

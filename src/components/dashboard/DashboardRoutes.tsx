@@ -10,12 +10,12 @@ import SingleCommitment from "./challenges/commitments/SingleCommitment";
 import NavBar from "./components/NavBar";
 import Footer from "./footer/Footer";
 import FriendsSidebar from "./friends/FriendsSidebar";
+import BuddyProfile from "./profile/BuddyProfile";
 import CycleTest from "./profile/CycleTest";
 import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
 import Friends from "./profile/friends/Friends";
-import BuddyProfile from "./profile/BuddyProfile";
 
 const DashboardRoutes = () => {
   return (
@@ -26,7 +26,7 @@ const DashboardRoutes = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/cycle/:day" element={<CycleTest />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:id" element={<BuddyProfile />} />
+          <Route path="/profile/:buddy_id" element={<BuddyProfile />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/buddy" element={<FriendsSidebar />} />
           <Route path="/commitments" element={<AllCommitments />} />

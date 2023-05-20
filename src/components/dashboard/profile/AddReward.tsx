@@ -79,7 +79,6 @@ const AddReward = ({ isOpen, onClose, reward }: AddRewardProps) => {
         </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {JSON.stringify(user.id)}
             <Box>
               Name: {" "}
               <Input

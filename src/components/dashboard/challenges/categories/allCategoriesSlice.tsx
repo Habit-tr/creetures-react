@@ -25,7 +25,6 @@ export const postNewCategoryAsync: any = createAsyncThunk(
         .from("categories")
         .insert([{ name: categoryName }])
         .select();
-      console.log("data returned: ", data);
       return data;
     } catch (error) {
       return error;
@@ -46,7 +45,6 @@ export const deleteCategoryAsync: any = createAsyncThunk(
         .delete()
         .eq("id", id)
         .select();
-      console.log("returned from delete request: ", data);
       return data;
     } catch (error) {
       return error;
