@@ -23,6 +23,8 @@ import {
   fetchSingleChallengeAsync,
   selectChallenge,
 } from "./singleChallengeSlice";
+import { fetchCommitmentChallengeIdsAsync, selectCommitmentChallengeIds } from './commitments/addCommitmentSlice';
+import { useAuth } from '../../../context/AuthContext';
 // import { Database } from "../../../utils/supabaseTypes";
 
 const SingleChallenge = () => {
@@ -41,8 +43,11 @@ const SingleChallenge = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { urlId } = useParams();
+  const { currentUser } = useAuth();
   const fetchedChallenge = useAppSelector(selectChallenge);
   const fetchedSharedUsers = useAppSelector(selectSharedUsers);
+  const fetchedChallengeIds = useAppSelector(selectCommitmentChallengeIds);
+  const challengeIds = fetchedChallengeIds.map(challenge => challenge.challenge_id);
 
   useEffect(() => {
     const id = urlId;
@@ -61,6 +66,17 @@ const SingleChallenge = () => {
     setChallenge(fetchedChallenge);
     // setSharedUsers(fetchedSharedUsers)
   }, [fetchedChallenge]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        await dispatch(fetchCommitmentChallengeIdsAsync(currentUser.id));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchData();
+  }, [dispatch, currentUser.id]);
 
   const handleDelete = async (id: number | string) => {
     await dispatch(deleteChallengeAsync({ id }));
@@ -115,7 +131,12 @@ const SingleChallenge = () => {
             <Text>No one has committed to this challenge.</Text>
           )}
         </Flex>
-        <Button margin="10px" bgColor="green.200" onClick={onCommitOpen}>
+        <Button
+          m="10px"
+          bgColor="green.200"
+          isDisabled={challengeIds.includes(challenge.id)}
+          onClick={onCommitOpen}
+        >
           Commit
         </Button>
         <Button margin="10px" bgColor="orange.200" onClick={onEditOpen}>
