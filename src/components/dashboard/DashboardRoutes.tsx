@@ -9,7 +9,7 @@ import AllCommitments from "./challenges/commitments/AllCommitments";
 import SingleCommitment from "./challenges/commitments/SingleCommitment";
 import NavBar from "./components/NavBar";
 import Footer from "./footer/Footer";
-import TestFriendsSidebar from "./friends/TestFriendsSidebar";
+import FriendsSidebar from "./friends/FriendsSidebar";
 import CycleTest from "./profile/CycleTest";
 import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
@@ -26,7 +26,7 @@ const DashboardRoutes = () => {
           <Route path="/cycle/:day" element={<CycleTest />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/friends" element={<Friends />} />
-          <Route path="/buddy" element={<TestFriendsSidebar />} />
+          <Route path="/buddy" element={<FriendsSidebar />} />
           <Route path="/commitments" element={<AllCommitments />} />
           <Route path="/commitments/:id" element={<SingleCommitment />} />
           <Route path="/rewards" element={<Rewards />} />

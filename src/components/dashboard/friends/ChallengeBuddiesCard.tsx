@@ -1,7 +1,7 @@
-import { Card, CardBody, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import supabase from "../../../utils/supabaseClient";
-import TestStatusCard from "./TestStatusCard";
+import BuddyStatusCard from "./BuddyStatusCard";
 
 const ChallengeBuddiesCard = ({ challengeId }: { challengeId: number }) => {
   const [fetchedBuddies, setFetchedBuddies] = useState<any>({});
@@ -20,22 +20,22 @@ const ChallengeBuddiesCard = ({ challengeId }: { challengeId: number }) => {
   }, [challengeId]);
 
   return fetchedBuddies && fetchedBuddies.length ? (
-    <Card
-      margin="10px"
-      w="90%"
-      border="1px black solid"
-      color="black"
-      bgGradient="linear(to-b, gray.100, gray.300)"
+    <Box
+    // margin="0px"
+    // mb="10px"
+    // border="1px black solid"
+    // color="black"
+    // bgGradient="linear(to-b, gray.100, gray.300)"
     >
-      <CardBody>
-        <Heading mb="0px" size="md">
-          {fetchedBuddies[0].challenge.name.toUpperCase()}
-        </Heading>
+      <Heading mb="0px" size="md">
+        {fetchedBuddies[0].challenge.name.toUpperCase()}
+      </Heading>
+      <Flex direction="column">
         {fetchedBuddies.map((buddy: any) => (
-          <TestStatusCard key={buddy.user_id} commitment={buddy} />
+          <BuddyStatusCard key={buddy.user_id} commitment={buddy} />
         ))}
-      </CardBody>
-    </Card>
+      </Flex>
+    </Box>
   ) : null;
 };
 
