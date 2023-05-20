@@ -17,7 +17,6 @@ const CycleTest = () => {
         .select(`*`);
       // .filter("frequency", "cs", day); // Use `cs` for `contains()`, `{}` for array values
       // .match({ id: id })
-      console.log(fetchedCommitments);
       return fetchedCommitments;
     };
     setCommitments(updateCommitments());

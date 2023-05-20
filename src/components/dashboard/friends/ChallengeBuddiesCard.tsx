@@ -14,7 +14,6 @@ const ChallengeBuddiesCard = ({ challengeId }: { challengeId: number }) => {
         .eq("challenge_id", challengeId)
         .eq("is_active", true);
       setFetchedBuddies(commitments);
-      console.log(commitments);
     };
     fetchBuddies();
   }, [challengeId]);

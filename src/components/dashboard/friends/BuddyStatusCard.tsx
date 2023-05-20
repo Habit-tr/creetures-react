@@ -20,9 +20,7 @@ const BuddyStatusCard = ({ commitment }: any) => {
       </Flex>
       <Text width="40%">
         {commitment.profile.username}, {commitment.id}{" "}
-        {JSON.stringify(commitment.is_up_to_date)}
       </Text>
-      {/* <pre>{JSON.stringify(commitment, null, 2)}</pre> */}
       <Flex width="30%">
         <ReactionsToggle commitId={commitment.id} />
       </Flex>

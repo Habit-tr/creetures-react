@@ -202,7 +202,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        <pre>{JSON.stringify(commitments, null, 2)}</pre>
       </Box>
     </>
   );

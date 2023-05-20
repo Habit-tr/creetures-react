@@ -34,7 +34,6 @@ const Profile = () => {
       const { data } = supabase.storage
         .from("profilePictures")
         .getPublicUrl(`${currentUser.id}`);
-      console.log("setting currentUser");
       setCurrentUserUrl(data.publicUrl);
       dispatch(fetchSingleProfileAsync({ id: currentUser.id }));
       const { data: myFetchedEarnedReactions } = await supabase
@@ -122,7 +121,6 @@ const Profile = () => {
           </Center>
         </Card>
       </Flex>
-      {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
       <Flex
         direction="row"
         wrap="wrap"
@@ -176,7 +174,6 @@ const Profile = () => {
         </Tbody>
       </Table> */}
 
-      {/* <pre>{JSON.stringify(profileData, null, 2)}</pre> */}
       <EditProfile user={currentUser} isOpen={isOpen} onClose={onClose} />
     </div>
   );

@@ -30,7 +30,6 @@ const EditProfile = ({ user, isOpen, onClose }: EditProfileProps) => {
     const { data } = supabase.storage
       .from("profilePictures")
       .getPublicUrl(`${currentUser.id}`);
-    console.log("setting currentUser");
     setCurrentUserUrl(data.publicUrl);
   }, [currentUser.id]);
 

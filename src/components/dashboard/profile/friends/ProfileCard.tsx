@@ -17,8 +17,6 @@ interface ProfileProps {
 
 const ProfileCard = ({ profile }: ProfileProps) => {
   const { id, username, avatar_url, full_name } = profile;
-  console.log(avatar_url);
-  console.log(full_name);
   return (
     <Card
       direction={{ base: "column", sm: "row" }}

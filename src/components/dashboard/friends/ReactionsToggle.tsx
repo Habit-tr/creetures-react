@@ -14,7 +14,6 @@ const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
 
   const { currentUser } = useAuth();
   useEffect(() => {
-    console.log("fetch reactions");
     const fetchReactions = async () => {
       let { data: fetchedReactions } = await supabase
         .from("reactions")
@@ -52,7 +51,6 @@ const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
         .eq("user_id", currentUser.id)
         .eq("commitment_id", reactions[0].commitment_id)
         .select();
-      console.log("updated reaction = ", updatedReaction);
       setIsClicked(newClickedState);
     } else {
       const { data } = await supabase
@@ -66,7 +64,6 @@ const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
           },
         ])
         .select();
-      console.log("added reaction = ", data);
       setIsClicked(true);
       setReactions([...reactions, data]);
     }
@@ -105,7 +102,6 @@ const ReactionsToggle = ({ commitId }: ReactionsToggleProps) => {
             ).length}
         </Text>
       )}
-      {/* <pre>{JSON.stringify(reactions, null, 2)}</pre> */}
     </>
   );
 };
