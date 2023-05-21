@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -10,14 +10,17 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
-import Reaction from "../../profile/AllReactions";
-import RenderMedal from "../RenderMedal";
-import EditCommitment from "./EditCommitment";
-import { deleteCommitmentAsync } from "./allCommitmentsSlice";
+import supabase from "../../../../utils/supabaseClient";
 import {
   fetchSingleCommitmentAsync,
   selectCommitment,
 } from "./singleCommitmentSlice";
+import { deleteCommitmentAsync } from "./allCommitmentsSlice";
+import Reaction from "../../profile/AllReactions";
+import RenderMedal from "../RenderMedal";
+import EditCommitment from "./EditCommitment";
+import PauseAlert from "./PauseAlert";
+import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
 
 const SingleCommitment = () => {
   const dispatch = useAppDispatch();
@@ -48,10 +51,11 @@ const SingleCommitment = () => {
     challenge,
     frequency,
     goals,
+    is_active,
     is_up_to_date,
     reward,
     timeframe,
-  } = commitment;
+  } = commitment || {};
 
   const dayFrequency = (frequency: string) => {
     const days: string[] = [];
@@ -91,7 +95,43 @@ const SingleCommitment = () => {
     } else if (timeframe === "4") {
       return <Text>Time of day: Night (8pm-4am)</Text>;
     }
-  }
+  };
+
+  const togglePause = async () => {
+    try {
+      const { data } = await supabase
+        .from("commitments")
+        .update({ is_active: !commitment.is_active })
+        .eq("id", commitment.id)
+        .select();
+      return data;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };  
+
+  const handleTogglePause = async () => {
+    try {
+      await togglePause();
+      if (is_active) {
+        toast({
+          title: "Paused commitment.",
+        });
+      } else {
+        toast({
+          title: "Recommitted to challenge.",
+        });
+      }
+      navigate("/commitments");
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "An error occurred while pausing the commitment.",
+        status: "error",
+      });
+    }
+  };
 
   const handleDelete = async (id: number) => {
     await dispatch(deleteCommitmentAsync(id));
@@ -126,17 +166,27 @@ const SingleCommitment = () => {
         }
         <br />
         <Box>
-          <Button margin="10px" bgColor="orange.200" onClick={onOpen}>
+          <Button 
+            m="10px"
+            bgColor="orange.200"
+            isDisabled={!is_active}
+            onClick={onOpen}
+          >
             <EditIcon />
           </Button>
-          <Button
-            margin="10px"
-            bgColor="red.200"
-            onClick={() => handleDelete(commitment.id)}
-          >
-            <DeleteIcon />
-          </Button>
+          {is_active
+            ? <PauseAlert onPause={handleTogglePause} />
+            : <Button
+                m="10px"
+                bgColor="green.200"
+                onClick={handleTogglePause}
+              >
+                Recommit
+              </Button>
+          }
+          <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} />
         </Box>
+        {/* Should add reactions for just this commitment */}
         <Reaction />
         <EditCommitment
           isOpen={isOpen}
