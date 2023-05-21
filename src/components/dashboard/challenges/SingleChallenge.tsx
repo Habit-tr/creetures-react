@@ -55,11 +55,17 @@ const SingleChallenge = () => {
 
   useEffect(() => {
     const fetchSharedUsers = async () => {
-      const { data } = await supabase
-        .from("commitments")
-        .select("*, challenge: challenges(name), profile: profiles(*)")
-        .match({ challenge_id: challenge.id, is_active: true });
-      setSharedUsers(data);
+      try {
+        if (challenge.id) {
+          const { data } = await supabase
+            .from("commitments")
+            .select("*, challenge: challenges(name), profile: profiles(*)")
+            .match({ challenge_id: challenge.id, is_active: true });
+          setSharedUsers(data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     };
     fetchSharedUsers();
   }, [challenge.id]);
