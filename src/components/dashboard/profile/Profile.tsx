@@ -55,7 +55,7 @@ const Profile = () => {
       setRedeemedRewards(fetchedRewards);
     };
     fetchData();
-  }, [dispatch, currentUser.id]);
+  }, [dispatch, currentUser.id, isOpen]);
 
   const profileData = useAppSelector(selectSingleProfile);
   return (
@@ -174,7 +174,12 @@ const Profile = () => {
         </Tbody>
       </Table> */}
 
-      <EditProfile user={currentUser} isOpen={isOpen} onClose={onClose} />
+      <EditProfile
+        user={currentUser}
+        profileData={profileData}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </div>
   );
 };
