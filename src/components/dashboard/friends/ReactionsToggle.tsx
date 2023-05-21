@@ -11,6 +11,7 @@ interface ReactionsToggleProps {
 const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
   const [reactions, setReactions] = useState<any>({});
   const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [toggled, setToggled] = useState<number>(0);
   // const [totalReactions, setTotalReactions] = useState<number>(0); //use length to set
 
   const { currentUser } = useAuth();
@@ -26,7 +27,30 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
       setReactions(fetchedReactions);
     };
     fetchReactions();
-  }, [commitId]);
+  }, [commitId, toggled, currentUser.id]);
+
+  // useEffect(() => {
+  //   if (reactions && reactions.length) {
+  //     console.log(
+  //       reactions.filter(
+  //         (reaction: any) =>
+  //           (reaction.commitment_id =
+  //             commitId &&
+  //             reaction.is_archived === false &&
+  //             reaction.user_id === currentUser.id),
+  //       ).length > 0,
+  //     );
+  //   }
+  // if (fetchedReactions) {
+  //   setIsClicked(
+  //     fetchedReactions.filter(
+  //       (reaction: any) =>
+  //         reaction.user_id === currentUser.id &&
+  //         reaction.is_archived === false,
+  //     ).length > 0,
+  //   );
+  // }
+  // }, [commitId, currentUser.id, reactions]);
 
   // const userHasClicked =
   //   reactions.filter(
@@ -35,25 +59,30 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
   //   ).length > 0;
   // setIsClicked(userHasClicked);
 
-  useEffect(() => {}, [currentUser.id, reactions]);
-
   const handleClick = async (reactionType: string) => {
     const alreadyReacted =
-      reactions.filter((reaction: any) => reaction.user_id === currentUser.id)
-        .length > 0;
+      reactions.filter(
+        (reaction: any) =>
+          reaction.user_id === currentUser.id && reaction.is_archived === false,
+      ).length > 0;
     if (alreadyReacted) {
       const myReaction = reactions.filter(
         (reaction: any) => reaction.user_id === currentUser.id,
       )[0];
-      const newClickedState = !myReaction.is_clicked;
+      const newClickedState = !myReaction.is_clicked; //this toggles the new clicked status to the opposite of its current status
+      //update existing not-archived reaction
       const { data: updatedReaction } = await supabase
         .from("reactions")
         .update({ is_clicked: newClickedState })
         .eq("user_id", currentUser.id)
-        .eq("commitment_id", reactions[0].commitment_id)
+        .eq("commitment_id", commitId)
+        .eq("is_archived", false)
         .select();
+      console.log(updatedReaction);
+      setToggled(toggled + 1); //this refreshes the page
       setIsClicked(newClickedState);
     } else {
+      //there isn't an existing reaction, so create a new one
       const { data } = await supabase
         .from("reactions")
         .insert([
@@ -62,11 +91,13 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
             commitment_id: commitId,
             type: reactionType,
             is_clicked: true,
+            is_archived: false,
           },
         ])
         .select();
+      setToggled(toggled + 1);
       setIsClicked(true);
-      setReactions([...reactions, data]);
+      setReactions([...reactions, data]); //push the new reaction into the reactions array
     }
   };
   // console.log("reactions for commitId ", commitId, ": ", reactions);
@@ -80,7 +111,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
             onClick={() => handleClick("highfive")}
             p="4px"
           >
-            🙌{" "}
+            {isClicked ? `🙌🏾` : `🙌🏻`}{" "}
             {reactions &&
               reactions.length &&
               reactions.filter(
@@ -97,7 +128,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
             bgColor="white"
             p="4px"
           >
-            👉{" "}
+            {isClicked ? `👈🏾` : `👈🏻`}{" "}
             {reactions &&
               reactions.length &&
               reactions.filter(

@@ -16,7 +16,7 @@ export const fetchAllEarnedRewardsAsync = createAsyncThunk(
       const { data } = await supabase
         .from("earned_rewards")
         .select("*, rewards (name, description)");
-        console.log('all earned rewards: ', data);
+        // console.log('all earned rewards: ', data);
       return data;
     } catch (err) {
       console.error(err);
@@ -108,7 +108,7 @@ export const updateEarnedRewardAsync = createAsyncThunk(
       }
 
       if (fetchdata) {
-        console.log(fetchdata);
+        // console.log(fetchdata);
         return fetchdata;
       } else {
         console.error('Data is null');
