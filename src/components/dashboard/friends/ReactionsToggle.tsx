@@ -9,7 +9,7 @@ interface ReactionsToggleProps {
 }
 
 const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
-  const [reactions, setReactions] = useState<any>({});
+  const [reactions, setReactions] = useState<any>([]);
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const [toggled, setToggled] = useState<number>(0);
 
@@ -55,7 +55,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
         .eq("commitment_id", commitId)
         .eq("is_archived", false)
         .select();
-      console.log(updatedReaction);
+      // console.log(updatedReaction);
       setToggled(toggled + 1); //this refreshes the page
       setIsClicked(newClickedState);
     } else {
@@ -77,12 +77,29 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
       setReactions([...reactions, data]); //push the new reaction into the reactions array
     }
   };
+
+  const renderTooltipList = (reactions: any, type: string) => {
+    const reactors = reactions
+      .filter(
+        (reaction: any) =>
+          reaction.type === type &&
+          reaction.is_archived === false &&
+          reaction.is_clicked === true,
+      )
+      .map((reaction: any) => reaction.reactor.username);
+    return reactors.join(", ");
+  };
+
   // console.log("reactions for commitId ", commitId, ": ", reactions);
   return (
     <Box width="60px">
       <Center bgColor="white">
         {status ? (
-          <Tooltip label="highfive" openDelay={500} aria-label="highfive">
+          <Tooltip
+            label={renderTooltipList(reactions, "highfive")}
+            openDelay={500}
+            aria-label="highfive"
+          >
             <Text
               cursor="pointer"
               bgColor="white"
@@ -99,7 +116,11 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
             </Text>
           </Tooltip>
         ) : (
-          <Tooltip label="nudge" openDelay={500} aria-label="nudge">
+          <Tooltip
+            label={renderTooltipList(reactions, "nudge")}
+            openDelay={500}
+            aria-label="nudge"
+          >
             <Text
               cursor="pointer"
               onClick={() => handleClick("nudge")}
