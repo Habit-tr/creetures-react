@@ -1,4 +1,4 @@
-import { Box, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Center, Text, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import supabase from "../../../utils/supabaseClient";
@@ -12,7 +12,6 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
   const [reactions, setReactions] = useState<any>({});
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const [toggled, setToggled] = useState<number>(0);
-  // const [totalReactions, setTotalReactions] = useState<number>(0); //use length to set
 
   const { currentUser } = useAuth();
   useEffect(() => {
@@ -25,39 +24,17 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
         .eq("commitment_id", commitId)
         .eq("is_archived", false);
       setReactions(fetchedReactions);
+      let { data: myClickedReactions } = await supabase
+        .from("reactions")
+        .select(`*`)
+        .eq("commitment_id", commitId)
+        .eq("user_id", currentUser.id)
+        .eq("is_archived", false)
+        .eq("is_clicked", true);
+      setIsClicked(myClickedReactions ? myClickedReactions.length > 0 : false);
     };
     fetchReactions();
   }, [commitId, toggled, currentUser.id]);
-
-  // useEffect(() => {
-  //   if (reactions && reactions.length) {
-  //     console.log(
-  //       reactions.filter(
-  //         (reaction: any) =>
-  //           (reaction.commitment_id =
-  //             commitId &&
-  //             reaction.is_archived === false &&
-  //             reaction.user_id === currentUser.id),
-  //       ).length > 0,
-  //     );
-  //   }
-  // if (fetchedReactions) {
-  //   setIsClicked(
-  //     fetchedReactions.filter(
-  //       (reaction: any) =>
-  //         reaction.user_id === currentUser.id &&
-  //         reaction.is_archived === false,
-  //     ).length > 0,
-  //   );
-  // }
-  // }, [commitId, currentUser.id, reactions]);
-
-  // const userHasClicked =
-  //   reactions.filter(
-  //     (reaction: any) =>
-  //       reaction.user_id === currentUser.id && reaction.is_clicked === true,
-  //   ).length > 0;
-  // setIsClicked(userHasClicked);
 
   const handleClick = async (reactionType: string) => {
     const alreadyReacted =
@@ -102,42 +79,44 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
   };
   // console.log("reactions for commitId ", commitId, ": ", reactions);
   return (
-    <Box>
-      {status ? (
-        <Tooltip label="highfive" openDelay={500} aria-label="highfive">
-          <Text
-            cursor="pointer"
-            bgColor="white"
-            onClick={() => handleClick("highfive")}
-            p="4px"
-          >
-            {isClicked ? `🙌🏾` : `🙌🏻`}{" "}
-            {reactions &&
-              reactions.length &&
-              reactions.filter(
-                (reaction: any) =>
-                  reaction.type === "highfive" && reaction.is_clicked,
-              ).length}
-          </Text>
-        </Tooltip>
-      ) : (
-        <Tooltip label="nudge" openDelay={500} aria-label="nudge">
-          <Text
-            cursor="pointer"
-            onClick={() => handleClick("nudge")}
-            bgColor="white"
-            p="4px"
-          >
-            {isClicked ? `👈🏾` : `👈🏻`}{" "}
-            {reactions &&
-              reactions.length &&
-              reactions.filter(
-                (reaction: any) =>
-                  reaction.type === "nudge" && reaction.is_clicked,
-              ).length}
-          </Text>
-        </Tooltip>
-      )}
+    <Box width="60px">
+      <Center bgColor="white">
+        {status ? (
+          <Tooltip label="highfive" openDelay={500} aria-label="highfive">
+            <Text
+              cursor="pointer"
+              bgColor="white"
+              onClick={() => handleClick("highfive")}
+              p="4px"
+            >
+              {isClicked ? `🙌🏾` : `🙌🏻`}{" "}
+              {reactions &&
+                reactions.length &&
+                reactions.filter(
+                  (reaction: any) =>
+                    reaction.type === "highfive" && reaction.is_clicked,
+                ).length}
+            </Text>
+          </Tooltip>
+        ) : (
+          <Tooltip label="nudge" openDelay={500} aria-label="nudge">
+            <Text
+              cursor="pointer"
+              onClick={() => handleClick("nudge")}
+              bgColor="white"
+              p="4px"
+            >
+              {isClicked ? `👈🏾` : `👈🏻`}{" "}
+              {reactions &&
+                reactions.length &&
+                reactions.filter(
+                  (reaction: any) =>
+                    reaction.type === "nudge" && reaction.is_clicked,
+                ).length}
+            </Text>
+          </Tooltip>
+        )}
+      </Center>
     </Box>
   );
 };
