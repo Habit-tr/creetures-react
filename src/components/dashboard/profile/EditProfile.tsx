@@ -32,23 +32,30 @@ const EditProfile = ({
 }: EditProfileProps) => {
   const [file, setFile] = useState<any>({});
   const [currentUserUrl, setCurrentUserUrl] = useState("");
-  const [username, setUsername] = useState(user.username);
-  const [fullName, setFullName] = useState(user.username);
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [url, setUrl] = useState<any>("");
   const { currentUser } = useAuth();
   const toast = useToast();
   useEffect(() => {
     const { data } = supabase.storage
       .from("profilePictures")
       .getPublicUrl(`${currentUser.id}`);
-    console.log("setting currentUser");
+    // console.log("setting currentUser");
     setCurrentUserUrl(data.publicUrl);
     setUsername(profileData.username);
     setFullName(profileData.full_name);
-  }, [profileData.username, profileData.full_name, currentUser.id]);
+    setUrl(profileData.avatar_url);
+  }, [
+    profileData.username,
+    profileData.full_name,
+    profileData.avatar_url,
+    currentUser.id,
+  ]);
 
   const handleFileSelected = (e: any) => {
     try {
-      console.log(e.target.files[0]);
+      // console.log(e.target.files[0]);
       setFile(e.target.files[0]);
     } catch (err) {
       console.log(err);
@@ -57,38 +64,45 @@ const EditProfile = ({
 
   const handleEdit = async () => {
     // //the first block handles uploading the avatar file to storage if necessary
-    // const filename = `${currentUser.id}`;
-    // let filepath;
+    if (file.name) {
+      try {
+        const filename = `${currentUser.id}`;
+        const { data, error } = await supabase.storage
+          .from("profilePictures")
+          .upload(filename, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+        setUrl(data?.path); // store filepath to save in database
+        // console.log("retreived url is: ", url);
+      } catch (error) {
+        toast({
+          title: "There was an error updating your avatar.",
+        });
+        console.log(error);
+      }
+    }
+    //this block builds the updated profile object
+    // const updatedProfile = {
+    //   username: username,
+    //   full_name: fullName,
+    //   avatar_url: profileData.avatar_url,
+    // };
+    //   //if a file was uploaded and successfully returned, update the avatar_url
+    //   if (filepath) {
+    //     updatedProfile.avatar_url = filepath;
+    //   }
+    //now submit the update request to supabase
     try {
-      //   if (file.name) {
-      //     const { data } = await supabase.storage
-      //       .from("profilePictures")
-      //       .upload(filename, file, {
-      //         cacheControl: "3600",
-      //         upsert: false,
-      //       });
-      //     filepath = data?.path; // store filepath to save in database
-      //   }
-      //this block builds the updated profile object
-      // const updatedProfile = {
-      //   username: username,
-      //   full_name: fullName,
-      //   avatar_url: profileData.avatar_url,
-      // };
-      //   //if a file was uploaded and successfully returned, update the avatar_url
-      //   if (filepath) {
-      //     updatedProfile.avatar_url = filepath;
-      //   }
-      //now submit the update request to supabase
       const { data: returnedProfile } = await supabase
         .from("profiles")
-        .update({ username: username, full_name: fullName })
+        .update({ username: username, full_name: fullName, avatar_url: url })
         .eq("id", profileData.id)
         .select();
       toast({
         title: "Profile updated.",
       });
-      console.log(returnedProfile);
+      // console.log(returnedProfile);
       onClose();
     } catch (error) {
       toast({
@@ -135,7 +149,7 @@ const EditProfile = ({
                 onChange={(e) => setFullName(e.target.value)}
               />
             </Box>
-            Update Avatar:
+            Update Avatar (CURRENTLY BUGGY):
             <Flex direction="row">
               <Input
                 type="file"
