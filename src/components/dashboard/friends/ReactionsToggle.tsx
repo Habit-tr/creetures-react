@@ -69,7 +69,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
       setReactions([...reactions, data]);
     }
   };
-  console.log("reactions for commitId ", commitId, ": ", reactions);
+  // console.log("reactions for commitId ", commitId, ": ", reactions);
   return (
     <Box>
       {status ? (

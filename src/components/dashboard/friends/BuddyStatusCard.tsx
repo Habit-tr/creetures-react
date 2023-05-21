@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import ReactionsToggle from "./ReactionsToggle";
 
 const BuddyStatusCard = ({ commitment }: any) => {
-  console.log("commitment in parent is: ", commitment);
   return (
     <Flex
       direction="row"

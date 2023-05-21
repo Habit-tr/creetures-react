@@ -9,7 +9,6 @@ interface ReactionBadgeCardProps {
 
 const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
   const { currentUser } = useAuth();
-  console.log(badge);
   return (
     <Card
       padding="10px"
