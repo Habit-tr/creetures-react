@@ -1,148 +1,76 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { Button, Card, CardBody, Heading, Text } from "@chakra-ui/react";
+import { Avatar, Card, CardBody, Flex, Heading, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import supabase from "../../../utils/supabaseClient";
 import { Challenge, Database } from "../../../utils/supabaseTypes";
 
 interface ChallengeCardProps {
   challenge: Challenge;
-  user: any;
   category?: Database["public"]["Tables"]["categories"]["Row"];
 }
 
-const ChallengeCard = ({ user, challenge, category }: ChallengeCardProps) => {
+const ChallengeCard = ({ challenge, category }: ChallengeCardProps) => {
+  const [sharedUsers, setSharedUsers] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchSharedUsers = async () => {
+      const { data } = await supabase
+        .from("commitments")
+        .select("*, challenge: challenges(name), profile: profiles(*)")
+        .match({ challenge_id: challenge.id, is_active: true });
+      setSharedUsers(data);
+    };
+    fetchSharedUsers();
+  }, [challenge.id]);
+
   return (
-    <Link to={`/challenges/${challenge.id}`}>
-      <Card
-        margin="10px"
-        w="430px"
-        border="2px black solid"
-        color="black"
-        bgGradient="linear(to-b, gray.100, gray.300)"
-      >
-        <CardBody>
-          <Heading mb="0px" size="md">
-            {challenge.name?.toUpperCase()}
-          </Heading>
-          <Text fontSize="sm">Description: {challenge.description}</Text>
-          <Text fontSize="sm">Category: {category?.name?.toUpperCase()}</Text>
-          <Text fontSize="sm">Committed Users: ( ) ( ) ( )</Text>
-          {/* <Text fontSize="sm">Success Rate: tbd</Text> */}
-          {/* don't show commitment button if already committed? make it say view Commitment? */}
-          <Button
-            isDisabled={true}
-            bgColor="white"
-            border="1px black solid"
-            m="10px"
-            >
-            Commit
-          </Button>
-          {user.id === challenge.created_by && (
-            <>
-              <EditIcon margin="10px" />
-              <DeleteIcon margin="10px" />
-            </>
-          )}
-        </CardBody>
-      </Card>
-    </Link>
+    <>
+      <Link to={`/challenges/${challenge.id}`}>
+        <Card
+          w="400px"
+          m="10px"
+          border="2px black solid"
+          color="black"
+          bgGradient="linear(to-b, gray.100, gray.300)"
+        >
+          <CardBody fontSize="sm">
+            <Heading mb="0px" size="md">
+              {challenge.name?.toUpperCase()}
+            </Heading>
+            <Text>Description: {challenge.description}</Text>
+            <Text>Category: {category?.name?.toUpperCase()}</Text>
+            <Text>Committed Creetures:</Text>
+            <Flex>
+              {sharedUsers && sharedUsers.length
+                ? sharedUsers.map((user: any) => (
+                  <Flex
+                    key={user.user_id}
+                    flexDirection="column"
+                    alignItems="center"
+                    m="5px"
+                  >
+                    {user.profile.avatar_url
+                      ? <Avatar
+                          h="35px"
+                          w="35px"
+                          name={`${user.profile.username}`}
+                          src={user.profile.avatar_url}
+                        />
+                      : null
+                    }
+                    <Text fontSize="xs">{user.profile.username}</Text>
+                  </Flex>
+                ))
+                : <Text>No one has committed to this challenge.</Text>
+              }
+            </Flex>
+            <br />
+            <Text fontSize="sm" fontStyle="italic">Click for Details</Text>
+          </CardBody>
+        </Card>
+      </Link>
+    </>
   );
 };
+
 export default ChallengeCard;
-
-
-
-// import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-// import { Box, Button, Card, CardBody, Heading, Text, useDisclosure, useToast } from "@chakra-ui/react";
-// // import { Link } from "react-router-dom";
-// import { Challenge, Database } from "../../../utils/supabaseTypes";
-// import { fetchSharedUsersAsync, selectSharedUsers } from '../profile/sharedUsersSlice';
-// import { deleteChallengeAsync } from './allChallengesSlice';
-// import { useAppDispatch, useAppSelector } from '../../../utils/reduxHooks';
-// import { useEffect } from 'react';
-// import AddCommitment from './commitments/AddCommitment';
-// import EditChallenge from './EditChallenge';
-
-// interface ChallengeCardProps {
-//   challenge: Challenge;
-//   user: any;
-//   category?: Database["public"]["Tables"]["categories"]["Row"];
-// }
-
-// const ChallengeCard = ({ user, challenge, category }: ChallengeCardProps) => {
-//   const dispatch = useAppDispatch();
-//   const { isOpen: isCommitOpen , onOpen: onCommitOpen, onClose: onCommitClose } = useDisclosure()
-//   const { isOpen: isEditOpen , onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
-//   const toast = useToast();
-//   const sharedUsers = useAppSelector(selectSharedUsers);
-
-//   useEffect(() => {
-//     const fetchSharedUsers = async () => {
-//       try {
-//         await dispatch(fetchSharedUsersAsync(challenge.id));
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     };
-//     fetchSharedUsers();
-//   }, [dispatch, challenge.id]);
-
-//   const handleDelete = async (id: number | string) => {
-//     await dispatch(deleteChallengeAsync({ id }));
-//     isEditOpen && onEditClose();
-//     toast({
-//       title: "Challenge deleted.",
-//     });
-//   };
-
-//   return (
-//     // <Link to={`/challenges/${challenge.id}`}>
-//       <Card
-//         margin="10px"
-//         // w="430px"
-//         // h="175px"
-//         border="2px black solid"
-//         color="black"
-//         bgGradient="linear(to-b, gray.100, gray.300)"
-//       >
-//         <CardBody>
-//           <Heading mb="0px" size="md">
-//             {challenge.name?.toUpperCase()}
-//           </Heading>
-//           <Text fontSize="sm">Description: {challenge.description}</Text>
-//           <Text fontSize="sm">Category: {category?.name?.toUpperCase()}</Text>
-//           <Text fontSize="sm">Committed Users: ( ) ( ) ( )</Text>
-//           {/* <Text fontSize="sm">Success Rate: tbd</Text> */}
-//           {/* don't show commitment button if already committed? make it say view Commitment? */}
-//           <Box mt="10px">
-//             <Button
-//               bgColor="white"
-//               border="1px black solid"
-//               onClick={onCommitOpen}
-//             >
-//               Commit
-//             </Button>
-//             {user.id === challenge.created_by && (
-//               <>
-//                 <EditIcon margin="10px" />
-//                 <DeleteIcon margin="10px" />
-//               </>
-//             )}
-//           </Box>
-//           <AddCommitment
-//             isOpen={isCommitOpen}
-//             onClose={onCommitClose}
-//             challenge={challenge}
-//           />
-//           <EditChallenge
-//             isOpen={isEditOpen}
-//             onClose={onEditClose}
-//             challenge={challenge}
-//             handleDelete={handleDelete}
-//             // setChallenge={setChallenge}
-//           />
-//         </CardBody>
-//       </Card>
-//     // </Link>
-//   );
-// };
-// export default ChallengeCard;

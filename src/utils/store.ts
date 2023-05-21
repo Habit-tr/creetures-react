@@ -7,7 +7,7 @@ import allReactionsReducer from "../components/dashboard/profile/AllReactionsSli
 import allRewardsReducer from "../components/dashboard/profile/allRewardsSlice";
 import friendsReducer from "../components/dashboard/profile/friends/FriendsSlice";
 import profilesReducer from "../components/dashboard/profile/Single-All-ProfilesSlice";
-import sharedUsersReducer from "../components/dashboard/profile/friends/sharedUsersSlice";
+// import sharedUsersReducer from "../components/dashboard/profile/friends/sharedUsersSlice";
 import singleCategoryReducer from "../components/dashboard/challenges/categories/singleCategorySlice";
 import singleChallengeReducer from "../components/dashboard/challenges/singleChallengeSlice";
 import singleCommitmentReducer from "../components/dashboard/challenges/commitments/singleCommitmentSlice";
@@ -26,7 +26,7 @@ const store = configureStore({
     commitmentChallengeIds: addCommitmentReducer,
     friends: friendsReducer,
     profiles: profilesReducer,
-    sharedUsers: sharedUsersReducer,
+    // sharedUsers: sharedUsersReducer,
     allEarnedRewards: allEarnedRewardsReducer,
     singleCategory: singleCategoryReducer,
     singleChallenge: singleChallengeReducer,

@@ -23,7 +23,6 @@ import {
   fetchAllRewardsAsync,
   selectRewards,
 } from "../../profile/allRewardsSlice";
-import { postSharedUsersAsync } from "../../profile/friends/sharedUsersSlice";
 import { postNewCommitmentAsync } from "./allCommitmentsSlice";
 
 interface AddCommitmentProps {
@@ -132,13 +131,6 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
         }),
       );
     }
-    // postSharedUsersAsync isn't working *MOST OF THE TIME* -- was briefly working but stopped
-    await dispatch(
-      postSharedUsersAsync({
-        challenge_id: challenge.id,
-        user_id: user.id,
-      }),
-    );
     toast({
       title: "Committed to challenge!",
     });
