@@ -77,7 +77,7 @@ const AllChallenges = () => {
       <Flex
         margin="10px"
         justifyContent="space-between"
-        maxW="900px"
+        maxW="1250px"
         wrap="wrap"
       >
         <Box>
@@ -126,12 +126,11 @@ const AllChallenges = () => {
         </Box>
       </Flex>
       {filteredChallenges && filteredChallenges.length ? (
-        <Flex direction="row" maxW="900px" wrap="wrap">
+        <Flex direction="row" wrap="wrap">
           {filteredChallenges.map((challenge, id) => {
             return (
               <ChallengeCard
                 key={id}
-                user={user}
                 challenge={challenge}
                 category={allCategories?.find(
                   (category) => category.id === challenge.category_id,

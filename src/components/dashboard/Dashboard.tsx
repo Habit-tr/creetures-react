@@ -1,13 +1,13 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
-import DashboardTable from "./DashboardTable";
+import { useAuth } from "../../context/AuthContext";
 import {
   fetchAllCommitmentsAsync,
   selectCommitments,
 } from "./challenges/commitments/allCommitmentsSlice";
+import DashboardTable from "./DashboardTable";
 import FriendsSidebar from "./friends/FriendsSidebar";
 
 const Dashboard = () => {
@@ -24,7 +24,7 @@ const Dashboard = () => {
   return (
     <>
       <Flex direction="row">
-        <Box w="60%" margin="20px" padding="10px">
+        <Box w="60%" m="20px" p="10px">
           <Heading
             size="md"
             mb="20px"

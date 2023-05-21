@@ -4,9 +4,9 @@ import {
   PayloadAction,
   Slice,
 } from "@reduxjs/toolkit";
-import { RootState } from "../../../../utils/store";
-import supabase from "../../../../utils/supabaseClient";
-import { Database } from "../../../../utils/supabaseTypes";
+import { RootState } from "../../utils/store";
+import supabase from "../../utils/supabaseClient";
+import { Database } from "../../utils/supabaseTypes";
 
 interface sharedUsersState {
   value: Database["public"]["Tables"]["challenge_users"]["Row"][];
@@ -20,9 +20,7 @@ export const fetchSharedUsersAsync: any = createAsyncThunk(
     try {
       const { data: users } = await supabase
         .from("challenge_users")
-        .select(
-          "*, challenge: challenges(name), profile: profiles(username, avatar_url)",
-        )
+        .select("*, challenge: challenges(name), profile: profiles(username, avatar_url)")
         .eq("challenge_id", challengeId);
       return users;
     } catch (err) {
@@ -55,7 +53,7 @@ export const postSharedUsersAsync: any = createAsyncThunk(
   }: Database["public"]["Tables"]["challenge_users"]["Insert"]) => {
     try {
       const { data } = await supabase
-        .from("commitments")
+        .from("challenge_users")
         .insert({
           challenge_id,
           user_id,
@@ -105,7 +103,7 @@ const sharedUsersSlice: Slice<sharedUsersState> = createSlice({
 });
 
 export const selectSharedUsers = (state: RootState) => {
-  return state.sharedUsers.value;
+  // return state.sharedUsers.value;
 };
 
 export default sharedUsersSlice.reducer;
