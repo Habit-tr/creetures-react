@@ -1,9 +1,9 @@
-import { Flex, Heading, Text } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../utils/reduxHooks';
-import { fetchAllCommitmentsAsync, selectCommitments } from './allCommitmentsSlice';
-import CommitmentCard from './CommitmentCard';
-import { useAuth } from '../../../../context/AuthContext';
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
+import { fetchAllCommitmentsAsync, selectCommitments } from "./allCommitmentsSlice";
+import CommitmentCard from "./CommitmentCard";
+import { useAuth } from "../../../../context/AuthContext";
 
 const AllCommitments = () => {
   const dispatch = useAppDispatch();
@@ -25,20 +25,41 @@ const AllCommitments = () => {
     return <Text>You don't have any commitments, go make some!</Text>;
   }
 
+  const activeCommitments = commitments.filter(commitment => commitment.is_active);
+  const inactiveCommitments = commitments.filter(commitment => !commitment.is_active);
+
   return (
     <>
-      <Heading m='10px'>My Commitments</Heading>
+      <Heading m="10px">My Commitments</Heading>
       <Flex 
-        m='10px'
-        maxW='900px'
-        direction='row'
-        wrap='wrap'>
-        {commitments && commitments.length
-          ? commitments.map(commitment => (
+        m="10px"
+        maxW="1250px"
+        direction="row"
+        wrap="wrap"
+      >
+        {activeCommitments && activeCommitments.length
+          ? activeCommitments.map(commitment => (
             <CommitmentCard key={commitment.id} commitment={commitment} />
           ))
-          : null}
+          : null
+        }
       </Flex>
+      {inactiveCommitments && inactiveCommitments.length
+        ? <>
+            <Heading as="h2" m="10px" fontSize="2xl">Previous Commitments</Heading>
+            <Flex 
+              m="10px"
+              maxW="1250px"
+              direction="row"
+              wrap="wrap"
+            >
+              {inactiveCommitments.map(commitment => (
+                <CommitmentCard key={commitment.id} commitment={commitment} />
+              ))}
+            </Flex>
+          </>            
+        : null
+      }
     </>
   );
 };

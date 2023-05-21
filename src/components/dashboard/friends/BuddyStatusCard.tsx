@@ -26,7 +26,9 @@ const BuddyStatusCard = ({ commitment }: any) => {
         </Link>
       </Flex>
       <Flex width="60%" direction="column" alignItems="center">
-        <Text fontSize="md">{commitment.profile.username.toUpperCase()}</Text>
+        <Link to={`/profile/${commitment.profile.id}`}>
+          <Text fontSize="md">{commitment.profile.username.toUpperCase()}</Text>
+        </Link>
         <Text fontSize="2xs">
           {commitment.is_up_to_date ? `up to date` : `behind schedule`}{" "}
         </Text>
