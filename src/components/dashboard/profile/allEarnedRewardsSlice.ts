@@ -16,6 +16,7 @@ export const fetchAllEarnedRewardsAsync = createAsyncThunk(
       const { data } = await supabase
         .from("earned_rewards")
         .select("*, rewards (name, description)");
+        console.log('all earned rewards: ', data);
       return data;
     } catch (err) {
       console.error(err);
@@ -26,6 +27,7 @@ export const fetchAllEarnedRewardsAsync = createAsyncThunk(
 interface postNewEarnedRewardProps {
   commitment_id: number;
   reward_id: number;
+  user_id: string;
 }
 
 export const postNewEarnedRewardAsync = createAsyncThunk(
@@ -33,6 +35,7 @@ export const postNewEarnedRewardAsync = createAsyncThunk(
   async ({
     commitment_id,
     reward_id,
+    user_id,
   }: postNewEarnedRewardProps) => {
     try {
       const { data } = await supabase
@@ -40,6 +43,7 @@ export const postNewEarnedRewardAsync = createAsyncThunk(
         .insert({
           commitment_id: commitment_id,
           reward_id: reward_id,
+          user_id: user_id,
         })
         .select();
       return data;
@@ -70,28 +74,55 @@ export const deleteEarnedRewardAsync = createAsyncThunk(
 );
 
 interface UpdateEarnedRewardProps {
-  id: number | string;
+  id: number;
   is_redeemed: boolean;
-  date_redeemed: string;
+  user_id: string;
 }
 
 export const updateEarnedRewardAsync = createAsyncThunk(
   "updateEarnedRewardAsync",
-  async ({ id, is_redeemed, date_redeemed }: UpdateEarnedRewardProps) => {
+  async ({ id, is_redeemed, user_id }: UpdateEarnedRewardProps) => {
     try {
-      const { data } = await supabase
+      const { error: updateError } = await supabase
         .from("earned_rewards")
         .update({
           is_redeemed: is_redeemed,
-          date_redeemed: date_redeemed,
+          user_id: user_id,
         })
         .eq("id", id);
-      return data;
+
+      if (updateError) {
+        console.error('Error updating reward:', updateError);
+        return;
+      }
+
+      const { data: fetchdata, error: fetchError } = await supabase
+        .from('earned_rewards')
+        .select('*')
+        .eq("id", id)
+        .single();
+
+      if (fetchError) {
+        console.error('Error fetching updated data:', fetchError);
+        return;
+      }
+
+      if (fetchdata) {
+        console.log(fetchdata);
+        return fetchdata;
+      } else {
+        console.error('Data is null');
+        return;
+      }
+
     } catch (err) {
       console.error(err);
     }
   },
 );
+
+
+
 
 const allEarnedRewardsSlice = createSlice({
   name: "allEarnedRewards",
@@ -121,16 +152,15 @@ const allEarnedRewardsSlice = createSlice({
     builder.addCase(
       updateEarnedRewardAsync.fulfilled,
       (state, action: PayloadAction<any>) => {
-        if (action.payload && Array.isArray(action.payload)) {
-          const updatedReward = action.payload[0];
+        if (action.payload) {
           const index = state.value.findIndex(
-            (reward) => reward.id === updatedReward.id,
+            (reward) => reward.id === action.payload.id
           );
-          if (index >= 0) {
-            state.value[index] = updatedReward;
+          if (index !== -1) {
+            state.value[index] = action.payload;
           }
         } else {
-          console.error("action.payload is either null or not iterable");
+          console.error('Action payload is null');
         }
       },
     );

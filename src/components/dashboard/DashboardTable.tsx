@@ -26,7 +26,7 @@ import {
   selectCommitments,
 } from "./challenges/commitments/allCommitmentsSlice";
 import { editCommitmentAsync } from "./challenges/commitments/singleCommitmentSlice";
-import { postNewEarnedRewardAsync } from "./profile/allEarnedRewardsSlice";
+import { fetchAllEarnedRewardsAsync, selectEarnedRewards, updateEarnedRewardAsync, postNewEarnedRewardAsync } from "./profile/allEarnedRewardsSlice";
 
 interface DashboardTableProps {
   commitments: Database["public"]["Tables"]["commitments"]["Row"][];
@@ -38,8 +38,12 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   >({});
   const dispatch = useAppDispatch();
   const fetchedCommitments = useAppSelector(selectCommitments);
+  const earnedRewards = useAppSelector(selectEarnedRewards);
   const [commitmentsFetched, setCommitmentsFetched] = useState(false);
+  const [commitmentCompleted, setCommitmentCompleted] = useState(false);
+
   const { currentUser } = useAuth();
+
 
   useEffect(() => {
     const fetchCommitments = async () => {
@@ -68,7 +72,17 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     }
   }, [commitmentsFetched, checkClickedCommitments]);
 
+  useEffect(() => {
+    const fetchRewards = async () => {
+      await dispatch(fetchAllEarnedRewardsAsync());
+    };
+
+    fetchRewards();
+  }, [dispatch, commitmentCompleted]);
+
+
   const handleCommitmentComplete = (commitmentId: number) => {
+    setCommitmentCompleted(prevState => !prevState);
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
       [commitmentId]: true,
@@ -81,6 +95,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
         postNewEarnedRewardAsync({
           commitment_id: commitment.id,
           reward_id: commitment.reward_id,
+          user_id: currentUser.id,
         }),
       );
     }
@@ -94,6 +109,34 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       );
     }
   };
+
+  const handleRedeemReward = async (commitmentId: number) => {
+    console.log(`button clicked for ${commitmentId}`)
+    const commitment = commitments.find(
+      (commitment) => commitment.id === commitmentId,
+    );
+    console.log('commitment:', commitment);
+    if (commitment) {
+      // Fetch the corresponding earned_reward
+      const earnedReward = earnedRewards.find(
+        (reward) => reward.commitment_id === commitment.id,
+      );
+      console.log(earnedRewards);
+      console.log('earnedReward: ', earnedReward);
+      if (earnedReward) {
+        console.log('Found earnedReward, dispatching action...');
+        console.log(earnedReward.id);
+        dispatch(
+          updateEarnedRewardAsync({
+            id: earnedReward.id,
+            is_redeemed: true,
+            user_id: currentUser.id,
+          })
+        );
+      }
+    }
+  };
+
 
   const getCurrentDay = () => {
     const date = new Date();
@@ -145,6 +188,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
                 icon={<MdRedeem />}
                 colorScheme="blue"
                 isDisabled={!checkedCommitments[commitment.id]}
+                onClick={() => handleRedeemReward(commitment.id)}
               />
             </Flex>
           </Td>
