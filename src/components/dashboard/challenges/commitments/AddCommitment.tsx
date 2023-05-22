@@ -13,6 +13,7 @@ import {
   Text,
   Textarea,
   useToast,
+  Input,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -25,12 +26,23 @@ import {
 } from "../../profile/allRewardsSlice";
 import { postSharedUsersAsync } from "../../profile/friends/sharedUsersSlice";
 import { postNewCommitmentAsync } from "./allCommitmentsSlice";
+import supabase from "../../../../utils/supabaseClient";
+
+
+interface newRewardProps {
+  rewardName: string,
+  description: string,
+  user_id: string,
+  id: number,
+}
 
 interface AddCommitmentProps {
   isOpen: boolean;
   onClose: () => void;
   challenge: Database["public"]["Tables"]["challenges"]["Insert"];
 }
+
+
 
 const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const dispatch = useAppDispatch();
@@ -59,6 +71,8 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const [days, setDays] = useState<string>("");
   const [timeframe, setTimeframe] = useState<string>("");
   const [goals, setGoals] = useState<string>("");
+  const [newRewardName, setNewRewardName] = useState<string>("");
+  const [showNewRewardInput, setShowNewRewardInput] = useState<boolean>(false);
   const [reward, setReward] =
     useState<Database["public"]["Tables"]["rewards"]["Row"]>(nullReward);
 
@@ -95,13 +109,19 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   };
 
   const handleRewardSelect = (rewardName: string) => {
-    if (rewardName === "Select reward") {
+    if(rewardName === "new") {
+      setShowNewRewardInput(true)
       setReward(nullReward);
+    }
+    else if (rewardName === "Select reward") {
+      setReward(nullReward);
+      setShowNewRewardInput(false);
     } else {
       let selectedReward: any = rewards.find(
         (reward) => reward.name === rewardName,
       );
       setReward(selectedReward);
+      setShowNewRewardInput(false);
     }
   };
 
@@ -109,52 +129,77 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (reward.id) {
+    try {
+      if (newRewardName) {
+        const { newReward }: any = await supabase
+          .from('rewards')
+          .insert({ name: newRewardName })
+          .single();
+
+        await dispatch(
+          postNewCommitmentAsync({
+            challenge_id: challenge.id,
+            frequency: days,
+            goals,
+            reward_id: newReward.id,
+            timeframe,
+            user_id: user.id,
+          }),
+        );
+      } else if (reward && reward.id) {
+        await dispatch(
+          postNewCommitmentAsync({
+            challenge_id: challenge.id,
+            frequency: days,
+            goals,
+            reward_id: reward.id,
+            timeframe,
+            user_id: user.id,
+          }),
+        );
+      } else {
+        await dispatch(
+          postNewCommitmentAsync({
+            challenge_id: challenge.id,
+            frequency: days,
+            goals,
+            reward_id: null,
+            timeframe,
+            user_id: user.id,
+          }),
+        );
+      }
+
       await dispatch(
-        postNewCommitmentAsync({
+        postSharedUsersAsync({
           challenge_id: challenge.id,
-          frequency: days,
-          goals,
-          reward_id: reward.id,
-          timeframe,
           user_id: user.id,
         }),
       );
-    } else {
-      await dispatch(
-        postNewCommitmentAsync({
-          challenge_id: challenge.id,
-          frequency: days,
-          goals,
-          reward_id: null,
-          timeframe,
-          user_id: user.id,
-        }),
-      );
+
+      toast({
+        title: "Committed to challenge!",
+      });
+
+      setDays("");
+      setTimeframe("");
+      setGoals("");
+      setReward(nullReward);
+      onClose();
+      navigate("/commitments");
+    } catch (error) {
+      // Handle the error here
+      console.error(error);
+      // Show an error toast or perform any necessary actions
     }
-    // postSharedUsersAsync isn't working *MOST OF THE TIME* -- was briefly working but stopped
-    await dispatch(
-      postSharedUsersAsync({
-        challenge_id: challenge.id,
-        user_id: user.id,
-      }),
-    );
-    toast({
-      title: "Committed to challenge!",
-    });
-    setDays("");
-    setTimeframe("");
-    setGoals("");
-    setReward(nullReward);
-    onClose();
-    navigate("/commitments");
+
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {challenge && challenge.name 
+        {challenge && challenge.name
           ? <ModalHeader bgColor="green.200">
               Commit to {challenge.name.toUpperCase()} Challenge
             </ModalHeader>
@@ -209,7 +254,19 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
                     <option key={idx}>{reward}</option>
                   ))
                 : null}
+
+                <option value={'new'}>
+                Create New Reward...
+              </option>
             </Select>
+            {showNewRewardInput ?
+            (<>{'Name your Reward'}
+            <Input
+            type="text"
+            value={newRewardName}
+            onChange={(e) => setNewRewardName(e.target.value)}
+            >
+            </Input></>): <></>}
           </Box>
         </ModalBody>
         <ModalFooter>
