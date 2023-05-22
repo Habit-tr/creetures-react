@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
@@ -29,7 +29,14 @@ const FriendsSidebar = () => {
   const activeCommitments = commitments.filter(commitment => commitment.is_active);
 
   return (
-    <>
+    <Box
+      id="friends-sidebar"
+      h="calc(100vh - 245px)"
+      p="10px"
+      border="1px solid lightgray"
+      borderRadius="4px"
+      overflow="auto"
+    >
       {activeCommitments && activeCommitments.length
         ? activeCommitments.map((commitment: any) => (
             <ChallengeBuddiesCard
@@ -42,7 +49,7 @@ const FriendsSidebar = () => {
             No buddies yet. Join some challenges and connect with other Creetures!
           </Text>
       }
-    </>
+    </Box>
   );
 };
 
