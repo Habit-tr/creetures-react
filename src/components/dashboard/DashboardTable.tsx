@@ -48,6 +48,8 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const earnedRewards = useAppSelector(selectEarnedRewards);
   const [commitmentsFetched, setCommitmentsFetched] = useState(false);
   const [commitmentCompleted, setCommitmentCompleted] = useState(false);
+  const [hour, setHour] = useState<number>(0);
+  const [tabIndex, setTabIndex] = useState<number>(0);
   const toast = useToast();
 
   const { currentUser } = useAuth();
@@ -88,6 +90,20 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   }, [dispatch, commitmentCompleted, currentUser.id]);
 
   useEffect(() => {
+    const checkTime = () => {
+      const now = new Date();
+      const options: any = {
+        timeZone: "America/New_York",
+        hour12: false,
+        hour: "2-digit",
+      };
+      const easternTime = now.toLocaleString("en-US", options);
+      return parseInt(easternTime);
+    };
+    setHour(checkTime());
+    if (hour > 3 && hour < 12) setTabIndex(0);
+    if (hour > 11 && hour < 20) setTabIndex(1);
+    if (hour < 4 || hour > 19) setTabIndex(2);
     const redeemedRewards = earnedRewards.reduce((result, reward) => {
       if (reward.commitment_id && reward.is_redeemed) {
         result[reward.commitment_id] = true;
@@ -235,11 +251,11 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   return (
     <>
       <Box>
-        <Tabs>
+        <Tabs defaultIndex={tabIndex}>
           <TabList justifyContent="center" alignItems="center">
-            <Tab>Morning</Tab>
-            <Tab>Afternoon</Tab>
-            <Tab>Night</Tab>
+            <Tab isDisabled={hour < 4 || hour > 11}>Morning</Tab>
+            <Tab isDisabled={hour < 12 || hour > 19}>Afternoon</Tab>
+            <Tab isDisabled={hour < 20 || hour > 3}>Night</Tab>
           </TabList>
 
           <TabPanels>
@@ -279,6 +295,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
           </TabPanels>
         </Tabs>
       </Box>
+      {JSON.stringify(hour)}
     </>
   );
 };
