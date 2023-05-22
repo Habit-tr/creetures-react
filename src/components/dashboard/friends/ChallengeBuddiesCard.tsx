@@ -11,6 +11,11 @@ interface ChallengeBuddiesProps {
 const ChallengeBuddiesCard = ({ challengeId, userId }: ChallengeBuddiesProps) => {
   const [fetchedBuddies, setFetchedBuddies] = useState<any>({});
 
+  const getCurrentDay = () => {
+    const date = new Date();
+    return String(date.getDay());
+  };
+
   useEffect(() => {
     const fetchBuddies = async () => {
       const { data: commitments } = await supabase
@@ -18,13 +23,16 @@ const ChallengeBuddiesCard = ({ challengeId, userId }: ChallengeBuddiesProps) =>
         .select("*, challenge: challenges(name), profile: profiles(*)")
         .neq("user_id", userId)
         .match({ challenge_id: challengeId, is_active: true });
-      setFetchedBuddies(commitments);
+      const currentBuddies = commitments?.filter(buddy => (
+        buddy.frequency.includes(getCurrentDay())
+      ));
+      setFetchedBuddies(currentBuddies);
     };
     fetchBuddies();
   }, [challengeId, userId]);
 
   return fetchedBuddies && fetchedBuddies.length ? (
-    <Box m="0px" w="100%">
+    <Box className="challenge-buddies-card" m="0px" w="100%">
       <Heading mb="0px" size="md">
         {fetchedBuddies[0].challenge.name.toUpperCase()}
       </Heading>

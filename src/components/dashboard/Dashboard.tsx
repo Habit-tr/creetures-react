@@ -24,7 +24,7 @@ const Dashboard = () => {
   return (
     <>
       <Flex direction="row">
-        <Box w="60%" m="20px" p="10px">
+        <Box w="50%" p="10px">
           <Heading
             size="md"
             mb="20px"
@@ -71,7 +71,7 @@ const Dashboard = () => {
           </Table> */}
         </Box>
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
-        <Box w="40%" margin="20px" padding="10px">
+        <Box w="50%" ml="30px" padding="10px">
           <Heading size="md" mb="20px" color="purple.500">
             FELLOW CREETURES OF HABIT
           </Heading>

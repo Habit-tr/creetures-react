@@ -7,7 +7,7 @@ const Footer = () => {
       width="100%"
       p="20px"
       minH="50px"
-      mt="40px"
+      mt="auto"
       bgColor="black"
       justifyContent="space-between"
       color="green.200"
