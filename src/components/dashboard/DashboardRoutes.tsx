@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import AllChallenges from "./challenges/AllChallenges";
@@ -15,13 +15,14 @@ import CycleTest from "./profile/CycleTest";
 import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
-import Friends from "./profile/friends/Friends";
+import Friends from "./profile/friends/ExploreFriends";
+import ExploreFriends from "./profile/friends/ExploreFriends";
 
 const DashboardRoutes = () => {
   return (
-    <>
+    <Flex direction="column" minH="100vh">
       <NavBar />
-      <Box padding="20px">
+      <Box p="20px" pb="0">
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/cycle/:day" element={<CycleTest />} />
@@ -36,6 +37,7 @@ const DashboardRoutes = () => {
           <Route path="/challenges" element={<AllChallenges />} />
           <Route path="/challenges/:urlId" element={<SingleChallenge />} />
           <Route path="/challenges/categories" element={<AllCategories />} />
+          <Route path="/explorefriends" element={<ExploreFriends />} />
           <Route
             path="/challenges/categories/:id"
             element={<SingleCategory />}
@@ -43,7 +45,7 @@ const DashboardRoutes = () => {
         </Routes>
       </Box>
       <Footer />
-    </>
+    </Flex>
   );
 };
 
