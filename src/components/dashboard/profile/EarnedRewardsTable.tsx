@@ -31,6 +31,7 @@ const EarnedRewardsTable = () => {
         id: rewardId,
         is_redeemed: true,
         user_id: currentUser.id,
+        date_redeemed: new Date().toISOString(),
       }));
 
       // filter out the redeemed reward from the list in local state

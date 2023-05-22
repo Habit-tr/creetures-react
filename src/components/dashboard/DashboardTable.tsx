@@ -139,6 +139,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             id: earnedReward.id,
             is_redeemed: true,
             user_id: currentUser.id,
+            date_redeemed: new Date().toISOString(),
           })
         );
       }
