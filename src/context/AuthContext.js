@@ -13,10 +13,12 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
 
   async function signup(email, password) {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
+    const { data, error } = await supabase.auth.signUp(
+      {
+        email: email,
+        password: password,
+      }
+    );
   }
 
   async function getSession() {
@@ -41,8 +43,8 @@ export function AuthProvider({ children }) {
         {
           email: email,
           password: password,
-        },
-        { redirectTo: "http://localhost:3000/" }
+        }
+    
       );
       return data;
     } catch (error) {
@@ -52,13 +54,13 @@ export function AuthProvider({ children }) {
 
   async function logout() {
     const { error } = await supabase.auth.signOut({
-      redirectTo: "http://localhost:3000/",
+      redirectTo: "creetures.com",
     });
   }
 
   async function resetPassword(email) {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://localhost:3000/",
+      redirectTo: "creetures.com",
     });
   }
 
@@ -75,7 +77,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     getUser();
-      getSession();
+    getSession();
     setLoading(false);
   }, []);
 

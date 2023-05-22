@@ -27,7 +27,7 @@ const SignUp = () => {
   const [fullName, setFullName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const { signup } = useAuth();
+  const { signup, Login } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -40,11 +40,18 @@ const SignUp = () => {
       return setError("Passwords must be 6 characters");
     }
 
+    if (password.includes("@")) {
+      return setError("Passwords cannot include @ or - symbols");
+    }
+    if (password.includes("-")) {
+      return setError("Passwords cannot include @ or - symbols");
+    }
+
     try {
       setError("");
       setLoading(true);
       const user = await signup(email, password);
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       setError("Failed to create an account ");
       console.log(error);
