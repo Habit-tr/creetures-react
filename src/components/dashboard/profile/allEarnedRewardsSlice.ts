@@ -109,7 +109,7 @@ export const updateEarnedRewardAsync = createAsyncThunk(
       }
 
       if (fetchdata) {
-        console.log(fetchdata);
+        // console.log(fetchdata);
         return fetchdata;
       } else {
         console.error('Data is null');
