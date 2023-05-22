@@ -13,7 +13,7 @@ import FriendsSidebar from "./friends/FriendsSidebar";
 import BuddyProfile from "./profile/BuddyProfile";
 import CycleTest from "./profile/CycleTest";
 import Profile from "./profile/Profile";
-import Rewards from "./profile/Rewards";
+import RewardsPage from "./profile/RewardsPage";
 import SingleReward from "./profile/SingleReward";
 import Friends from "./profile/friends/ExploreFriends";
 import ExploreFriends from "./profile/friends/ExploreFriends";
@@ -32,7 +32,7 @@ const DashboardRoutes = () => {
           <Route path="/buddy" element={<FriendsSidebar />} />
           <Route path="/commitments" element={<AllCommitments />} />
           <Route path="/commitments/:id" element={<SingleCommitment />} />
-          <Route path="/rewards" element={<Rewards />} />
+          <Route path="/rewards" element={<RewardsPage />} />
           <Route path="/rewards/:urlId" element={<SingleReward />} />
           <Route path="/challenges" element={<AllChallenges />} />
           <Route path="/challenges/:urlId" element={<SingleChallenge />} />
