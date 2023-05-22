@@ -15,7 +15,8 @@ import CycleTest from "./profile/CycleTest";
 import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
-import Friends from "./profile/friends/Friends";
+import Friends from "./profile/friends/ExploreFriends";
+import ExploreFriends from "./profile/friends/ExploreFriends";
 
 const DashboardRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const DashboardRoutes = () => {
           <Route path="/challenges" element={<AllChallenges />} />
           <Route path="/challenges/:urlId" element={<SingleChallenge />} />
           <Route path="/challenges/categories" element={<AllCategories />} />
+          <Route path="/explorefriends" element={<ExploreFriends />} />
           <Route
             path="/challenges/categories/:id"
             element={<SingleCategory />}

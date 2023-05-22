@@ -362,27 +362,17 @@ const NAV_ITEMS: Array<NavItem> = [
         subLabel: "View your dashboard",
         href: "/",
       },
-      {
-        label: "Commitments",
-        subLabel: "View your commitments",
-        href: "/commitments",
-      },
-      {
-        label: "Challenges",
-        subLabel: "View your challenges",
-        href: "/challenges",
-      },
-      {
-        label: "Rewards",
-        subLabel: "View your rewards",
-        href: "/rewards",
-      },
-      {
-        label: "Friends",
-        subLabel: "View your friends",
-        href: "/friends",
-      },
     ],
+  },
+  {
+    label: "Rewards",
+      subLabel: "View your rewards",
+      href: "/rewards",
+
+  },
+  {
+    label: "Commitments",
+    href: "/commitments",
   },
   {
     label: "Explore",
@@ -395,7 +385,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: "Friends",
         subLabel: "See what others are doing",
-        href: "/friends",
+        href: "/explorefriends",
       },
     ],
   },
