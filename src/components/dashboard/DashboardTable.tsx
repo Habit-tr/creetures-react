@@ -101,9 +101,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       return parseInt(easternTime);
     };
     setHour(checkTime());
-    if (hour > 3 && hour < 12) setTabIndex(0);
-    if (hour > 11 && hour < 20) setTabIndex(1);
-    if (hour < 4 || hour > 19) setTabIndex(2);
     const redeemedRewards = earnedRewards.reduce((result, reward) => {
       if (reward.commitment_id && reward.is_redeemed) {
         result[reward.commitment_id] = true;
@@ -141,6 +138,12 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       );
     }
   };
+
+  useEffect(() => {
+    if (hour > 3 && hour < 12) setTabIndex(0);
+    if (hour > 11 && hour < 20) setTabIndex(1);
+    if (hour < 4 || hour > 19) setTabIndex(2);
+  }, [hour]);
 
   const handleRedeemReward = async (commitmentId: number) => {
     const commitment = commitments.find(
@@ -253,9 +256,9 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       <Box>
         <Tabs defaultIndex={tabIndex}>
           <TabList justifyContent="center" alignItems="center">
-            <Tab isDisabled={hour < 4 || hour > 11}>Morning</Tab>
-            <Tab isDisabled={hour < 12 || hour > 19}>Afternoon</Tab>
-            <Tab isDisabled={hour < 20 || hour > 3}>Night</Tab>
+            <Tab isDisabled={hour > 11}>Morning</Tab>
+            <Tab isDisabled={hour < 12}>Afternoon</Tab>
+            <Tab>Night</Tab>
           </TabList>
 
           <TabPanels>
@@ -295,7 +298,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
           </TabPanels>
         </Tabs>
       </Box>
-      {JSON.stringify(hour)}
     </>
   );
 };
