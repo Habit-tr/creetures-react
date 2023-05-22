@@ -16,6 +16,7 @@ import Profile from "./profile/Profile";
 import Rewards from "./profile/Rewards";
 import SingleReward from "./profile/SingleReward";
 import Friends from "./profile/friends/Friends";
+import EarnedRewardsTable from "./profile/EarnedRewardsTable";
 
 const DashboardRoutes = () => {
   return (
@@ -31,7 +32,7 @@ const DashboardRoutes = () => {
           <Route path="/buddy" element={<FriendsSidebar />} />
           <Route path="/commitments" element={<AllCommitments />} />
           <Route path="/commitments/:id" element={<SingleCommitment />} />
-          <Route path="/rewards" element={<Rewards />} />
+          <Route path="/rewards" element={<EarnedRewardsTable />} />
           <Route path="/rewards/:urlId" element={<SingleReward />} />
           <Route path="/challenges" element={<AllChallenges />} />
           <Route path="/challenges/:urlId" element={<SingleChallenge />} />

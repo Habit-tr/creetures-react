@@ -15,9 +15,9 @@ export const fetchAllEarnedRewardsAsync = createAsyncThunk(
     try {
       const { data: fetchedEarnedRewards } = await supabase
         .from("earned_rewards")
-        .select("*, rewards (name, description)")
-        .eq("user_id", userId)
-        console.log('allEarnedRewards:', fetchedEarnedRewards);
+        .select("*, reward: rewards(name, description)")
+        .eq("user_id", userId);
+        console.log(fetchedEarnedRewards);
       return fetchedEarnedRewards;
     } catch (err) {
       console.error(err);

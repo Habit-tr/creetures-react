@@ -207,6 +207,10 @@ export interface Database {
           id: number
           is_redeemed: boolean | null
           reward_id: number | null
+          reward: {
+            name: string
+            description: string | null
+          }
         }
         Insert: {
           commitment_id?: number | null
