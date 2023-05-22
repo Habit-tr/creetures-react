@@ -14,6 +14,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MdRedeem } from "react-icons/md";
@@ -42,6 +43,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const earnedRewards = useAppSelector(selectEarnedRewards);
   const [commitmentsFetched, setCommitmentsFetched] = useState(false);
   const [commitmentCompleted, setCommitmentCompleted] = useState(false);
+  const toast = useToast();
 
   const { currentUser } = useAuth();
 
@@ -75,11 +77,11 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
   useEffect(() => {
     const fetchRewards = async () => {
-      await dispatch(fetchAllEarnedRewardsAsync());
+      await dispatch(fetchAllEarnedRewardsAsync(currentUser.id));
     };
 
     fetchRewards();
-  }, [dispatch, commitmentCompleted]);
+  }, [dispatch, commitmentCompleted, currentUser.id]);
 
   useEffect(() => {
     const redeemedRewards = earnedRewards.reduce((result, reward) => {
@@ -141,6 +143,11 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
         );
       }
     }
+    toast({
+      title: "Reward Redeemed!",
+      duration: 5000,
+      isClosable: true,
+    })
   };
 
 
