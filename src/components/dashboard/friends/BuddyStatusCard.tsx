@@ -5,6 +5,7 @@ import ReactionsToggle from "./ReactionsToggle";
 const BuddyStatusCard = ({ commitment }: any) => {
   return (
     <Flex
+      className="buddy-status-card"
       direction="row"
       justifyContent="space-between"
       bgColor="green.100"
@@ -12,7 +13,6 @@ const BuddyStatusCard = ({ commitment }: any) => {
       border="1px solid"
       margin="5px"
       padding="5px"
-      width="100%"
     >
       <Flex width="20%" justifyContent="baseline">
         <Link to={`/profile/${commitment.profile.id}`}>

@@ -11,13 +11,14 @@ const initialState: allEarnedRewardsState = { value: [] };
 
 export const fetchAllEarnedRewardsAsync = createAsyncThunk(
   "earnedRewards/fetchAllAsync",
-  async () => {
+  async (userId: string) => {
     try {
-      const { data } = await supabase
+      const { data: fetchedEarnedRewards } = await supabase
         .from("earned_rewards")
-        .select("*, rewards (name, description)");
-        // console.log('all earned rewards: ', data);
-      return data;
+        .select("*, rewards (name, description)")
+        .eq("user_id", userId)
+        console.log('allEarnedRewards:', fetchedEarnedRewards);
+      return fetchedEarnedRewards;
     } catch (err) {
       console.error(err);
     }

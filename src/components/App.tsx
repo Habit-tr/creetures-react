@@ -1,4 +1,4 @@
-import { ChakraProvider, Flex, ColorModeScript } from "@chakra-ui/react";
+import { ChakraProvider, Flex } from "@chakra-ui/react";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
