@@ -1,10 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import AllChallenges from "./challenges/AllChallenges";
 import SingleChallenge from "./challenges/SingleChallenge";
 import AllCategories from "./challenges/categories/AllCategories";
-import SingleCategory from "./challenges/categories/SingleCategory";
 import AllCommitments from "./challenges/commitments/AllCommitments";
 import SingleCommitment from "./challenges/commitments/SingleCommitment";
 import NavBar from "./components/NavBar";
@@ -19,10 +18,14 @@ import Friends from "./profile/friends/ExploreFriends";
 import ExploreFriends from "./profile/friends/ExploreFriends";
 
 const DashboardRoutes = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const categoryId = parseInt(searchParams.get("categoryId") || "0", 10);
+
   return (
     <Flex direction="column" minH="100vh">
       <NavBar />
-      <Box p="20px" pb="0">
+      <Box p="20px">
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/cycle/:day" element={<CycleTest />} />
@@ -34,14 +37,13 @@ const DashboardRoutes = () => {
           <Route path="/commitments/:id" element={<SingleCommitment />} />
           <Route path="/rewards" element={<RewardsPage />} />
           <Route path="/rewards/:urlId" element={<SingleReward />} />
-          <Route path="/challenges" element={<AllChallenges />} />
+          <Route
+            path="/challenges"
+            element={<AllChallenges categoryId={categoryId} />}
+          />
           <Route path="/challenges/:urlId" element={<SingleChallenge />} />
           <Route path="/challenges/categories" element={<AllCategories />} />
           <Route path="/explorefriends" element={<ExploreFriends />} />
-          <Route
-            path="/challenges/categories/:id"
-            element={<SingleCategory />}
-          />
         </Routes>
       </Box>
       <Footer />

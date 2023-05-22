@@ -31,7 +31,7 @@ const FriendsSidebar = () => {
   return (
     <Box
       id="friends-sidebar"
-      h="calc(100vh - 245px)"
+      h="calc(100vh - 258px)"
       p="10px"
       border="1px solid lightgray"
       borderRadius="4px"

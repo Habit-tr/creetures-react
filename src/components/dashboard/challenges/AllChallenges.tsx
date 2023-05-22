@@ -23,8 +23,8 @@ import {
   selectCategories,
 } from "./categories/allCategoriesSlice";
 
-const AllChallenges = () => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
+const AllChallenges = ({ categoryId }: { categoryId: number }) => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(categoryId);
   const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
