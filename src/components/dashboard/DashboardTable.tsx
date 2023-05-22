@@ -36,6 +36,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const [checkedCommitments, setCheckedCommitments] = useState<
     Record<string, boolean>
   >({});
+  const [redeemedRewards, setRedeemedRewards] = useState<Record<string, boolean>>({});
   const dispatch = useAppDispatch();
   const fetchedCommitments = useAppSelector(selectCommitments);
   const earnedRewards = useAppSelector(selectEarnedRewards);
@@ -80,6 +81,15 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     fetchRewards();
   }, [dispatch, commitmentCompleted]);
 
+  useEffect(() => {
+    const redeemedRewards = earnedRewards.reduce((result, reward) => {
+      if (reward.commitment_id && reward.is_redeemed) {
+        result[reward.commitment_id] = true;
+      }
+      return result;
+    }, {} as Record<string, boolean>);
+    setRedeemedRewards(redeemedRewards);
+  }, [earnedRewards]);
 
   const handleCommitmentComplete = (commitmentId: number) => {
     setCommitmentCompleted(prevState => !prevState);
@@ -183,13 +193,13 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
           )}
           <Td>
             <Flex justifyContent="center" alignItems="center">
-              <IconButton
-                aria-label="Redeem"
-                icon={<MdRedeem />}
-                colorScheme="blue"
-                isDisabled={!checkedCommitments[commitment.id]}
-                onClick={() => handleRedeemReward(commitment.id)}
-              />
+            <IconButton
+              aria-label="Redeem"
+              icon={<MdRedeem />}
+              colorScheme="blue"
+              isDisabled={!checkedCommitments[commitment.id] || redeemedRewards[commitment.id]}
+              onClick={() => handleRedeemReward(commitment.id)}
+            />
             </Flex>
           </Td>
         </Tr>,
