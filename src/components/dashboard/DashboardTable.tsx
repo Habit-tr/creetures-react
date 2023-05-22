@@ -1,7 +1,7 @@
 import {
   Box,
+  Button,
   Flex,
-  IconButton,
   Tab,
   TabList,
   TabPanel,
@@ -10,14 +10,12 @@ import {
   Tabs,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
   useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { MdRedeem } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import { Database } from "../../utils/supabaseTypes";
@@ -27,7 +25,12 @@ import {
   selectCommitments,
 } from "./challenges/commitments/allCommitmentsSlice";
 import { editCommitmentAsync } from "./challenges/commitments/singleCommitmentSlice";
-import { fetchAllEarnedRewardsAsync, selectEarnedRewards, updateEarnedRewardAsync, postNewEarnedRewardAsync } from "./profile/allEarnedRewardsSlice";
+import {
+  fetchAllEarnedRewardsAsync,
+  postNewEarnedRewardAsync,
+  selectEarnedRewards,
+  updateEarnedRewardAsync,
+} from "./profile/allEarnedRewardsSlice";
 
 interface DashboardTableProps {
   commitments: Database["public"]["Tables"]["commitments"]["Row"][];
@@ -37,7 +40,9 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const [checkedCommitments, setCheckedCommitments] = useState<
     Record<string, boolean>
   >({});
-  const [redeemedRewards, setRedeemedRewards] = useState<Record<string, boolean>>({});
+  const [redeemedRewards, setRedeemedRewards] = useState<
+    Record<string, boolean>
+  >({});
   const dispatch = useAppDispatch();
   const fetchedCommitments = useAppSelector(selectCommitments);
   const earnedRewards = useAppSelector(selectEarnedRewards);
@@ -46,7 +51,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const toast = useToast();
 
   const { currentUser } = useAuth();
-
 
   useEffect(() => {
     const fetchCommitments = async () => {
@@ -94,7 +98,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   }, [earnedRewards]);
 
   const handleCommitmentComplete = (commitmentId: number) => {
-    setCommitmentCompleted(prevState => !prevState);
+    setCommitmentCompleted((prevState) => !prevState);
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
       [commitmentId]: true,
@@ -129,7 +133,8 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     if (commitment) {
       // Fetch all the unredeemed earned_rewards
       const unredeemedRewards = earnedRewards.filter(
-        (reward) => reward.commitment_id === commitment.id && !reward.is_redeemed,
+        (reward) =>
+          reward.commitment_id === commitment.id && !reward.is_redeemed,
       );
       // If there's at least one unredeemed reward, redeem it
       if (unredeemedRewards.length > 0) {
@@ -140,7 +145,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             is_redeemed: true,
             user_id: currentUser.id,
             date_redeemed: new Date().toISOString(),
-          })
+          }),
         );
       }
     }
@@ -148,10 +153,8 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       title: "Reward Redeemed!",
       duration: 5000,
       isClosable: true,
-    })
+    });
   };
-
-
 
   const getCurrentDay = () => {
     const date = new Date();
@@ -182,31 +185,48 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       commitmentCategories[timeframe].push(
         <Tr key={commitment.id}>
           <Td>
-            <Flex>
+            <Flex justifyContent="center">
               <CommitmentButton
                 commitmentId={commitment.id}
                 isCompleted={checkedCommitments[commitment.id] || false}
                 markAsComplete={handleCommitmentComplete}
+                commitmentName={commitment.challenge.name}
               />
-              <Text textAlign="center">{commitment.challenge.name}</Text>
             </Flex>
           </Td>
           {commitment.reward_id && (
             <Td>
-              <Text textAlign="center">{commitment?.reward?.name}</Text>
+              <Flex justifyContent="center" alignItems="center">
+                <Button
+                  isDisabled={
+                    !checkedCommitments[commitment.id] ||
+                    redeemedRewards[commitment.id]
+                  }
+                  onClick={() => handleRedeemReward(commitment.id)}
+                  colorScheme={
+                    !checkedCommitments[commitment.id] ||
+                    redeemedRewards[commitment.id]
+                      ? "gray"
+                      : "yellow"
+                  }
+                  height="150px"
+                  width="150px"
+                >
+                  {commitment.reward.name.toUpperCase()}
+                </Button>
+                {/* <IconButton
+                  aria-label="Redeem"
+                  icon={<MdRedeem />}
+                  colorScheme="blue"
+                  isDisabled={
+                    !checkedCommitments[commitment.id] ||
+                    redeemedRewards[commitment.id]
+                  }
+                  onClick={() => handleRedeemReward(commitment.id)}
+                /> */}
+              </Flex>
             </Td>
           )}
-          <Td>
-            <Flex justifyContent="center" alignItems="center">
-            <IconButton
-              aria-label="Redeem"
-              icon={<MdRedeem />}
-              colorScheme="blue"
-              isDisabled={!checkedCommitments[commitment.id] || redeemedRewards[commitment.id]}
-              onClick={() => handleRedeemReward(commitment.id)}
-            />
-            </Flex>
-          </Td>
         </Tr>,
       );
     }
@@ -229,7 +249,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
                   <Tr>
                     <Th textAlign="center">Commitment</Th>
                     <Th textAlign="center">Reward</Th>
-                    <Th textAlign="center">Redeem</Th>
                   </Tr>
                 </Thead>
                 <Tbody>{commitmentCategories["12"]}</Tbody>
@@ -241,7 +260,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
                   <Tr>
                     <Th textAlign="center">Commitment</Th>
                     <Th textAlign="center">Reward</Th>
-                    <Th textAlign="center">Redeem</Th>
                   </Tr>
                 </Thead>
                 <Tbody>{commitmentCategories["20"]}</Tbody>
@@ -253,7 +271,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
                   <Tr>
                     <Th textAlign="center">Commitment</Th>
                     <Th textAlign="center">Reward</Th>
-                    <Th textAlign="center">Redeem</Th>
                   </Tr>
                 </Thead>
                 <Tbody>{commitmentCategories["4"]}</Tbody>
