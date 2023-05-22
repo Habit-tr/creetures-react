@@ -1,30 +1,30 @@
-import React, { useRef, useState } from "react";
-import "./signup.css";
-import { useAuth } from "../../../context/AuthContext";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link as ReactLink } from "react-router-dom";
-import LoginNavbar from "../LoginNavbar/loginnavbar";
 import {
-  Flex,
+  Alert,
+  AlertIcon,
   Box,
+  Button,
+  Flex,
   FormControl,
   FormLabel,
-  Input,
-  Checkbox,
-  AlertIcon,
-  Stack,
-  Link,
-  Button,
   Heading,
-  Text,
-  Alert,
+  Input,
+  Link,
+  Stack,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
+import supabase from "../../../utils/supabaseClient";
+import "./signup.css";
 
 const SignUp = () => {
+  const toast = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const { signup } = useAuth();
@@ -44,6 +44,23 @@ const SignUp = () => {
       setError("");
       setLoading(true);
       const user = await signup(email, password);
+      console.log("user: ", user);
+      const { data: profile } = await supabase
+        .from("profiles")
+        .update({
+          email: email,
+          username: username,
+          full_name: fullName,
+          avatar_url: `https://gravatar.com/avatar/0b4f0855a2606cd1f9f583c4c837a66c?s=400&d=robohash&r=x`,
+        })
+        .eq("id", user.user.id)
+        .select();
+      console.log("profile: ", profile);
+      if (user) {
+        toast({
+          title: "Account created successfully. Please log in.",
+        });
+      }
       navigate("/login");
     } catch (error) {
       setError("Failed to create an account ");
@@ -85,8 +102,26 @@ const SignUp = () => {
                 }}
               />
             </FormControl>
+            <FormControl id="username">
+              <FormLabel>Username:</FormLabel>
+              <Input
+                type="username"
+                onChange={(e: any) => {
+                  setUsername(e.target.value);
+                }}
+              />
+            </FormControl>
+            <FormControl id="fullName">
+              <FormLabel>Full Name:</FormLabel>
+              <Input
+                type="fullName"
+                onChange={(e: any) => {
+                  setFullName(e.target.value);
+                }}
+              />
+            </FormControl>
             <FormControl id="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Password (6 characters minimum)</FormLabel>
               <Input
                 type="password"
                 onChange={(e) => {
