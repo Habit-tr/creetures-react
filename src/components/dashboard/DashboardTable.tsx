@@ -14,6 +14,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MdRedeem } from "react-icons/md";
@@ -42,6 +43,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const earnedRewards = useAppSelector(selectEarnedRewards);
   const [commitmentsFetched, setCommitmentsFetched] = useState(false);
   const [commitmentCompleted, setCommitmentCompleted] = useState(false);
+  const toast = useToast();
 
   const { currentUser } = useAuth();
 
@@ -75,11 +77,11 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
   useEffect(() => {
     const fetchRewards = async () => {
-      await dispatch(fetchAllEarnedRewardsAsync());
+      await dispatch(fetchAllEarnedRewardsAsync(currentUser.id));
     };
 
     fetchRewards();
-  }, [dispatch, commitmentCompleted]);
+  }, [dispatch, commitmentCompleted, currentUser.id]);
 
   useEffect(() => {
     const redeemedRewards = earnedRewards.reduce((result, reward) => {
@@ -121,21 +123,17 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   };
 
   const handleRedeemReward = async (commitmentId: number) => {
-    // console.log(`button clicked for ${commitmentId}`)
     const commitment = commitments.find(
       (commitment) => commitment.id === commitmentId,
     );
-    // console.log('commitment:', commitment);
     if (commitment) {
-      // Fetch the corresponding earned_reward
-      const earnedReward = earnedRewards.find(
-        (reward) => reward.commitment_id === commitment.id,
+      // Fetch all the unredeemed earned_rewards
+      const unredeemedRewards = earnedRewards.filter(
+        (reward) => reward.commitment_id === commitment.id && !reward.is_redeemed,
       );
-      // console.log(earnedRewards);
-      // console.log('earnedReward: ', earnedReward);
-      if (earnedReward) {
-        // console.log('Found earnedReward, dispatching action...');
-        // console.log(earnedReward.id);
+      // If there's at least one unredeemed reward, redeem it
+      if (unredeemedRewards.length > 0) {
+        const earnedReward = unredeemedRewards[0];
         dispatch(
           updateEarnedRewardAsync({
             id: earnedReward.id,
@@ -145,7 +143,13 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
         );
       }
     }
+    toast({
+      title: "Reward Redeemed!",
+      duration: 5000,
+      isClosable: true,
+    })
   };
+
 
 
   const getCurrentDay = () => {
