@@ -352,18 +352,6 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Profile",
     href: "/profile",
-    children: [
-      {
-        label: "Profile",
-        subLabel: "View your profile",
-        href: "/profile",
-      },
-      {
-        label: "Dashboard",
-        subLabel: "View your dashboard",
-        href: "/",
-      },
-    ],
   },
   {
     label: "Rewards",
@@ -371,23 +359,7 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "/rewards",
   },
   {
-    label: "Commitments",
-    href: "/commitments",
-  },
-  {
-    label: "Explore",
+    label: "Challenges",
     href: "/challenges",
-    children: [
-      {
-        label: "Challenges",
-        subLabel: "Find a new challenge",
-        href: "/challenges",
-      },
-      {
-        label: "Friends",
-        subLabel: "See what others are doing",
-        href: "/explorefriends",
-      },
-    ],
   },
 ];
