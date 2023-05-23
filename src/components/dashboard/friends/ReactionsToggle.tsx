@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import supabase from "../../../utils/supabaseClient";
 
+import { HighfiveColor, HighfiveOutline, NudgeColor, NudgeOutline } from "../components/icons";
+
 interface ReactionsToggleProps {
   commitId: number;
   status: boolean;
@@ -93,6 +95,10 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
   // console.log("reactions for commitId ", commitId, ": ", reactions);
   return (
     <Box width="60px">
+      {/* <HighfiveColor/>
+      <HighfiveOutline/>
+      <NudgeColor/>
+      <NudgeOutline/> */}
       <Center bgColor="white">
         {status ? (
           <Tooltip
@@ -106,7 +112,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
               onClick={() => handleClick("highfive")}
               p="4px"
             >
-              {isClicked ? `🙌🏾` : `🙌🏻`}{" "}
+              {isClicked ? <HighfiveColor/> : <HighfiveOutline/>}{" "}
               {reactions &&
                 reactions.length &&
                 reactions.filter(
@@ -127,7 +133,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
               bgColor="white"
               p="4px"
             >
-              {isClicked ? `👈🏾` : `👈🏻`}{" "}
+              {isClicked ? <NudgeColor/> : <NudgeOutline/>}{" "}
               {reactions &&
                 reactions.length &&
                 reactions.filter(
@@ -142,3 +148,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
   );
 };
 export default ReactionsToggle;
+
+
+
+// `👈🏾` : `👈🏻`
