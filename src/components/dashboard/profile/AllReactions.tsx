@@ -11,8 +11,10 @@ import {
     Stack
   } from "@chakra-ui/react";
 
-  import highfive from '../components/high-five.gif'
-  import point from '../components/point.gif'
+  import Nudge from "../components/Nudge";
+  import HighFive from "../components/Highfive";
+  import HighFiveOutline from "../components/HighFiveOutline";
+  import NudgeOutline from "../components/NudgeOutline";
 
 
 const Reaction: React.FC = () => {
@@ -46,8 +48,7 @@ const Reaction: React.FC = () => {
             <Text color={'black'}>High Five!</Text>
            </Stack>
                <Button bg="transparent" onClick={()=> setTotalHighfives(totalHighfives + 1)}>
-               <img style={{ height: '40px' }} className="highfive" src={highfive} alt="highfive" />
-               {totalHighfives}
+               <HighFive/>
                 </Button>
            </Box>
 
@@ -56,8 +57,7 @@ const Reaction: React.FC = () => {
             <Text color={'black'}>Poke!</Text>
            </Stack>
                <Button bg="transparent" onClick={()=> setTotalNudges(totalNudges + 1)}>
-               <img style={{ height: '30px' }} className="point" src={point} alt="point"/>
-               {totalNudges}
+               <Nudge/>
                 </Button>
            </Box>
         </Center>
