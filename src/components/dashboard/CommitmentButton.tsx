@@ -22,8 +22,9 @@ const CommitmentButton = ({
           isDisabled={isCompleted}
           height="100px"
           margin="10px"
-          padding="10px"
-          width="150px"
+          padding="8px"
+          width="110px"
+          whiteSpace="normal"
         >
           {commitmentName.toUpperCase()}
         </Button>
