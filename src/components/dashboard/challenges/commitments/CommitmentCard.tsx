@@ -14,9 +14,9 @@ const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
       <Card
         margin="10px"
         padding="10px"
-        w="150px"
+        w="350px"
         h="150px"
-        colorScheme="blue"
+        bgColor="orange.200"
         justify="center"
       >
         <Text fontSize="20px" align="center">

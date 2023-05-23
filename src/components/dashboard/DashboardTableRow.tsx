@@ -35,7 +35,7 @@ const DashboardTableRow = ({
               label="Redeem reward"
               isDisabled={
                 !checkedCommitments[commitment.id] ||
-                availableRewards[commitment.id]
+                !availableRewards[commitment.id]
               }
             >
               <Button
@@ -50,7 +50,9 @@ const DashboardTableRow = ({
                     ? "gray"
                     : "yellow"
                 }
-                height="150px"
+                height="100px"
+                margin="10px"
+                padding="10px"
                 width="150px"
               >
                 {commitment.reward.name.toUpperCase()}

@@ -115,8 +115,8 @@ export default function NavBar() {
               justifySelf="center"
               justifyContent="center"
               height="40px"
-              width="300px"
-              paddingLeft="10"
+              width="210px"
+              paddingLeft="10px"
               paddingRight="3"
               drag="y"
               dragConstraints={{ left: -100, right: 200 }}

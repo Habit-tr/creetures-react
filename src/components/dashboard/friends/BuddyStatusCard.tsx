@@ -1,16 +1,16 @@
-import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import { Avatar, Box, Card, Flex, Heading, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import ReactionsToggle from "./ReactionsToggle";
 
 const BuddyStatusCard = ({ commitment }: any) => {
   return (
-    <Flex
+    <Card
       className="buddy-status-card"
       direction="row"
       justifyContent="space-between"
       bgColor="green.200"
       color="black"
-      border="1px solid"
+      width="350px"
       margin="5px"
       padding="5px"
     >
@@ -32,7 +32,9 @@ const BuddyStatusCard = ({ commitment }: any) => {
         justifyContent="center"
       >
         <Link to={`/profile/${commitment.profile.id}`}>
-          <Text fontSize="md">{commitment.profile.username.toUpperCase()}</Text>
+          <Heading fontSize="xl">
+            {commitment.profile.username.toUpperCase()}
+          </Heading>
         </Link>
         <Text fontSize="2xs">
           {commitment.is_up_to_date ? `up to date` : `behind schedule`}{" "}
@@ -46,7 +48,7 @@ const BuddyStatusCard = ({ commitment }: any) => {
           />
         </Box>
       </Flex>
-    </Flex>
+    </Card>
   );
 };
 export default BuddyStatusCard;
