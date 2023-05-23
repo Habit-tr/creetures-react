@@ -15,7 +15,7 @@ const RedeemButton = ({ id, onRedeem }: RedeemButtonProps) => {
     <>
       <Button
         m="10px"
-        bgColor="white"
+        colorScheme="white"
         border="1px black solid"
         width="100px"
         onClick={handleRedeem}

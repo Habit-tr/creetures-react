@@ -1,7 +1,7 @@
 import {
   Box,
-  Button,
-  Flex,
+  Card,
+  Heading,
   Tab,
   TabList,
   TabPanel,
@@ -9,17 +9,17 @@ import {
   Table,
   Tabs,
   Tbody,
-  Td,
   Th,
   Thead,
   Tr,
   useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import { Database } from "../../utils/supabaseTypes";
-import CommitmentButton from "./CommitmentButton";
+import DashboardTableRow from "./DashboardTableRow";
 import {
   fetchAllCommitmentsAsync,
   selectCommitments,
@@ -40,7 +40,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const [checkedCommitments, setCheckedCommitments] = useState<
     Record<string, boolean>
   >({});
-  const [redeemedRewards, setRedeemedRewards] = useState<
+  const [availableRewards, setAvailableRewards] = useState<
     Record<string, boolean>
   >({});
   const dispatch = useAppDispatch();
@@ -55,14 +55,28 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const { currentUser } = useAuth();
 
   useEffect(() => {
+    //grabbing all commitments for auth user
     const fetchCommitments = async () => {
       await dispatch(fetchAllCommitmentsAsync(currentUser.id));
       setCommitmentsFetched(true); // after fetching set state to true
     };
-
     fetchCommitments();
+    //set current hour
+    const checkTime = () => {
+      const now = new Date();
+      const options: any = {
+        timeZone: "America/New_York",
+        hour12: false,
+        hour: "2-digit",
+      };
+      const easternTime = now.toLocaleString("en-US", options);
+      return parseInt(easternTime);
+    };
+    const currentHour = checkTime();
+    setHour(currentHour);
   }, [dispatch, currentUser.id]);
 
+  //filter all commitments to see which are already clicked
   const checkClickedCommitments = useCallback(() => {
     const clickedCommitments = fetchedCommitments.filter(
       (commitment) => commitment.is_clicked,
@@ -75,12 +89,14 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     });
   }, [fetchedCommitments]);
 
+  //running the above filter once all commitments have been fetched
   useEffect(() => {
     if (commitmentsFetched) {
       checkClickedCommitments();
     }
   }, [commitmentsFetched, checkClickedCommitments]);
 
+  //fetch the earned rewards for the auth user
   useEffect(() => {
     const fetchRewards = async () => {
       await dispatch(fetchAllEarnedRewardsAsync(currentUser.id));
@@ -90,27 +106,18 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   }, [dispatch, commitmentCompleted, currentUser.id]);
 
   useEffect(() => {
-    const checkTime = () => {
-      const now = new Date();
-      const options: any = {
-        timeZone: "America/New_York",
-        hour12: false,
-        hour: "2-digit",
-      };
-      const easternTime = now.toLocaleString("en-US", options);
-      return parseInt(easternTime);
-    };
-    setHour(checkTime());
-    const redeemedRewards = earnedRewards.reduce((result, reward) => {
-      if (reward.commitment_id && reward.is_redeemed) {
+    //filtering rewards into state if they're redeemed
+    const foundAvailableRewards = earnedRewards.reduce((result, reward) => {
+      if (reward.commitment_id && !reward.is_redeemed) {
         result[reward.commitment_id] = true;
       }
       return result;
     }, {} as Record<string, boolean>);
-    setRedeemedRewards(redeemedRewards);
+    setAvailableRewards(foundAvailableRewards);
   }, [earnedRewards]);
 
   const handleCommitmentComplete = (commitmentId: number) => {
+    // debugger;
     setCommitmentCompleted((prevState) => !prevState);
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
@@ -139,6 +146,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     }
   };
 
+  //set current tab based on hour to be active
   useEffect(() => {
     if (hour > 3 && hour < 12) setTabIndex(0);
     if (hour > 11 && hour < 20) setTabIndex(1);
@@ -150,7 +158,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       (commitment) => commitment.id === commitmentId,
     );
     if (commitment) {
-      // Fetch all the unredeemed earned_rewards
+      // Filter for all the unredeemed earned_rewards
       const unredeemedRewards = earnedRewards.filter(
         (reward) =>
           reward.commitment_id === commitment.id && !reward.is_redeemed,
@@ -169,10 +177,11 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       }
     }
     toast({
-      title: "Reward Redeemed!",
+      title: "Reward redeemed!",
       duration: 5000,
       isClosable: true,
     });
+    //refresh availableRewards in state
   };
 
   const getCurrentDay = () => {
@@ -202,62 +211,36 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     const timeframe = commitment.timeframe as "12" | "20" | "4";
     if (commitmentCategories.hasOwnProperty(timeframe) && committedToday) {
       commitmentCategories[timeframe].push(
-        <Tr key={commitment.id}>
-          <Td>
-            <Flex justifyContent="center">
-              <CommitmentButton
-                commitmentId={commitment.id}
-                isCompleted={checkedCommitments[commitment.id] || false}
-                markAsComplete={handleCommitmentComplete}
-                commitmentName={commitment.challenge.name}
-              />
-            </Flex>
-          </Td>
-          {commitment.reward_id && (
-            <Td>
-              <Flex justifyContent="center" alignItems="center">
-                <Button
-                  isDisabled={
-                    !checkedCommitments[commitment.id] ||
-                    redeemedRewards[commitment.id]
-                  }
-                  onClick={() => handleRedeemReward(commitment.id)}
-                  colorScheme={
-                    !checkedCommitments[commitment.id] ||
-                    redeemedRewards[commitment.id]
-                      ? "gray"
-                      : "yellow"
-                  }
-                  height="150px"
-                  width="150px"
-                >
-                  {commitment.reward.name.toUpperCase()}
-                </Button>
-                {/* <IconButton
-                  aria-label="Redeem"
-                  icon={<MdRedeem />}
-                  colorScheme="blue"
-                  isDisabled={
-                    !checkedCommitments[commitment.id] ||
-                    redeemedRewards[commitment.id]
-                  }
-                  onClick={() => handleRedeemReward(commitment.id)}
-                /> */}
-              </Flex>
-            </Td>
-          )}
-        </Tr>,
+        <DashboardTableRow
+          key={commitment.id}
+          commitment={commitment}
+          checkedCommitments={checkedCommitments}
+          handleCommitmentComplete={handleCommitmentComplete}
+          availableRewards={availableRewards}
+          handleRedeemReward={handleRedeemReward}
+        />,
       );
     }
   });
 
   return (
     <>
-      <Box>
+      <Box
+        id="dashboard-table"
+        h="calc(100vh - 258px)"
+        p="10px"
+        border="1px solid lightgray"
+        borderRadius="4px"
+        overflow="auto"
+        textAlign="center"
+      >
+        <Heading size="md" mb="20px" color="green.500">
+          TODAY'S COMMITMENTS
+        </Heading>
         <Tabs defaultIndex={tabIndex}>
           <TabList justifyContent="center" alignItems="center">
-            <Tab isDisabled={hour > 11}>Morning</Tab>
-            <Tab isDisabled={hour < 12}>Afternoon</Tab>
+            <Tab>Morning</Tab>
+            <Tab>Afternoon</Tab>
             <Tab>Night</Tab>
           </TabList>
 
@@ -297,6 +280,19 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             </TabPanel>
           </TabPanels>
         </Tabs>
+        {fetchedCommitments.length === 0 && (
+          <Card
+            textAlign="center"
+            margin="10px"
+            padding="10px"
+            bgColor="orange.100"
+          >
+            <Link to="/challenges">
+              You have no commitments scheduled for today. Browse the available
+              challenges and make a commitment!
+            </Link>
+          </Card>
+        )}
       </Box>
     </>
   );

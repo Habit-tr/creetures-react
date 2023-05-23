@@ -17,14 +17,17 @@ import {
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import { Database } from "../../../../utils/supabaseTypes";
+import {
+  fetchAllRewardsAsync,
+  selectRewards,
+} from "../../profile/allRewardsSlice";
 import { editCommitmentAsync } from "./singleCommitmentSlice";
-import { fetchAllRewardsAsync, selectRewards } from "../../profile/allRewardsSlice";
 
 interface EditCommitmentProps {
   isOpen: boolean;
   onClose: () => void;
   selectedCommitment: Database["public"]["Tables"]["commitments"]["Update"];
-};
+}
 
 const EditCommitment = ({
   isOpen,
@@ -51,7 +54,7 @@ const EditCommitment = ({
   useEffect(() => {
     const fetchRewards = async () => {
       await dispatch(fetchAllRewardsAsync());
-    }
+    };
     fetchRewards();
   }, [dispatch]);
 
@@ -75,7 +78,7 @@ const EditCommitment = ({
       updated_at: new Date(),
     };
     const returnedCommitment = await dispatch(
-      editCommitmentAsync(updatedCommitment)
+      editCommitmentAsync(updatedCommitment),
     );
     setCommitment(returnedCommitment);
     toast({
@@ -88,9 +91,7 @@ const EditCommitment = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader bgColor="orange.200">
-          Edit Your Commitment
-        </ModalHeader>
+        <ModalHeader bgColor="orange.200">Edit Your Commitment</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text mt="20px" mb="20px">
@@ -101,37 +102,44 @@ const EditCommitment = ({
               colorScheme="yellow"
               defaultChecked={days.includes("0")}
               onChange={() => handleDayClick("0")}
-            /> Sun{" "}
+            />{" "}
+            Sun{" "}
             <Checkbox
               colorScheme="yellow"
               defaultChecked={days.includes("1")}
               onChange={() => handleDayClick("1")}
-            /> Mon{" "}
+            />{" "}
+            Mon{" "}
             <Checkbox
               colorScheme="yellow"
               defaultChecked={days.includes("2")}
               onChange={() => handleDayClick("2")}
-            /> Tue{" "}
+            />{" "}
+            Tue{" "}
             <Checkbox
               colorScheme="yellow"
               defaultChecked={days.includes("3")}
               onChange={() => handleDayClick("3")}
-            /> Wed{" "}
+            />{" "}
+            Wed{" "}
             <Checkbox
               colorScheme="yellow"
               defaultChecked={days.includes("4")}
               onChange={() => handleDayClick("4")}
-            /> Thur{" "}
+            />{" "}
+            Thur{" "}
             <Checkbox
               colorScheme="yellow"
               defaultChecked={days.includes("5")}
               onChange={() => handleDayClick("5")}
-            /> Fri{" "}
+            />{" "}
+            Fri{" "}
             <Checkbox
               colorScheme="yellow"
               defaultChecked={days.includes("6")}
               onChange={() => handleDayClick("6")}
-            /> Sat
+            />{" "}
+            Sat
           </Box>
           <Box mb="20px">
             Time Frame:
@@ -163,10 +171,7 @@ const EditCommitment = ({
               <option value="">Select Reward</option>
               {rewards && rewards.length
                 ? rewards.map((reward) => (
-                    <option
-                      key={reward.id}
-                      value={reward.id}
-                    >
+                    <option key={reward.id} value={reward.id}>
                       {reward.name}
                     </option>
                   ))
@@ -175,12 +180,10 @@ const EditCommitment = ({
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={() => onClose()}>
-            Cancel
-          </Button>
+          <Button onClick={() => onClose()}>Cancel</Button>
           <Button
             isDisabled={!days || !timeframe}
-            bgColor="green.200"
+            colorScheme="green"
             ml={3}
             onClick={() => handleEdit()}
           >

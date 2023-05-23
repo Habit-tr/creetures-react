@@ -29,8 +29,6 @@ import {
   HamburgerIcon,
 } from "@chakra-ui/icons";
 
-// import "../styles.css";
-
 // import { IconType } from 'react-icons';
 // import {
 //   FiHome,
@@ -77,7 +75,7 @@ export default function NavBar() {
       await navigate("/");
       await navigate(0);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -115,8 +113,8 @@ export default function NavBar() {
               justifySelf="center"
               justifyContent="center"
               height="40px"
-              width="300px"
-              paddingLeft="10"
+              width="210px"
+              paddingLeft="10px"
               paddingRight="3"
               drag="y"
               dragConstraints={{ left: -100, right: 200 }}
@@ -125,6 +123,7 @@ export default function NavBar() {
               transition="0.5s ease-in-out"
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"Play Toon"}
+              className="creetures-logo"
               fontSize="40px"
               color={useColorModeValue("gray.800", "green.200")}
             >
@@ -351,42 +350,15 @@ interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Profile",
-    children: [
-      {
-        label: "Profile",
-        subLabel: "View your profile",
-        href: "/profile",
-      },
-      {
-        label: "Dashboard",
-        subLabel: "View your dashboard",
-        href: "/",
-      },
-    ],
+    href: "/profile",
   },
   {
     label: "Rewards",
-      subLabel: "View your rewards",
-      href: "/rewards",
-
+    subLabel: "View your rewards",
+    href: "/rewards",
   },
   {
-    label: "Commitments",
-    href: "/commitments",
-  },
-  {
-    label: "Explore",
-    children: [
-      {
-        label: "Challenges",
-        subLabel: "Find a new challenge",
-        href: "/challenges",
-      },
-      {
-        label: "Friends",
-        subLabel: "See what others are doing",
-        href: "/explorefriends",
-      },
-    ],
+    label: "Challenges",
+    href: "/challenges",
   },
 ];

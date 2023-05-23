@@ -13,8 +13,6 @@ const AllProfiles = () => {
   const dispatch = useAppDispatch();
   const profiles = useAppSelector(selectAllProfiles);
   const commitments = useAppSelector(selectCommitments);
-  // console.log('these are the commitments', commitments)
-  // console.log('these are the profiles', profiles)
 
   useEffect(() => {
     dispatch(fetchAllProfilesAsync());

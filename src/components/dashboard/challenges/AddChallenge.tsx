@@ -108,7 +108,7 @@ const AddChallenge = ({
           <ModalFooter>
             <Button
               isDisabled={!challengeName || !categoryId}
-              bgColor="green.200"
+              colorScheme="green"
               mr={3}
               onClick={() => handleSubmit()}
             >

@@ -61,7 +61,6 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
         .eq("commitment_id", commitId)
         .eq("is_archived", false)
         .select();
-      // console.log(updatedReaction);
       setToggled(toggled + 1); //this refreshes the page
       setIsClicked(newClickedState);
     } else {
@@ -96,7 +95,7 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
     return reactors.join(", ");
   };
 
-  // console.log("reactions for commitId ", commitId, ": ", reactions);
+
   return (
     <Box width="90px" display="inline-block" border="none">
 

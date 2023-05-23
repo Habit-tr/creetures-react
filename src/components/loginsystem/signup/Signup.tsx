@@ -44,7 +44,6 @@ const SignUp = () => {
       setError("");
       setLoading(true);
       const user = await signup(email, password);
-      console.log("user: ", user);
       const { data: profile } = await supabase
         .from("profiles")
         .update({
@@ -55,7 +54,6 @@ const SignUp = () => {
         })
         .eq("id", user.user.id)
         .select();
-      console.log("profile: ", profile);
       if (user) {
         toast({
           title: "Account created successfully. Please log in.",

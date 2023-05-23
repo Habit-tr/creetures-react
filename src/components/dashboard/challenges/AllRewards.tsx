@@ -24,7 +24,7 @@ const AllRewards = () => {
         <Flex direction="row" maxW="900px" wrap="wrap">
           {rewards.map((reward) => (
             <>
-              <Button bgColor="purple.200" onClick={onOpen}>
+              <Button colorScheme="purple" onClick={onOpen}>
                 <Link to={`/reward/${reward.id}`}>View reward</Link>
               </Button>
             </>

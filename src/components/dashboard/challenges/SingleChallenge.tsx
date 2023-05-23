@@ -1,3 +1,4 @@
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Button,
@@ -8,35 +9,47 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
-import { useAuth } from "../../../context/AuthContext";
+import EditChallenge from "./EditChallenge";
+import { deleteChallengeAsync } from "./allChallengesSlice";
+import AddCommitment from "./commitments/AddCommitment";
+import {
+  fetchCommitmentChallengeIdsAsync,
+  selectCommitmentChallengeIds,
+} from "./commitments/addCommitmentSlice";
 import {
   fetchSingleChallengeAsync,
   selectChallenge,
 } from "./singleChallengeSlice";
-import { deleteChallengeAsync } from "./allChallengesSlice";
-import { fetchCommitmentChallengeIdsAsync, selectCommitmentChallengeIds } from "./commitments/addCommitmentSlice";
-import AddCommitment from "./commitments/AddCommitment";
-import EditChallenge from "./EditChallenge";
 
 const SingleChallenge = () => {
   const dispatch = useAppDispatch();
   const { urlId } = useParams();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
-  const { isOpen: isCommitOpen, onOpen: onCommitOpen, onClose: onCommitClose } = useDisclosure();
-  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const {
+    isOpen: isCommitOpen,
+    onOpen: onCommitOpen,
+    onClose: onCommitClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
   const toast = useToast(); //https://chakra-ui.com/docs/components/toast/usage
   const [challenge, setChallenge] = useState<any>({});
   const [sharedUsers, setSharedUsers] = useState<any>([]);
   const fetchedChallenge = useAppSelector(selectChallenge);
   const fetchedChallengeIds = useAppSelector(selectCommitmentChallengeIds);
-  const challengeIds = fetchedChallengeIds.map(challenge => challenge.challenge_id);
-  
+  const challengeIds = fetchedChallengeIds.map(
+    (challenge) => challenge.challenge_id,
+  );
+
   // We have 4 separate useEffects in this component, might want to clean up a bit
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -91,7 +104,8 @@ const SingleChallenge = () => {
   };
 
   return (
-    challenge && challenge.id && (
+    challenge &&
+    challenge.id && (
       <>
         <Heading>Challenge: {challenge.name.toUpperCase()}</Heading>
         <Text>
@@ -105,8 +119,8 @@ const SingleChallenge = () => {
         )}
         <Text>Creetures of this Challenge:</Text>
         <Flex>
-          {sharedUsers && sharedUsers.length
-            ? sharedUsers.map((user: any) => (
+          {sharedUsers && sharedUsers.length ? (
+            sharedUsers.map((user: any) => (
               // This route isn't set up yet, but should link to a user's profile
               <Link to={`/profile/${user.user_id}`} key={user.user_id}>
                 <Card
@@ -117,46 +131,45 @@ const SingleChallenge = () => {
                   alignItems="center"
                   justifyContent="center"
                 >
-                  {user.profile.avatar_url
-                    ? <Avatar
-                        h="35px"
-                        w="35px"
-                        name={`${user.profile.username}`}
-                        src={user.profile.avatar_url}
-                      />
-                    : null
-                  }
+                  {user.profile.avatar_url ? (
+                    <Avatar
+                      h="35px"
+                      w="35px"
+                      name={`${user.profile.username}`}
+                      src={user.profile.avatar_url}
+                    />
+                  ) : null}
                   <Text fontSize="xs">{user.profile.username}</Text>
                 </Card>
               </Link>
             ))
-            : <Text>No one has committed to this challenge.</Text>
-          }
+          ) : (
+            <Text>No one has committed to this challenge.</Text>
+          )}
         </Flex>
         <Button
           m="10px"
           ml="0"
-          bgColor="green.200"
+          colorScheme="green"
           isDisabled={challengeIds.includes(challenge.id)}
           onClick={onCommitOpen}
         >
           Commit
         </Button>
-        {currentUser.id === challenge.created_by
-        ? <>
-            <Button margin="10px" bgColor="orange.200" onClick={onEditOpen}>
+        {currentUser.id === challenge.created_by ? (
+          <>
+            <Button margin="10px" colorScheme="orange" onClick={onEditOpen}>
               <EditIcon />
             </Button>
             <Button
               margin="10px"
-              bgColor="red.200"
+              colorScheme="red"
               onClick={() => handleDelete(challenge.id)}
             >
               <DeleteIcon />
             </Button>
           </>
-          : null
-        }
+        ) : null}
         <AddCommitment
           isOpen={isCommitOpen}
           onClose={onCommitClose}

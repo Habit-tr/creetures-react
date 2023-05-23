@@ -8,7 +8,10 @@ interface ChallengeBuddiesProps {
   userId: string;
 }
 
-const ChallengeBuddiesCard = ({ challengeId, userId }: ChallengeBuddiesProps) => {
+const ChallengeBuddiesCard = ({
+  challengeId,
+  userId,
+}: ChallengeBuddiesProps) => {
   const [fetchedBuddies, setFetchedBuddies] = useState<any>({});
 
   const getCurrentDay = () => {
@@ -23,20 +26,24 @@ const ChallengeBuddiesCard = ({ challengeId, userId }: ChallengeBuddiesProps) =>
         .select("*, challenge: challenges(name), profile: profiles(*)")
         .neq("user_id", userId)
         .match({ challenge_id: challengeId, is_active: true });
-      const currentBuddies = commitments?.filter(buddy => (
-        buddy.frequency.includes(getCurrentDay())
-      ));
+      const currentBuddies = commitments?.filter((buddy) =>
+        buddy.frequency.includes(getCurrentDay()),
+      );
       setFetchedBuddies(currentBuddies);
     };
     fetchBuddies();
   }, [challengeId, userId]);
 
   return fetchedBuddies && fetchedBuddies.length ? (
-    <Box className="challenge-buddies-card" m="0px" w="100%">
-      <Heading mb="0px" size="md">
+    <Box className="challenge-buddies-card" m="0" w="100%">
+      <Heading
+        mb="0"
+        size="md"
+        textAlign="center"
+      >
         {fetchedBuddies[0].challenge.name.toUpperCase()}
       </Heading>
-      <Flex direction="column">
+      <Flex direction="column" alignItems="center" mb="15px">
         {fetchedBuddies.map((buddy: any) => (
           <BuddyStatusCard key={buddy.user_id} commitment={buddy} />
         ))}

@@ -35,7 +35,7 @@ const Rewards = () => {
   return (
     <>
       <Heading>My Rewards</Heading>
-      <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
+      <Button margin="10px" colorScheme="purple" onClick={onOpen}>
         + Create Reward
       </Button>
       <Table variant="striped">
@@ -103,7 +103,7 @@ export default Rewards;
 //   return (
 //     <>
 //       <Heading>My Rewards</Heading>
-//       <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
+//       <Button margin="10px" colorScheme="purple" onClick={onOpen}>
 //         + Create Reward
 //       </Button>
 //       <Table variant="striped">
