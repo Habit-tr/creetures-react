@@ -1,5 +1,6 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Card } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { Database } from "../../../utils/supabaseTypes";
@@ -26,7 +27,9 @@ const FriendsSidebar = () => {
     fetchData();
   }, [dispatch, currentUser.id]);
 
-  const activeCommitments = commitments.filter(commitment => commitment.is_active);
+  const activeCommitments = commitments.filter(
+    (commitment) => commitment.is_active,
+  );
 
   return (
     <Box
@@ -37,18 +40,27 @@ const FriendsSidebar = () => {
       borderRadius="4px"
       overflow="auto"
     >
-      {activeCommitments && activeCommitments.length
-        ? activeCommitments.map((commitment: any) => (
-            <ChallengeBuddiesCard
-              key={commitment.challenge_id}
-              challengeId={commitment.challenge_id}
-              userId={currentUser.id}
-            />
-          ))
-        : <Text>
-            No buddies yet. Join some challenges and connect with other Creetures!
-          </Text>
-      }
+      {activeCommitments && activeCommitments.length ? (
+        activeCommitments.map((commitment: any) => (
+          <ChallengeBuddiesCard
+            key={commitment.challenge_id}
+            challengeId={commitment.challenge_id}
+            userId={currentUser.id}
+          />
+        ))
+      ) : (
+        <Card
+          textAlign="center"
+          margin="10px"
+          padding="10px"
+          bgColor="orange.100"
+        >
+          <Link to="/challenges">
+            You don't have any buddies yet. Commit to some challenges and
+            connect with other Creetures!
+          </Link>
+        </Card>
+      )}
     </Box>
   );
 };

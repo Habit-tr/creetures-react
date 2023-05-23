@@ -23,7 +23,7 @@ const CommitmentButton = ({
           height="150px"
           width="150px"
         >
-          {commitmentName.toUpperCase()} {commitmentId}
+          {commitmentName.toUpperCase()}
         </Button>
       </Tooltip>
     </Flex>
