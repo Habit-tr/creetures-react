@@ -62,7 +62,8 @@ const EditProfile = ({
     }
   };
 
-  const handleEdit = async () => {
+  const handleEdit = async (e: any) => {
+    e.preventDefault();
     // //the first block handles uploading the avatar file to storage if necessary
     if (file.name) {
       try {
@@ -170,7 +171,7 @@ const EditProfile = ({
               isDisabled={!username || !user}
               bgColor="green.200"
               mr={3}
-              onClick={() => handleEdit()}
+              onClick={handleEdit}
             >
               Save
             </Button>
