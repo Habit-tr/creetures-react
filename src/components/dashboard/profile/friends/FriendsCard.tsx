@@ -16,7 +16,7 @@ const FriendsCard = ({ friend }: FriendsCardProps) => {
         padding="0px"
         w="300px"
         h="150px"
-        bgColor="blue.200"
+        colorScheme="blue"
         justify="center"
       >
         <Flex>
@@ -44,7 +44,7 @@ export default FriendsCard;
   padding="10px"
   w="300px"
   h="150px"
-  bgColor="blue.200"
+  colorScheme="blue"
   justify="center"
 >
   <Text fontSize="20px" align="center">

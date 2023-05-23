@@ -58,7 +58,7 @@ const SingleCategory = () => {
         <>
           <EditCategory category={category} />
           <Button
-            bgColor="red.200"
+            colorScheme="red"
             m="10px"
             onClick={() => handleDelete(category.id!)}
           >

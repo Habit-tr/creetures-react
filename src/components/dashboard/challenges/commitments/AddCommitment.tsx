@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,7 +14,6 @@ import {
   Text,
   Textarea,
   useToast,
-  Input,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -25,15 +25,14 @@ import {
   selectRewards,
 } from "../../profile/allRewardsSlice";
 // import { postSharedUsersAsync } from "../../profile/friends/sharedUsersSlice";
-import { postNewCommitmentAsync } from "./allCommitmentsSlice";
 import supabase from "../../../../utils/supabaseClient";
-
+import { postNewCommitmentAsync } from "./allCommitmentsSlice";
 
 interface newRewardProps {
-  rewardName: string,
-  description: string,
-  user_id: string,
-  id: number,
+  rewardName: string;
+  description: string;
+  user_id: string;
+  id: number;
 }
 
 interface AddCommitmentProps {
@@ -41,8 +40,6 @@ interface AddCommitmentProps {
   onClose: () => void;
   challenge: Database["public"]["Tables"]["challenges"]["Insert"];
 }
-
-
 
 const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const dispatch = useAppDispatch();
@@ -109,11 +106,10 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   };
 
   const handleRewardSelect = (rewardName: string) => {
-    if(rewardName === "new") {
-      setShowNewRewardInput(true)
+    if (rewardName === "new") {
+      setShowNewRewardInput(true);
       setReward(nullReward);
-    }
-    else if (rewardName === "Select reward") {
+    } else if (rewardName === "Select reward") {
       setReward(nullReward);
       setShowNewRewardInput(false);
     } else {
@@ -131,11 +127,10 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
   const handleSubmit = async () => {
     try {
       if (newRewardName) {
-        const { data:newReward }: any = await supabase
-          .from('rewards')
+        const { data: newReward }: any = await supabase
+          .from("rewards")
           .insert({ name: newRewardName })
           .select();
-          console.log('This is new Reward', newReward);
 
         await dispatch(
           postNewCommitmentAsync({
@@ -179,8 +174,6 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
       setTimeframe("");
       setGoals("");
       setReward(nullReward);
-
-
     } catch (error) {
       // Handle the error here
       console.error(error);
@@ -194,14 +187,15 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {challenge && challenge.name
-          ? <ModalHeader bgColor="green.200">
-              Commit to {challenge.name.toUpperCase()} Challenge
-            </ModalHeader>
-          : <ModalHeader bgColor="green.200">
-              Commit to this challenge
-            </ModalHeader>
-        }
+        {challenge && challenge.name ? (
+          <ModalHeader bgColor="green.200">
+            Commit to {challenge.name.toUpperCase()} Challenge
+          </ModalHeader>
+        ) : (
+          <ModalHeader bgColor="green.200">
+            Commit to this challenge
+          </ModalHeader>
+        )}
         <ModalCloseButton />
         <ModalBody>
           <Text mt="20px" mb="20px">
@@ -250,23 +244,25 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
                   ))
                 : null}
 
-                <option value={'new'}>
-                Create New Reward...
-              </option>
+              <option value={"new"}>Create New Reward...</option>
             </Select>
-            {showNewRewardInput ?
-            (<>{'Name your Reward'}
-            <Input
-            type="text"
-            value={newRewardName}
-            onChange={(e) => setNewRewardName(e.target.value)}
-            >
-            </Input></>): <></>}
+            {showNewRewardInput ? (
+              <>
+                {"Name your Reward"}
+                <Input
+                  type="text"
+                  value={newRewardName}
+                  onChange={(e) => setNewRewardName(e.target.value)}
+                ></Input>
+              </>
+            ) : (
+              <></>
+            )}
           </Box>
         </ModalBody>
         <ModalFooter>
           <Button
-            bgColor="green.200"
+            colorScheme="green"
             mr={3}
             isDisabled={!days || !timeframe}
             onClick={handleSubmit}

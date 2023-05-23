@@ -38,7 +38,7 @@ const AddFriend = ({
       <Button
         type="submit"
         onClick={() => handleAddButton()}
-        bgColor="green.200"
+        colorScheme="green"
       >
         Add Friend
       </Button>

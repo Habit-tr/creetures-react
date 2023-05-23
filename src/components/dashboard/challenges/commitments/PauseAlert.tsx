@@ -1,19 +1,19 @@
-import React from "react";
 import {
-  Button,
   AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
   AlertDialogBody,
+  AlertDialogContent,
   AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import React from "react";
 
-interface PauseAlertProps  {
+interface PauseAlertProps {
   onPause: () => Promise<void> | void;
-};
+}
 
 const PauseAlert = ({ onPause }: PauseAlertProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,11 +27,7 @@ const PauseAlert = ({ onPause }: PauseAlertProps) => {
 
   return (
     <>
-      <Button
-        ml={3}
-        bgColor="lightsalmon"
-        onClick={onOpen}
-      >
+      <Button ml={3} colorScheme="pink" onClick={onOpen}>
         Pause
       </Button>
 
@@ -42,18 +38,16 @@ const PauseAlert = ({ onPause }: PauseAlertProps) => {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader
-              fontSize="lg"
-              fontWeight="bold"
-              bgColor="lightsalmon"
-            >
+            <AlertDialogHeader fontSize="lg" fontWeight="bold" bgColor="salmon">
               Pause Commitment
             </AlertDialogHeader>
 
             <AlertDialogBody>
               <Text>
-                Pausing this commitment will hault your progress in this challenge. You will retain all your current progress, reactions, 
-                and badge level, and at any point you can pick up where you left off by recommitting to this challenge.
+                Pausing this commitment will hault your progress in this
+                challenge. You will retain all your current progress, reactions,
+                and badge level, and at any point you can pick up where you left
+                off by recommitting to this challenge.
               </Text>
               <br />
               <Text fontStyle="italic">
@@ -65,7 +59,7 @@ const PauseAlert = ({ onPause }: PauseAlertProps) => {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button bgColor="lightsalmon" onClick={togglePause} ml={3}>
+              <Button colorScheme="pink" onClick={togglePause} ml={3}>
                 Pause
               </Button>
             </AlertDialogFooter>

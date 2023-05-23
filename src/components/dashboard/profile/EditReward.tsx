@@ -79,7 +79,7 @@ const EditReward = ({
           <ModalFooter>
             <Button
               isDisabled={!reward}
-              bgColor="green.200"
+              colorScheme="green"
               mr={3}
               onClick={() => handleEdit()}
             >

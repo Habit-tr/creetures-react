@@ -41,7 +41,6 @@ const EditProfile = ({
     const { data } = supabase.storage
       .from("profilePictures")
       .getPublicUrl(`${currentUser.id}`);
-    // console.log("setting currentUser");
     setCurrentUserUrl(data.publicUrl);
     setUsername(profileData.username);
     setFullName(profileData.full_name);
@@ -55,7 +54,6 @@ const EditProfile = ({
 
   const handleFileSelected = (e: any) => {
     try {
-      // console.log(e.target.files[0]);
       setFile(e.target.files[0]);
     } catch (err) {
       console.log(err);
@@ -75,7 +73,6 @@ const EditProfile = ({
             upsert: false,
           });
         setUrl(data?.path); // store filepath to save in database
-        // console.log("retreived url is: ", url);
       } catch (error) {
         toast({
           title: "There was an error updating your avatar.",
@@ -103,7 +100,6 @@ const EditProfile = ({
       toast({
         title: "Profile updated.",
       });
-      // console.log(returnedProfile);
       onClose();
     } catch (error) {
       toast({
@@ -135,7 +131,6 @@ const EditProfile = ({
           <ModalHeader bgColor="red.200">Edit Your Challenge</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* {JSON.stringify(profileData)} */}
             <Box>
               Update Username:
               <Input
@@ -150,7 +145,7 @@ const EditProfile = ({
                 onChange={(e) => setFullName(e.target.value)}
               />
             </Box>
-            Update Avatar (CURRENTLY BUGGY):
+            Update Avatar:
             <Flex direction="row">
               <Input
                 type="file"
@@ -169,7 +164,7 @@ const EditProfile = ({
           <ModalFooter>
             <Button
               isDisabled={!username || !user}
-              bgColor="green.200"
+              colorScheme="green"
               mr={3}
               onClick={handleEdit}
             >

@@ -93,20 +93,20 @@ const SingleReward = () => {
           {reward.date_last_redeemed && (
             <Flex>Date Last Redeemed: {reward.date_last_redeemed}</Flex>
           )}
-          {/* <Button bgColor="green.200" width="100px" marginRight="10px"
+          {/* <Button colorScheme="green" width="100px" marginRight="10px"
           onClick={() => handleRedeem()}
           >Redeem</Button> */}
           <RedeemButton id={reward.id} onRedeem={() => handleRedeem()}/>
           <Button
             margin="10px"
-            bgColor="orange.200"
+            colorScheme="orange"
             onClick={onOpen}
           >
             <EditIcon />
           </Button>
           {/* <Button
             margin="10px"
-            bgColor="red.200"
+            colorScheme="red"
             onClick={() => handleDelete(reward.id)}
           >
             <DeleteIcon />

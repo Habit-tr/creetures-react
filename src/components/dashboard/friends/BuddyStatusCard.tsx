@@ -1,47 +1,54 @@
-import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import { Avatar, Box, Card, Flex, Heading, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import ReactionsToggle from "./ReactionsToggle";
 
 const BuddyStatusCard = ({ commitment }: any) => {
   return (
-    <Flex
+    <Card
       className="buddy-status-card"
       direction="row"
       justifyContent="space-between"
-      bgColor="green.100"
+      bgColor="green.200"
       color="black"
-      border="1px solid"
+      width="350px"
       margin="5px"
       padding="5px"
     >
-      <Flex width="20%" justifyContent="baseline">
+      <Flex width="20%" justifyContent="baseline" alignItems="center" pl="30px">
         <Link to={`/profile/${commitment.profile.id}`}>
           <Avatar
-            height="35px"
-            width="35px"
-            bgColor="purple.100"
+            height="55px"
+            width="55px"
+            bgColor="purple"
             border="1px solid black"
             src={commitment.profile.avatar_url}
           />
         </Link>
       </Flex>
-      <Flex width="60%" direction="column" alignItems="center">
+      <Flex
+        width="60%"
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Link to={`/profile/${commitment.profile.id}`}>
-          <Text fontSize="md">{commitment.profile.username.toUpperCase()}</Text>
+          <Heading fontSize="xl">
+            {commitment.profile.username.toUpperCase()}
+          </Heading>
         </Link>
         <Text fontSize="2xs">
           {commitment.is_up_to_date ? `up to date` : `behind schedule`}{" "}
         </Text>
       </Flex>
       <Flex width="20%" justifyContent="end">
-        <Box border="1px black solid" p="0px" m="2px">
+        <Box border="none" p="0px" m="2px" display="inline-block">
           <ReactionsToggle
             commitId={commitment.id}
             status={commitment.is_up_to_date}
           />
         </Box>
       </Flex>
-    </Flex>
+    </Card>
   );
 };
 export default BuddyStatusCard;

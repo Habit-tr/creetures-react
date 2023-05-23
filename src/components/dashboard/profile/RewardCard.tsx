@@ -44,7 +44,7 @@ const RewardCard = ({ reward }: RewardCardProps) => {
           <Text fontSize="sm">Description: {reward.description}</Text>
         </CardBody>
         <Divider />
-        {/* <Button bgColor="green.200" width="100px" m="10px">Redeem</Button> */}
+        {/* <Button colorScheme="green" width="100px" m="10px">Redeem</Button> */}
         <RedeemButton key="redeemButton" id={reward.id} onRedeem={() => handleRedeem()}/>
       </Card>
     </Link>

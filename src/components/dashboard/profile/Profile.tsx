@@ -112,7 +112,7 @@ const Profile = () => {
             <Text>{`${currentUser.email}`}</Text>
             <Button
               margin="10px"
-              bgColor="purple.200"
+              colorScheme="purple"
               width="50%"
               onClick={() => onOpen()}
             >
@@ -147,7 +147,7 @@ const Profile = () => {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr bgColor="red.100">
+          <Tr colorScheme="red">
             <Td>
               <Link to="/commitments">Commitments</Link>
             </Td>
@@ -159,7 +159,7 @@ const Profile = () => {
             <Td></Td>
             <Td></Td>
           </Tr>
-          <Tr bgColor="yellow.100">
+          <Tr colorScheme="yellow">
             <Td>
               <Link to="/rewards">Rewards</Link>
             </Td>

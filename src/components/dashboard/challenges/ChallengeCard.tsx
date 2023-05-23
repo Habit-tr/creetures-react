@@ -32,13 +32,7 @@ const ChallengeCard = ({ challenge, category }: ChallengeCardProps) => {
   return (
     <>
       <Link to={`/challenges/${challenge.id}`}>
-        <Card
-          w="400px"
-          m="10px"
-          border="2px black solid"
-          color="black"
-          bgGradient="linear(to-b, gray.100, gray.300)"
-        >
+        <Card w="350px" m="10px" p="10px" bgColor="purple.200" color="black">
           <CardBody fontSize="sm">
             <Heading mb="0px" size="md">
               {challenge.name?.toUpperCase()}
@@ -47,31 +41,33 @@ const ChallengeCard = ({ challenge, category }: ChallengeCardProps) => {
             <Text>Category: {category?.name?.toUpperCase()}</Text>
             <Text>Committed Creetures:</Text>
             <Flex>
-              {sharedUsers && sharedUsers.length
-                ? sharedUsers.map((user: any) => (
+              {sharedUsers && sharedUsers.length ? (
+                sharedUsers.map((user: any) => (
                   <Flex
                     key={user.user_id}
                     flexDirection="column"
                     alignItems="center"
                     m="5px"
                   >
-                    {user.profile.avatar_url
-                      ? <Avatar
-                          h="35px"
-                          w="35px"
-                          name={`${user.profile.username}`}
-                          src={user.profile.avatar_url}
-                        />
-                      : null
-                    }
+                    {user.profile.avatar_url ? (
+                      <Avatar
+                        h="35px"
+                        w="35px"
+                        name={`${user.profile.username}`}
+                        src={user.profile.avatar_url}
+                      />
+                    ) : null}
                     <Text fontSize="xs">{user.profile.username}</Text>
                   </Flex>
                 ))
-                : <Text>No one has committed to this challenge.</Text>
-              }
+              ) : (
+                <Text>No one has committed to this challenge.</Text>
+              )}
             </Flex>
             <br />
-            <Text fontSize="sm" fontStyle="italic">Click for Details</Text>
+            <Text fontSize="sm" fontStyle="italic">
+              Click for Details
+            </Text>
           </CardBody>
         </Card>
       </Link>

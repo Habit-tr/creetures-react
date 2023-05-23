@@ -2,6 +2,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Flex,
   Heading,
   Text,
   useDisclosure,
@@ -10,27 +11,30 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
+import { useAuth } from "../../../../context/AuthContext";
 import supabase from "../../../../utils/supabaseClient";
+import Reaction from "../../profile/AllReactions";
+import RenderMedal from "../RenderMedal";
+import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
+import EditCommitment from "./EditCommitment";
+import PauseAlert from "./PauseAlert";
+import { deleteCommitmentAsync } from "./allCommitmentsSlice";
 import {
   fetchSingleCommitmentAsync,
   selectCommitment,
 } from "./singleCommitmentSlice";
-import { deleteCommitmentAsync } from "./allCommitmentsSlice";
-import Reaction from "../../profile/AllReactions";
-import RenderMedal from "../RenderMedal";
-import EditCommitment from "./EditCommitment";
-import PauseAlert from "./PauseAlert";
-import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
 
 const SingleCommitment = () => {
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { currentUser } = useAuth();
   const { id } = useParams();
   const toast = useToast();
   const navigate = useNavigate();
-  const [commitment, setCommitment] = useState<any>({})
-  const fetchedCommitment = useAppSelector(selectCommitment)
-  
+  const [commitment, setCommitment] = useState<any>({});
+  const [earnedReactions, setEarnedReactions] = useState<any>([]);
+  const fetchedCommitment = useAppSelector(selectCommitment);
+
   useEffect(() => {
     const fetchCommitment = async () => {
       try {
@@ -43,9 +47,27 @@ const SingleCommitment = () => {
   }, [dispatch, id, isOpen]);
 
   useEffect(() => {
+    const fetchReactions = async () => {
+      try {
+        if (commitment.id) {
+          const { data: reactions } = await supabase
+            .from("reactions")
+            .select(`*, commitments!inner (user_id), profile: profiles(username)`)
+            .eq("commitment_id", commitment.id);
+          setEarnedReactions(reactions);
+          console.log("reactions: ", reactions);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchReactions();
+  }, [commitment.id, currentUser.id, isOpen]);
+
+  useEffect(() => {
     setCommitment(fetchedCommitment);
   }, [fetchedCommitment]);
-  
+
   const {
     badge_level,
     challenge,
@@ -109,7 +131,7 @@ const SingleCommitment = () => {
       console.error(err);
       throw err;
     }
-  };  
+  };
 
   const handleTogglePause = async () => {
     try {
@@ -142,59 +164,70 @@ const SingleCommitment = () => {
     navigate("/commitments");
   };
 
-  return (
-    challenge && challenge.name
-    ? <>
-        <Box display="flex" alignItems="center">
-          <Heading as="h1">{challenge.name}&nbsp;&nbsp;</Heading>
-          <RenderMedal level={badge_level} />
-        </Box>
-        <Heading as="h2" size="md">
-          Category:&nbsp;&nbsp;
-          <Link to={`/challenges/categories/${challenge.category.name}`}>
-            {challenge.category.name}
-          </Link>
-        </Heading>
-        {frequency && frequency.length ? dayFrequency(frequency) : null}
-        {timeframe && timeframe.length ? time(timeframe) : null}
-        {goals && goals.length ? <Text>Goals: {goals}</Text> : null}
-        {reward && reward.name ? <Text>Reward: {reward.name}</Text> : null}
-        <br />
-        {is_up_to_date
-          ? <Text fontWeight="bold">You are up to date on your challenge!</Text>
-          : <Text fontWeight="bold">You behind on your challenge</Text>
-        }
-        <br />
+  return challenge && challenge.name ? (
+    <>
+      <Box display="flex" alignItems="center">
+        <Heading as="h1">{challenge.name}&nbsp;&nbsp;</Heading>
+        <RenderMedal level={badge_level} />
+      </Box>
+      <Heading as="h2" size="md">
+        Category:&nbsp;&nbsp;
+        <Link to={`/challenges/categories/${challenge.category.name}`}>
+          {challenge.category.name}
+        </Link>
+      </Heading>
+      <Flex>
         <Box>
-          <Button 
-            bgColor="orange.200"
-            isDisabled={!is_active}
-            onClick={onOpen}
-          >
-            <EditIcon />
-          </Button>
-          {is_active
-            ? <PauseAlert onPause={handleTogglePause} />
-            : <Button
-                ml={3}
-                bgColor="green.200"
-                onClick={handleTogglePause}
-              >
-                Recommit
-              </Button>
+          {frequency && frequency.length ? dayFrequency(frequency) : null}
+          {timeframe && timeframe.length ? time(timeframe) : null}
+          {goals && goals.length ? <Text>Goals: {goals}</Text> : null}
+          {reward && reward.name ? <Text>Reward: {reward.name}</Text> : null}
+        </Box>       
+        {/* Add reactions here */}
+        <Box>
+          {is_up_to_date
+            ? <Text fontWeight="bold">You are up to date on your challenge!</Text>
+            : <Text fontWeight="bold">You behind on your challenge</Text>
           }
-          <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} />
+          {earnedReactions && earnedReactions.length
+            ? earnedReactions.map((reaction: any) => (
+              reaction === "highfive"
+              ? <Text key={reaction.id}>{`${reaction.profile.username} high-fived you!`}</Text>
+              : <Text key={reaction.id}>{`${reaction.profile.username} nudged you`}</Text>
+            ))
+            : null
+          }
         </Box>
-        {/* Should add reactions for just this commitment */}
-        <Reaction />
-        <EditCommitment
-          isOpen={isOpen}
-          onClose={onClose}
-          selectedCommitment={commitment}
-        />
-      </>
-    : null
-  );
+      </Flex>
+      <Box>
+        <Button 
+          bgColor="orange.200"
+          isDisabled={!is_active}
+          onClick={onOpen}
+        >
+          <EditIcon />
+        </Button>
+        {is_active
+          ? <PauseAlert onPause={handleTogglePause} />
+          : <Button
+              ml={3}
+              bgColor="green.200"
+              onClick={handleTogglePause}
+            >
+              Recommit
+            </Button>
+        }
+        <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} />
+      </Box>
+      {/* Should add reactions for just this commitment */}
+      <Reaction />
+      <EditCommitment
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedCommitment={commitment}
+      />
+    </>
+  ) : null;
 };
 
 export default SingleCommitment;

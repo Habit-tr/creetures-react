@@ -11,29 +11,34 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
-import { Database } from "../../../utils/supabaseTypes";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch } from "../../../utils/reduxHooks";
-import { fetchAllRewardsAsync, postNewRewardAsync, updateRewardAsync } from "./allRewardsSlice";
+import { Database } from "../../../utils/supabaseTypes";
+import {
+  fetchAllRewardsAsync,
+  postNewRewardAsync,
+  updateRewardAsync,
+} from "./allRewardsSlice";
 
 interface AddRewardProps {
   isOpen: boolean;
   onClose: () => void;
-  reward?: Database['public']['Tables']['rewards']['Row'] | null;
+  reward?: Database["public"]["Tables"]["rewards"]["Row"] | null;
 }
-
 
 const AddReward = ({ isOpen, onClose, reward }: AddRewardProps) => {
   const dispatch = useAppDispatch();
   const { session } = useAuth();
   const user = session.session.user;
-  const [rewardName, setRewardName] = useState(reward ? reward.name : '');
-  const [description, setDescription] = useState(reward ? reward.description : '');
+  const [rewardName, setRewardName] = useState(reward ? reward.name : "");
+  const [description, setDescription] = useState(
+    reward ? reward.description : "",
+  );
 
   useEffect(() => {
-    setRewardName(reward ? reward.name : '');
-    setDescription(reward ? reward.description : '');
+    setRewardName(reward ? reward.name : "");
+    setDescription(reward ? reward.description : "");
   }, [reward]);
 
   const toast = useToast();
@@ -41,15 +46,19 @@ const AddReward = ({ isOpen, onClose, reward }: AddRewardProps) => {
   const handleSubmit = async () => {
     try {
       if (reward) {
-        await dispatch(updateRewardAsync({ id: reward.id, name: rewardName, description }));
+        await dispatch(
+          updateRewardAsync({ id: reward.id, name: rewardName, description }),
+        );
         dispatch(fetchAllRewardsAsync());
       } else {
-        await dispatch(postNewRewardAsync({
-          rewardName,
-          description,
-          user_id: user.id,
-          times_redeemed: 0,
-        }));
+        await dispatch(
+          postNewRewardAsync({
+            rewardName,
+            description,
+            user_id: user.id,
+            times_redeemed: 0,
+          }),
+        );
       }
       toast({
         title: reward ? "Reward updated" : "Reward added",
@@ -66,7 +75,6 @@ const AddReward = ({ isOpen, onClose, reward }: AddRewardProps) => {
         isClosable: true,
       });
     }
-
   };
 
   return (
@@ -74,13 +82,13 @@ const AddReward = ({ isOpen, onClose, reward }: AddRewardProps) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-        <ModalHeader bgColor="purple.200">
-          {reward ? "Update Reward" : "Create New Reward"}
-        </ModalHeader>
+          <ModalHeader bgColor="purple.200">
+            {reward ? "Update Reward" : "Create New Reward"}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              Name: {" "}
+              Name:{" "}
               <Input
                 value={rewardName}
                 onChange={(e) => setRewardName(e.target.value)}
@@ -89,7 +97,7 @@ const AddReward = ({ isOpen, onClose, reward }: AddRewardProps) => {
             <Box>
               Description:
               <Input
-                value={description || ''}
+                value={description || ""}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Box>
@@ -97,7 +105,7 @@ const AddReward = ({ isOpen, onClose, reward }: AddRewardProps) => {
           <ModalFooter>
             <Button
               isDisabled={!rewardName}
-              bgColor="green.200"
+              colorScheme="green"
               mr={3}
               onClick={() => handleSubmit()}
             >
