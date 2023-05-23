@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Tooltip } from "@chakra-ui/react";
 
 interface CommitmentButtonProps {
   commitmentId: number;
@@ -15,15 +15,20 @@ const CommitmentButton = ({
 }: CommitmentButtonProps) => {
   return (
     <Flex direction="row" justifyContent="center">
-      <Button
-        colorScheme={isCompleted ? "purple" : "pink"}
-        onClick={() => !isCompleted && markAsComplete(commitmentId)}
+      <Tooltip
+        label="Mark as complete"
         isDisabled={isCompleted}
-        height="150px"
-        width="150px"
       >
-        {commitmentName.toUpperCase()}
-      </Button>
+        <Button
+          colorScheme={isCompleted ? "purple" : "pink"}
+          onClick={() => !isCompleted && markAsComplete(commitmentId)}
+          isDisabled={isCompleted}
+          height="150px"
+          width="150px"
+        >
+          {commitmentName.toUpperCase()}
+        </Button>
+      </Tooltip>
     </Flex>
   );
 };

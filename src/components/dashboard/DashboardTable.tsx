@@ -12,6 +12,7 @@ import {
   Td,
   Th,
   Thead,
+  Tooltip,
   Tr,
   useToast,
 } from "@chakra-ui/react";
@@ -216,23 +217,31 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
           {commitment.reward_id && (
             <Td>
               <Flex justifyContent="center" alignItems="center">
-                <Button
+                <Tooltip
+                  label="Redeem reward"
                   isDisabled={
                     !checkedCommitments[commitment.id] ||
                     redeemedRewards[commitment.id]
                   }
-                  onClick={() => handleRedeemReward(commitment.id)}
-                  colorScheme={
-                    !checkedCommitments[commitment.id] ||
-                    redeemedRewards[commitment.id]
-                      ? "gray"
-                      : "yellow"
-                  }
-                  height="150px"
-                  width="150px"
                 >
-                  {commitment.reward.name.toUpperCase()}
-                </Button>
+                  <Button
+                    isDisabled={
+                      !checkedCommitments[commitment.id] ||
+                      redeemedRewards[commitment.id]
+                    }
+                    onClick={() => handleRedeemReward(commitment.id)}
+                    colorScheme={
+                      !checkedCommitments[commitment.id] ||
+                      redeemedRewards[commitment.id]
+                        ? "gray"
+                        : "yellow"
+                    }
+                    height="150px"
+                    width="150px"
+                  >
+                    {commitment.reward.name.toUpperCase()}
+                  </Button>
+                </Tooltip>
                 {/* <IconButton
                   aria-label="Redeem"
                   icon={<MdRedeem />}
@@ -253,7 +262,14 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
   return (
     <>
-      <Box>
+      <Box
+        id="dashboard-table"
+        h="calc(100vh - 258px)"
+        p="10px"
+        border="1px solid lightgray"
+        borderRadius="4px"
+        overflow="auto"
+      >
         <Tabs defaultIndex={tabIndex}>
           <TabList justifyContent="center" alignItems="center">
             <Tab isDisabled={hour > 11}>Morning</Tab>
