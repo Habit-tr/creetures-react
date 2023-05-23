@@ -15,7 +15,7 @@ const Navbar = () => {
       await logout();
       await navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   const { colorMode, toggleColorMode } = useColorMode();
@@ -33,7 +33,7 @@ const Navbar = () => {
         </Heading>
       </Link>
       <HamburgerMenu />
-      <Button m="5px" onClick={() => toggleColorMode()} bgColor="green.200">
+      <Button m="5px" onClick={() => toggleColorMode()} colorScheme="green">
         {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
       </Button>
       <Flex
@@ -45,7 +45,7 @@ const Navbar = () => {
         <Center color="white">{user.email}</Center>
       </Flex>
       <Link to="/">
-        <Button m="5px" bgColor="green.200" onClick={handleLogout}>
+        <Button m="5px" colorScheme="green" onClick={handleLogout}>
           Logout
         </Button>
       </Link>

@@ -26,7 +26,7 @@ const AddCategory = () => {
         }}
       ></Input>
       <Button
-        bgColor="green.200"
+        colorScheme="green"
         onClick={() => {
           handleSubmit();
         }}

@@ -17,7 +17,6 @@ export const fetchAllEarnedRewardsAsync = createAsyncThunk(
         .from("earned_rewards")
         .select("*, reward: rewards(name, description)")
         .eq("user_id", userId);
-        console.log(fetchedEarnedRewards);
       return fetchedEarnedRewards;
     } catch (err) {
       console.error(err);
@@ -111,7 +110,6 @@ export const updateEarnedRewardAsync = createAsyncThunk(
       }
 
       if (fetchdata) {
-        // console.log(fetchdata);
         return fetchdata;
       } else {
         console.error('Data is null');

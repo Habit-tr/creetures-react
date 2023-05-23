@@ -19,7 +19,7 @@ const HamburgerMenu = () => {
         aria-label="Options"
         icon={<HamburgerIcon />}
         m="5px"
-        bgColor="green.200"
+        colorScheme="green"
       />
       <MenuList>
         <MenuItem onClick={() => navigate("/")}>My Dashboard</MenuItem>

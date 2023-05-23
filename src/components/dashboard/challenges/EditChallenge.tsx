@@ -119,7 +119,7 @@ const EditChallenge = ({
           <ModalFooter>
             <Button
               isDisabled={!challenge || !categoryId}
-              bgColor="red.200"
+              colorScheme="red"
               mr={3}
               onClick={() => handleDelete(challenge.id)}
             >
@@ -127,7 +127,7 @@ const EditChallenge = ({
             </Button>
             <Button
               isDisabled={!challenge || !categoryId}
-              bgColor="green.200"
+              colorScheme="green"
               mr={3}
               onClick={() => handleEdit()}
             >

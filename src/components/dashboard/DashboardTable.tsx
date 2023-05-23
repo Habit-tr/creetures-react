@@ -273,8 +273,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        {<pre>{JSON.stringify(checkedCommitments, null, 2)}</pre>}
-        {<pre>{JSON.stringify(availableRewards, null, 2)}</pre>}
       </Box>
     </>
   );

@@ -40,7 +40,7 @@ const EditCategory = ({ category }: EditCategoryProps) => {
           onChange={(e) => setCategoryName(e.target.value)}
         ></Input>
       </Flex>
-      <Button bgColor="orange.200" onClick={() => handleSubmit()}>
+      <Button colorScheme="orange" onClick={() => handleSubmit()}>
         UPDATE
       </Button>
     </>

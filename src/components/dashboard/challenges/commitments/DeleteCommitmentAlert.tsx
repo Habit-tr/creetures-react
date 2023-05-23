@@ -1,20 +1,20 @@
-import React from "react";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Button,
   AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
   AlertDialogBody,
+  AlertDialogContent,
   AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import React from "react";
 
-interface DeleteAlertProps  {
+interface DeleteAlertProps {
   onDelete: () => Promise<void> | void;
-};
+}
 
 const DeleteCommitmentAlert = ({ onDelete }: DeleteAlertProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -28,11 +28,7 @@ const DeleteCommitmentAlert = ({ onDelete }: DeleteAlertProps) => {
 
   return (
     <>
-      <Button
-        ml={3}
-        bgColor="red.300"
-        onClick={onOpen}
-      >
+      <Button ml={3} colorScheme="red" onClick={onOpen}>
         <DeleteIcon />
       </Button>
 
@@ -46,14 +42,15 @@ const DeleteCommitmentAlert = ({ onDelete }: DeleteAlertProps) => {
             <AlertDialogHeader
               fontSize="lg"
               fontWeight="bold"
-              bgColor="red.300"
+              bgColor="red.200"
             >
               Delete Commitment
             </AlertDialogHeader>
 
             <AlertDialogBody>
               <Text>
-                Deleting this commitment will remove all progress and reactions you've acquired and reset your badge level to level 1.
+                Deleting this commitment will remove all progress and reactions
+                you've acquired and reset your badge level to level 1.
               </Text>
               <br />
               <Text fontStyle="italic">
@@ -65,7 +62,7 @@ const DeleteCommitmentAlert = ({ onDelete }: DeleteAlertProps) => {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button bgColor="red.300" onClick={handleDelete} ml={3}>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Database } from "../../../../utils/supabaseTypes";
 
 interface CommitmentCardProps {
-  commitment: Database['public']['Tables']['commitments']['Row'];
+  commitment: Database["public"]["Tables"]["commitments"]["Row"];
 }
 
 const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
@@ -16,7 +16,7 @@ const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
         padding="10px"
         w="150px"
         h="150px"
-        bgColor="blue.200"
+        colorScheme="blue"
         justify="center"
       >
         <Text fontSize="20px" align="center">
@@ -25,14 +25,15 @@ const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
         <Text fontSize="10px" align="center">
           Badge level: {badge_level}
         </Text>
-        {is_up_to_date
-        ? <Text fontSize="10px" fontWeight="bold" color="white" align="center">
+        {is_up_to_date ? (
+          <Text fontSize="10px" fontWeight="bold" color="white" align="center">
             Up to date
           </Text>
-        : <Text fontSize="10px" fontWeight="bold" color="red" align="center">
+        ) : (
+          <Text fontSize="10px" fontWeight="bold" color="red" align="center">
             Behind
           </Text>
-        }
+        )}
       </Card>
     </Link>
   );
