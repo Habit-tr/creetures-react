@@ -127,7 +127,7 @@ const SingleCommitment = () => {
     } catch (err) {
       console.error(err);
       toast({
-        title: "An error occurred while pausing the commitment.",
+        title: "An error occurred while pausing your commitment.",
         status: "error",
       });
     }
@@ -167,7 +167,6 @@ const SingleCommitment = () => {
         <br />
         <Box>
           <Button 
-            m="10px"
             bgColor="orange.200"
             isDisabled={!is_active}
             onClick={onOpen}
@@ -177,7 +176,7 @@ const SingleCommitment = () => {
           {is_active
             ? <PauseAlert onPause={handleTogglePause} />
             : <Button
-                m="10px"
+                ml={3}
                 bgColor="green.200"
                 onClick={handleTogglePause}
               >
@@ -192,7 +191,6 @@ const SingleCommitment = () => {
           isOpen={isOpen}
           onClose={onClose}
           selectedCommitment={commitment}
-          handleDelete={handleDelete}
         />
       </>
     : null

@@ -15,9 +15,9 @@ export const fetchAllEarnedRewardsAsync = createAsyncThunk(
     try {
       const { data: fetchedEarnedRewards } = await supabase
         .from("earned_rewards")
-        .select("*, rewards (name, description)")
-        .eq("user_id", userId)
-        console.log('allEarnedRewards:', fetchedEarnedRewards);
+        .select("*, reward: rewards(name, description)")
+        .eq("user_id", userId);
+        console.log(fetchedEarnedRewards);
       return fetchedEarnedRewards;
     } catch (err) {
       console.error(err);
@@ -78,17 +78,19 @@ interface UpdateEarnedRewardProps {
   id: number;
   is_redeemed: boolean;
   user_id: string;
+  date_redeemed: string | null;
 }
 
 export const updateEarnedRewardAsync = createAsyncThunk(
   "updateEarnedRewardAsync",
-  async ({ id, is_redeemed, user_id }: UpdateEarnedRewardProps) => {
+  async ({ id, is_redeemed, user_id, date_redeemed }: UpdateEarnedRewardProps) => {
     try {
       const { error: updateError } = await supabase
         .from("earned_rewards")
         .update({
           is_redeemed: is_redeemed,
           user_id: user_id,
+          date_redeemed: is_redeemed ? new Date().toISOString() : null,
         })
         .eq("id", id);
 

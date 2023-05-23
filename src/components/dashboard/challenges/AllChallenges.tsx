@@ -23,8 +23,8 @@ import {
   selectCategories,
 } from "./categories/allCategoriesSlice";
 
-const AllChallenges = () => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
+const AllChallenges = ({ categoryId }: { categoryId: number }) => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(categoryId);
   const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -80,7 +80,7 @@ const AllChallenges = () => {
         maxW="1250px"
         wrap="wrap"
       >
-        <Box>
+        <Flex alignItems="center">
           <Select
             value={selectedCategoryId}
             margin="5px"
@@ -103,6 +103,7 @@ const AllChallenges = () => {
             isChecked={showOnlyMine}
             colorScheme="purple"
             margin="5px"
+            whiteSpace="nowrap"
             onChange={() => {
               setShowOnlyMine(!showOnlyMine);
               filterChallenges(challenges);
@@ -110,7 +111,7 @@ const AllChallenges = () => {
           >
             Only My Challenges
           </Checkbox>
-        </Box>
+        </Flex>
         <Box>
           <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
             + Challenge

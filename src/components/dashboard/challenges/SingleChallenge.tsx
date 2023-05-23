@@ -96,7 +96,7 @@ const SingleChallenge = () => {
         <Heading>Challenge: {challenge.name.toUpperCase()}</Heading>
         <Text>
           Category:{" "}
-          <Link to={`/challenges/categories/${challenge.category.name}`}>
+          <Link to={`/challenges?categoryId=${challenge.category_id}`}>
             {challenge.category.name}
           </Link>
         </Text>

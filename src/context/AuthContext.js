@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import supabase from "../utils/supabaseClient";
 
 const AuthContext = React.createContext();
@@ -13,10 +13,19 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
 
   async function signup(email, password) {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
+    try {
+      const { data } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+      await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function getSession() {
@@ -42,7 +51,7 @@ export function AuthProvider({ children }) {
           email: email,
           password: password,
         },
-        { redirectTo: "http://localhost:3000/" }
+        { redirectTo: "http://localhost:3000/" },
       );
       return data;
     } catch (error) {
@@ -75,7 +84,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     getUser();
-      getSession();
+    getSession();
     setLoading(false);
   }, []);
 

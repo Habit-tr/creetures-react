@@ -1,13 +1,13 @@
 import { Button, Heading, Text, useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
-import EditCategory from "./EditCategory";
-import { deleteCategoryAsync } from "./allCategoriesSlice";
+import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
+import EditCategory from "../dashboard/challenges/categories/EditCategory";
+import { deleteCategoryAsync } from "../dashboard/challenges/categories/allCategoriesSlice";
 import {
   fetchSingleCategoryAsync,
   selectCategory,
-} from "./singleCategorySlice";
+} from "../dashboard/challenges/categories/singleCategorySlice";
 
 const SingleCategory = () => {
   const { id } = useParams();
