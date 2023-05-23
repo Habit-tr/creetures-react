@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import supabase from "../../../utils/supabaseClient";
 
-import { HighfiveColor, HighfiveOutline, NudgeColor, NudgeOutline } from "../components/icons";
+// import { HighfiveColor, HighfiveOutline, NudgeColor, NudgeOutline } from "../components/icons";
+import Nudge from "../components/Nudge";
+import HighFive from "../components/Highfive";
+import HighFiveOutline from "../components/HighFiveOutline";
+import NudgeOutline from "../components/NudgeOutline";
 
 interface ReactionsToggleProps {
   commitId: number;
@@ -94,25 +98,28 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
 
   // console.log("reactions for commitId ", commitId, ": ", reactions);
   return (
-    <Box width="60px">
-      {/* <HighfiveColor/>
-      <HighfiveOutline/>
-      <NudgeColor/>
-      <NudgeOutline/> */}
-      <Center bgColor="white">
+    <Box width="90px" display="inline-block" border="none">
+
+
+
+      <Center >
         {status ? (
           <Tooltip
             label={renderTooltipList(reactions, "highfive")}
             openDelay={500}
             aria-label="highfive"
           >
+
             <Text
               cursor="pointer"
-              bgColor="white"
               onClick={() => handleClick("highfive")}
               p="4px"
+              pr='30px'
+              display="inline-flex"
+              justifyContent="center"
+              alignItems="center"
             >
-              {isClicked ? <HighfiveColor/> : <HighfiveOutline/>}{" "}
+              {isClicked ? <HighFive /> : <HighFiveOutline/>}{" "}
               {reactions &&
                 reactions.length &&
                 reactions.filter(
@@ -130,10 +137,13 @@ const ReactionsToggle = ({ commitId, status }: ReactionsToggleProps) => {
             <Text
               cursor="pointer"
               onClick={() => handleClick("nudge")}
-              bgColor="white"
               p="4px"
+              pr='30px'
+              display="inline-flex"
+              justifyContent="center"
+              alignItems="center"
             >
-              {isClicked ? <NudgeColor/> : <NudgeOutline/>}{" "}
+              {isClicked ? <Nudge/> : <NudgeOutline/>}{" "}
               {reactions &&
                 reactions.length &&
                 reactions.filter(
