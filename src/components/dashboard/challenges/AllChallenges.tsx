@@ -80,7 +80,7 @@ const AllChallenges = ({ categoryId }: { categoryId: number }) => {
         maxW="1250px"
         wrap="wrap"
       >
-        <Box>
+        <Flex alignItems="center">
           <Select
             value={selectedCategoryId}
             margin="5px"
@@ -103,6 +103,7 @@ const AllChallenges = ({ categoryId }: { categoryId: number }) => {
             isChecked={showOnlyMine}
             colorScheme="purple"
             margin="5px"
+            whiteSpace="nowrap"
             onChange={() => {
               setShowOnlyMine(!showOnlyMine);
               filterChallenges(challenges);
@@ -110,7 +111,7 @@ const AllChallenges = ({ categoryId }: { categoryId: number }) => {
           >
             Only My Challenges
           </Checkbox>
-        </Box>
+        </Flex>
         <Box>
           <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
             + Challenge

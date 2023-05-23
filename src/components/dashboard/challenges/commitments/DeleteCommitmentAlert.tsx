@@ -29,7 +29,7 @@ const DeleteCommitmentAlert = ({ onDelete }: DeleteAlertProps) => {
   return (
     <>
       <Button
-        m="10px"
+        ml={3}
         bgColor="red.300"
         onClick={onOpen}
       >

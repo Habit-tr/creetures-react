@@ -24,44 +24,36 @@ interface EditCommitmentProps {
   isOpen: boolean;
   onClose: () => void;
   selectedCommitment: Database["public"]["Tables"]["commitments"]["Update"];
-  handleDelete: (id: number) => Promise<void>;
 };
 
 const EditCommitment = ({
   isOpen,
   onClose,
   selectedCommitment,
-  handleDelete,
 }: EditCommitmentProps) => {
   const [commitment, setCommitment] = useState<any>(selectedCommitment);
   const [days, setDays] = useState<any>("");
+  const [timeframe, setTimeframe] = useState<any>("");
   const [goals, setGoals] = useState<any>("");
   const [rewardId, setRewardId] = useState<any>("");
-  const [timeframe, setTimeframe] = useState<any>("");
   const dispatch = useAppDispatch();
   const toast = useToast();
+  const rewards = useAppSelector(selectRewards);
 
   useEffect(() => {
     setCommitment(selectedCommitment);
+    setDays(selectedCommitment.frequency);
+    setTimeframe(selectedCommitment.timeframe);
     setGoals(selectedCommitment.goals);
     setRewardId(selectedCommitment.reward_id);
-    setTimeframe(selectedCommitment.timeframe);
-    setDays("");
   }, [selectedCommitment]);
 
   useEffect(() => {
-    dispatch(fetchAllRewardsAsync());
+    const fetchRewards = async () => {
+      await dispatch(fetchAllRewardsAsync());
+    }
+    fetchRewards();
   }, [dispatch]);
-
-  const rewards = useAppSelector(selectRewards);
-
-  const rewardList = (rewards: Database["public"]["Tables"]["rewards"]["Row"][]) => {
-    const selectableRewards = ["Select reward"];
-    rewards.forEach(reward => {
-      selectableRewards.push(reward.name);
-    });
-    return selectableRewards;
-  };
 
   const handleDayClick = (dayChar: string) => {
     if (days.includes(dayChar)) {
@@ -72,27 +64,6 @@ const EditCommitment = ({
       setDays(newString);
     }
   };
-
-  const handleTimeframeSelect = (time: string) => {
-    if (time === "Morning (4am-12pm)") {
-      setTimeframe("12");
-    } else if (time === "Afternoon (12pm-8pm)") {
-      setTimeframe("20");
-    } else if (time === "Night (8pm-4am)") {
-      setTimeframe("4");
-    } else {
-      setTimeframe("");
-    }
-  };
-
-  const handleRewardSelect = (rewardName: string) => {
-    if (rewardName === "Select reward") {
-      setRewardId(null);
-    } else {
-      let selectedReward: any = rewards.find(reward => reward.name === rewardName);
-      setRewardId(selectedReward.id);
-    }
-  }
 
   const handleEdit = async () => {
     const updatedCommitment = {
@@ -126,62 +97,91 @@ const EditCommitment = ({
             Please select the days you'd like to commit:
           </Text>
           <Box mb="20px">
-            <Checkbox onChange={() => handleDayClick("0")} /> Sun{" "}
-            <Checkbox onChange={() => handleDayClick("1")} /> Mon{" "}
-            <Checkbox onChange={() => handleDayClick("2")} /> Tue{" "}
-            <Checkbox onChange={() => handleDayClick("3")} /> Wed{" "}
-            <Checkbox onChange={() => handleDayClick("4")} /> Thurs{" "}
-            <Checkbox onChange={() => handleDayClick("5")} /> Fri{" "}
-            <Checkbox onChange={() => handleDayClick("6")} /> Sat
+            <Checkbox
+              colorScheme="yellow"
+              defaultChecked={days.includes("0")}
+              onChange={() => handleDayClick("0")}
+            /> Sun{" "}
+            <Checkbox
+              colorScheme="yellow"
+              defaultChecked={days.includes("1")}
+              onChange={() => handleDayClick("1")}
+            /> Mon{" "}
+            <Checkbox
+              colorScheme="yellow"
+              defaultChecked={days.includes("2")}
+              onChange={() => handleDayClick("2")}
+            /> Tue{" "}
+            <Checkbox
+              colorScheme="yellow"
+              defaultChecked={days.includes("3")}
+              onChange={() => handleDayClick("3")}
+            /> Wed{" "}
+            <Checkbox
+              colorScheme="yellow"
+              defaultChecked={days.includes("4")}
+              onChange={() => handleDayClick("4")}
+            /> Thur{" "}
+            <Checkbox
+              colorScheme="yellow"
+              defaultChecked={days.includes("5")}
+              onChange={() => handleDayClick("5")}
+            /> Fri{" "}
+            <Checkbox
+              colorScheme="yellow"
+              defaultChecked={days.includes("6")}
+              onChange={() => handleDayClick("6")}
+            /> Sat
           </Box>
           <Box mb="20px">
             Time Frame:
             <Select
-              w="260px"
               mb="20px"
-              onChange={(e) => handleTimeframeSelect(e.target.value)}
               value={timeframe}
+              onChange={(e) => setTimeframe(e.target.value)}
             >
-              <option>Select time frame</option>
-              <option>Morning (4am-12pm)</option>
-              <option>Afternoon (12pm-8pm)</option>
-              <option>Night (8pm-4am)</option>
+              <option value="">Select Time Frame</option>
+              <option value="12">Morning (4am-12pm)</option>
+              <option value="20">Afternoon (12pm-8pm)</option>
+              <option value="4">Night (8pm-4am)</option>
             </Select>
           </Box>
           <Box mb="20px">
             Goals (Optional):
             <Textarea
-              value={goals}
+              value={goals || ""}
               onChange={(e) => setGoals(e.target.value)}
             />
           </Box>
           <Box>
             Reward (Optional):
             <Select
-              w="260px"
               mb="20px"
-              onChange={(e) => handleRewardSelect(e.target.value)}
+              value={rewardId}
+              onChange={(e) => setRewardId(e.target.value)}
             >
+              <option value="">Select Reward</option>
               {rewards && rewards.length
-                ? rewardList(rewards).map((reward, idx) => (
-                    <option key={idx}>{reward}</option>
+                ? rewards.map((reward) => (
+                    <option
+                      key={reward.id}
+                      value={reward.id}
+                    >
+                      {reward.name}
+                    </option>
                   ))
                 : null}
             </Select>
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button
-            bgColor="red.200"
-            mr={3}
-            onClick={() => handleDelete(commitment.id)}
-          >
-            Delete
+          <Button onClick={() => onClose()}>
+            Cancel
           </Button>
           <Button
             isDisabled={!days || !timeframe}
             bgColor="green.200"
-            mr={3}
+            ml={3}
             onClick={() => handleEdit()}
           >
             Save

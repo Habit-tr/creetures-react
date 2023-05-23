@@ -28,7 +28,7 @@ const PauseAlert = ({ onPause }: PauseAlertProps) => {
   return (
     <>
       <Button
-        m="10px"
+        ml={3}
         bgColor="lightsalmon"
         onClick={onOpen}
       >
