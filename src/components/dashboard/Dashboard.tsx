@@ -46,8 +46,8 @@ const Dashboard = () => {
   const welcomeString = `GOOD ${checkTime()}, ${username}!`;
   return (
     <>
-      <Flex direction="row">
-        <Box w="50%" p="10px">
+      <Flex direction="row" flexWrap="wrap">
+        <Box w="50%" minW="370px" p="10px">
           <Heading size="md" mb="20px" color="black">
             {welcomeString.toUpperCase()}
           </Heading>
@@ -88,7 +88,7 @@ const Dashboard = () => {
           </Table> */}
         </Box>
         {/* each of these two boxes should be a separate component that gets rendered in this parent component */}
-        <Box w="50%" ml="30px" padding="10px">
+        <Box w="50%" minW="370px" padding="10px">
           <Heading size="md" mb="20px" color="purple.500" textAlign="center">
             FELLOW CREETURES OF HABIT
           </Heading>
