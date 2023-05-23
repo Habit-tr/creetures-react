@@ -21,7 +21,9 @@ const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
       <Center mb="10px">
         <RenderMedal level={badge.badge_level} />
       </Center>
-      <Center fontSize="xs">{badge.challenge.name.toUpperCase()}</Center>
+      <Center textAlign="center" fontSize="xs">
+        {badge.challenge.name.toUpperCase()}
+      </Center>
       <Center fontSize="xs" color={badge.is_up_to_date ? `green` : `red`}>
         {badge.is_up_to_date ? `up to date` : `behind schedule`}
       </Center>
