@@ -1,5 +1,7 @@
 import {
   Box,
+  Card,
+  Heading,
   Tab,
   TabList,
   TabPanel,
@@ -13,6 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import { Database } from "../../utils/supabaseTypes";
@@ -229,7 +232,11 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
         border="1px solid lightgray"
         borderRadius="4px"
         overflow="auto"
+        textAlign="center"
       >
+        <Heading size="md" mb="20px" color="green.500">
+          TODAY'S COMMITMENTS
+        </Heading>
         <Tabs defaultIndex={tabIndex}>
           <TabList justifyContent="center" alignItems="center">
             <Tab>Morning</Tab>
@@ -273,6 +280,19 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             </TabPanel>
           </TabPanels>
         </Tabs>
+        {fetchedCommitments.length === 0 && (
+          <Card
+            textAlign="center"
+            margin="10px"
+            padding="10px"
+            bgColor="orange.100"
+          >
+            <Link to="/challenges">
+              You have no commitments scheduled for today. Browse the available
+              challenges and make a commitment!
+            </Link>
+          </Card>
+        )}
       </Box>
     </>
   );
