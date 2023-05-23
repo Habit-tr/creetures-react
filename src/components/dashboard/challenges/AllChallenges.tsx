@@ -24,7 +24,8 @@ import {
 } from "./categories/allCategoriesSlice";
 
 const AllChallenges = ({ categoryId }: { categoryId: number }) => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(categoryId);
+  const [selectedCategoryId, setSelectedCategoryId] =
+    useState<number>(categoryId);
   const [showOnlyMine, setShowOnlyMine] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -95,7 +96,7 @@ const AllChallenges = ({ categoryId }: { categoryId: number }) => {
             {allCategories &&
               allCategories.map((category) => (
                 <option key={category.id} value={category.id}>
-                  {category.name} {category.id}
+                  {category.name}
                 </option>
               ))}
           </Select>
