@@ -351,6 +351,7 @@ interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Profile",
+    href: "/profile",
     children: [
       {
         label: "Profile",
@@ -375,6 +376,7 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Explore",
+    href: "/challenges",
     children: [
       {
         label: "Challenges",
