@@ -9,6 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import supabase from "../../../utils/supabaseClient";
@@ -31,7 +32,7 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = supabase.storage
+      const { data } = await supabase.storage
         .from("profilePictures")
         .getPublicUrl(`${currentUser.id}`);
       setCurrentUserUrl(data.publicUrl);
@@ -58,6 +59,14 @@ const Profile = () => {
   }, [dispatch, currentUser.id, isOpen]);
 
   const profileData = useAppSelector(selectSingleProfile);
+
+  if (!profileData || profileData.length === 0) {
+    <Card textAlign="center" margin="10px" padding="10px" bgColor="orange.100">
+      <Link to="/challenges">
+        You don't have any commitments yet -- go make some!
+      </Link>
+    </Card>;
+  }
   return (
     <div>
       <Heading margin="20px">
@@ -70,110 +79,103 @@ const Profile = () => {
         margin="20px"
         justifyContent="space-evenly"
       >
-        <Card padding="10px" height="160px" width="30%" justifyContent="center">
+        <Card padding="10px" justifyContent="center">
           <Center>
-            {
+            {earnedReactions &&
+              earnedReactions.length &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
-              ).length
-            }{" "}
+              ).length}{" "}
             🙌 Earned
           </Center>
           <Center>
-            {
+            {earnedReactions &&
+              earnedReactions.length &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
-              ).length
-            }{" "}
+              ).length}{" "}
             👉 Earned
           </Center>
           <Center>{redeemedRewards.length} 🎁 Redeemed</Center>
           <Center>
-            {
+            {givenReactions &&
+              givenReactions.length &&
               givenReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
-              ).length
-            }{" "}
+              ).length}{" "}
             🙌 Given
           </Center>
           <Center>
-            {
+            {givenReactions &&
+              givenReactions.length &&
               givenReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
-              ).length
-            }{" "}
+              ).length}{" "}
             👉 Given
           </Center>
         </Card>{" "}
-        <Card width="40%" height="160px" justifyContent="center" padding="10px">
+        <Card justifyContent="center" padding="10px">
           <Center flexDirection="column">
             <Text>{profileData.username}</Text>
             <Text>{profileData.full_name}</Text>
             <Text>{`${currentUser.email}`}</Text>
-            <Button
-              margin="10px"
-              colorScheme="purple"
-              width="50%"
-              onClick={() => onOpen()}
-            >
+            <Button margin="10px" colorScheme="purple" onClick={() => onOpen()}>
               Edit Settings
             </Button>
           </Center>
         </Card>
       </Flex>
-      <Flex
-        direction="row"
-        wrap="wrap"
-        margin="20px"
-        justifyContent="space-evenly"
-      >
-        {profileData &&
-          profileData.commitments &&
-          profileData.commitments.map((badge: any, i: number) => (
-            <ReactionBadgeCard key={badge.id} badge={badge} />
-          ))}
-      </Flex>
-      {/* <Table>
-        <Thead>
-          <Tr>
-            <Th></Th>
-            <Th>Mon</Th>
-            <Th>Tues</Th>
-            <Th>Weds</Th>
-            <Th>Thurs</Th>
-            <Th>Fri</Th>
-            <Th>Sat</Th>
-            <Th>Sun</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr colorScheme="red">
-            <Td>
-              <Link to="/commitments">Commitments</Link>
-            </Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-          </Tr>
-          <Tr colorScheme="yellow">
-            <Td>
-              <Link to="/rewards">Rewards</Link>
-            </Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-          </Tr>
-        </Tbody>
-      </Table> */}
+      {profileData &&
+      profileData.commitments &&
+      profileData.commitments.length ? (
+        <>
+          <Heading textAlign="center">My Badges</Heading>
+          <Flex
+            direction="row"
+            wrap="wrap"
+            margin="20px"
+            justifyContent="center"
+          >
+            {profileData.commitments
+              .filter((commitment: any) => commitment.is_active) //add a sort to rank badges from highest to lowest
+              .map((badge: any, i: number) => (
+                <Link to={`/commitments/${badge.id}`} key={badge.id}>
+                  <ReactionBadgeCard badge={badge} />
+                </Link>
+              ))}
+          </Flex>
+        </>
+      ) : (
+        <></>
+      )}
 
+      {profileData &&
+      profileData.commitments &&
+      profileData.commitments.length &&
+      profileData.commitments.filter((commitment: any) => !commitment.is_active)
+        .length > 0 ? (
+        <>
+          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+            My Paused Commitments
+          </Heading>
+          <Flex
+            direction="row"
+            wrap="wrap"
+            margin="20px"
+            justifyContent="center"
+          >
+            {profileData.commitments
+              .filter((commitment: any) => !commitment.is_active)
+              .map((badge: any, i: number) => (
+                <Link to={`/commitments/${badge.id}`} key={badge.id}>
+                  <ReactionBadgeCard badge={badge} />
+                </Link>
+              ))}
+          </Flex>
+        </>
+      ) : (
+        <></>
+      )}
       <EditProfile
         user={currentUser}
         profileData={profileData}
