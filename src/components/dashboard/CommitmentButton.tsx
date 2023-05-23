@@ -15,10 +15,7 @@ const CommitmentButton = ({
 }: CommitmentButtonProps) => {
   return (
     <Flex direction="row" justifyContent="center">
-      <Tooltip
-        label="Mark as complete"
-        isDisabled={isCompleted}
-      >
+      <Tooltip label="Mark as complete" isDisabled={isCompleted}>
         <Button
           colorScheme={isCompleted ? "purple" : "pink"}
           onClick={() => !isCompleted && markAsComplete(commitmentId)}
@@ -26,7 +23,7 @@ const CommitmentButton = ({
           height="150px"
           width="150px"
         >
-          {commitmentName.toUpperCase()}
+          {commitmentName.toUpperCase()} {commitmentId}
         </Button>
       </Tooltip>
     </Flex>
