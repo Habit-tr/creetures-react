@@ -52,8 +52,9 @@ const DashboardTableRow = ({
                 }
                 height="100px"
                 margin="10px"
-                padding="10px"
-                width="150px"
+                padding="8px"
+                width="100px"
+                whiteSpace="normal"
               >
                 {commitment.reward.name.toUpperCase()}
               </Button>

@@ -10,7 +10,7 @@ const BuddyStatusCard = ({ commitment }: any) => {
       justifyContent="space-between"
       bgColor="green.200"
       color="black"
-      width="350px"
+      width="325px"
       margin="5px"
       padding="5px"
     >
