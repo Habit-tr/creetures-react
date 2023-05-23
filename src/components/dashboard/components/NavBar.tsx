@@ -77,7 +77,7 @@ export default function NavBar() {
       await navigate("/");
       await navigate(0);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -366,9 +366,8 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Rewards",
-      subLabel: "View your rewards",
-      href: "/rewards",
-
+    subLabel: "View your rewards",
+    href: "/rewards",
   },
   {
     label: "Commitments",

@@ -113,13 +113,13 @@ const AllChallenges = ({ categoryId }: { categoryId: number }) => {
           </Checkbox>
         </Flex>
         <Box>
-          <Button margin="10px" bgColor="purple.200" onClick={onOpen}>
+          <Button margin="10px" colorScheme="purple" onClick={onOpen}>
             + Challenge
           </Button>
           {/* adding a category feels like admin only functionality */}
           <Button
             margin="10px"
-            bgColor="purple.200"
+            colorScheme="purple"
             onClick={() => navigate("/challenges/categories")}
           >
             + Category
