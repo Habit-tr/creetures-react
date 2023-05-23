@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import supabase from "../../../utils/supabaseClient";
 
+
+
 interface EditProfileProps {
   user: any;
   isOpen: any;
@@ -229,8 +231,8 @@ const EditProfile = ({
   return (
     <Flex direction="column">
       <Heading padding="20px">Edit Profile Modal</Heading>
-      
-      
+
+
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { Avatar, Card, Center, Flex, Heading } from "@chakra-ui/react";
+import { Avatar, Card, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
@@ -8,6 +8,10 @@ import {
   fetchSingleProfileAsync,
   selectSingleProfile,
 } from "./Single-All-ProfilesSlice";
+
+import HighFive from "../components/Highfive";
+import Nudge from "../components/Nudge";
+import Reward from "../components/Reward";
 
 const BuddyProfile = () => {
   const { buddy_id } = useParams();
@@ -57,37 +61,37 @@ const BuddyProfile = () => {
         margin="20px"
         justifyContent="space-evenly"
       >
-        <Card padding="10px" height="160px" width="30%" justifyContent="center">
+        <Card direction='column' padding="20px" height="460px" width="20%" justifyContent="space-evenly" alignItems='center'>
           <Center>
             {earnedReactions &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
               ).length}{" "}
-            🙌 Earned
+            <HighFive/> <Text style={{padding: '0 15px'}}>Earned</Text>
           </Center>
           <Center>
             {earnedReactions &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
               ).length}{" "}
-            👉 Earned
+            <Nudge/> <Text style={{padding: '0 10px'}}>Earned</Text>
           </Center>
           <Center>
-            {redeemedRewards && redeemedRewards.length} 🎁 Redeemed
+            {redeemedRewards && redeemedRewards.length} <Reward/> <Text style={{padding: '0 0px'}}>Redeemed</Text>
           </Center>
           <Center>
             {givenReactions &&
               givenReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
               ).length}{" "}
-            🙌 Given
+            <HighFive/><Text style={{padding: '0 15px'}}>Given</Text>
           </Center>
           <Center>
             {givenReactions &&
               givenReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
               ).length}{" "}
-            👉 Given
+            <Nudge/><Text style={{padding: '0 15px'}}>Given</Text>
           </Center>
         </Card>{" "}
         {profileData &&

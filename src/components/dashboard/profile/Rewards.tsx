@@ -5,6 +5,7 @@ import { fetchAllRewardsAsync, deleteRewardAsync, selectRewards } from "./allRew
 import AddReward from "./AddReward";
 import DeleteAlert from "./DeleteAlert";
 import { Database } from "../../../utils/supabaseTypes";
+import Trash from "../components/Trash";
 
 const Rewards = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,6 +55,7 @@ const Rewards = () => {
                 <Td>
                   <Button onClick={() => { setSelectedReward(reward); onOpen(); }}>Edit</Button>
                   <DeleteAlert onDelete={() => handleDelete(reward.id)}/>
+
                 </Td>
               </Tr>
             ))
