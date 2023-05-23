@@ -15,8 +15,8 @@ import CycleTest from "./profile/CycleTest";
 import Profile from "./profile/Profile";
 import RewardsPage from "./profile/RewardsPage";
 import SingleReward from "./profile/SingleReward";
-import Friends from "./profile/friends/ExploreFriends";
-import ExploreFriends from "./profile/friends/ExploreFriends";
+import Friends from "./friends/explore/ExploreFriends";
+import ExploreFriends from "./friends/explore/ExploreFriends";
 
 const DashboardRoutes = () => {
   return (
