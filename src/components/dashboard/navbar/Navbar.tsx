@@ -14,7 +14,6 @@ const Navbar = () => {
     try {
       await logout();
       await navigate("/");
-      await navigate(0);
     } catch (error) {
       console.log(error);
     }
