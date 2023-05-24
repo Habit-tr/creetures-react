@@ -7,6 +7,8 @@ import {
   Heading,
   Text,
   useDisclosure,
+  Box,
+  Spacer,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,6 +21,13 @@ import {
   fetchSingleProfileAsync,
   selectSingleProfile,
 } from "./Single-All-ProfilesSlice";
+
+import HighFive from "../components/Highfive";
+import Nudge from "../components/Nudge";
+import Reward from "../components/Reward";
+import Edit from "../components/Edit";
+import Level from "../components/Level";
+
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -73,68 +82,90 @@ const Profile = () => {
         <Avatar name={`${currentUser.id}`} src={currentUserUrl} />{" "}
         {profileData.username}'s Profile
       </Heading>
+
       <Flex
         direction="row"
         wrap="wrap"
         margin="20px"
         justifyContent="space-evenly"
+        padding="10px"
+        gridGap={12}
       >
-        <Card padding="10px" justifyContent="center">
+        <Box
+          flex="2.5"
+          justifyContent="space-evenly"
+          padding="0px"
+          alignItems="center"
+        >
+        <Card height='200px' padding="20px" justifyContent="center" direction="row">
           <Center>
             {earnedReactions &&
               earnedReactions.length &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
               ).length}{" "}
-            🙌 Earned
+            <HighFive /> <Text fontWeight="bold" style={{ padding: "0 15px" }}>Earned</Text>
           </Center>
+          <Spacer />
           <Center>
             {earnedReactions &&
               earnedReactions.length &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
               ).length}{" "}
-            👉 Earned
+            <Nudge /> <Text fontWeight="bold" style={{ padding: "0 10px" }}>Earned</Text>
           </Center>
-          <Center>{redeemedRewards.length} 🎁 Redeemed</Center>
+          <Spacer />
+          <Center>{redeemedRewards.length} <Reward />{" "}
+              <Text fontWeight="bold" style={{ padding: "0 0px" }}>Redeemed</Text>
+          </Center>
+          <Spacer />
           <Center>
             {givenReactions &&
               givenReactions.length &&
               givenReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
               ).length}{" "}
-            🙌 Given
+            <HighFive /><Text fontWeight="bold" style={{ padding: "0 15px" }}>Given</Text>
           </Center>
+          <Spacer />
           <Center>
             {givenReactions &&
               givenReactions.length &&
               givenReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
               ).length}{" "}
-            👉 Given
+            <Nudge /><Text fontWeight="bold" style={{ padding: "0 15px" }}>Given</Text>
           </Center>
         </Card>{" "}
-        <Card justifyContent="center" padding="10px">
-          <Center flexDirection="column">
-            <Text>{profileData.username}</Text>
-            <Text>{profileData.full_name}</Text>
-            <Text>{`${currentUser.email}`}</Text>
+        </Box>
+
+        <Box flex='1'>
+        <Card  padding="10px" height='200px'>
+          <Center flexDirection="column" marginTop="-60px">
+          <Edit style={{ marginRight: "200px" }}/>
+            <Text>UserName:{profileData.username}</Text>
+            <Text>Name:{profileData.full_name}</Text>
+            <Text>Email:{`${currentUser.email}`}</Text>
             <Button margin="10px" colorScheme="purple" onClick={() => onOpen()}>
               Edit Settings
             </Button>
           </Center>
         </Card>
+        </Box>
       </Flex>
+
+
       {profileData &&
       profileData.commitments &&
       profileData.commitments.length ? (
         <>
-          <Heading textAlign="center">My Badges</Heading>
+          <Flex direction="row" wrap="wrap" margin="30px"><Level/><Heading margin="10px" marginTop='20px'>My Badges</Heading></Flex>
           <Flex
             direction="row"
             wrap="wrap"
-            margin="20px"
-            justifyContent="center"
+            margin="30px"
+            gap="6"
           >
             {profileData.commitments
               .filter((commitment: any) => commitment.is_active) //add a sort to rank badges from highest to lowest
