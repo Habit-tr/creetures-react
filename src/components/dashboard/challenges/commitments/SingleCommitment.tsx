@@ -55,7 +55,6 @@ const SingleCommitment = () => {
             .select(`*, commitments!inner (user_id), profile: profiles(username)`)
             .eq("commitment_id", commitment.id);
           setEarnedReactions(reactions);
-          console.log("reactions: ", reactions);
         }
       } catch (err) {
         console.error(err);

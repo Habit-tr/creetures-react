@@ -17,8 +17,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import supabase from "../../../utils/supabaseClient";
 
-
-
 interface EditProfileProps {
   user: any;
   isOpen: any;
@@ -36,7 +34,7 @@ const EditProfile = ({
   const [currentUserUrl, setCurrentUserUrl] = useState("");
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
-  const [url, setUrl] = useState<any>("");
+  const [url, setUrl] = useState<string>("");
   const { currentUser } = useAuth();
   const toast = useToast();
   useEffect(() => {
@@ -54,53 +52,64 @@ const EditProfile = ({
     currentUser.id,
   ]);
 
-  const handleFileSelected = (e: any) => {
+  const handleFileSelected = async (e: any) => {
     try {
       setFile(e.target.files[0]);
+      const filename = `${currentUser.id}`;
+      const { data, error } = await supabase.storage
+        .from("profilePictures")
+        .upload(filename, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+      const avatarUrl = `https://xrinzjsqsfarjyupbckx.supabase.co/storage/v1/object/public/profilePictures/${data?.path}`;
+      setUrl(avatarUrl); // store filepath to save in database
     } catch (err) {
       console.log(err);
     }
   };
 
+  // const sendAvatarToStorage = async () => {
+  //   try {
+  //     const filename = `${currentUser.id}`;
+  //     const { data, error } = await supabase.storage
+  //       .from("profilePictures")
+  //       .upload(filename, file, {
+  //         cacheControl: "3600",
+  //         upsert: true,
+  //       });
+  //     console.log("data: ", data);
+  //     const avatarUrl = `https://xrinzjsqsfarjyupbckx.supabase.co/storage/v1/object/public/profilePictures/${data?.path}`;
+  //     await setUrl(avatarUrl); // store filepath to save in database
+  //     console.log("url: ", url);
+  //   } catch (error) {
+  //     toast({
+  //       title: "There was an error updating your avatar.",
+  //     });
+  //     console.log(error);
+  //   }
+  // };
+
   const handleEdit = async (e: any) => {
     e.preventDefault();
     // //the first block handles uploading the avatar file to storage if necessary
-    if (file.name) {
-      try {
-        const filename = `${currentUser.id}`;
-        const { data, error } = await supabase.storage
-          .from("profilePictures")
-          .upload(filename, file, {
-            cacheControl: "3600",
-            upsert: false,
-          });
-        setUrl(data?.path); // store filepath to save in database
-      } catch (error) {
-        toast({
-          title: "There was an error updating your avatar.",
-        });
-        console.log(error);
-      }
-    }
-    //this block builds the updated profile object
-    // const updatedProfile = {
-    //   username: username,
-    //   full_name: fullName,
-    //   avatar_url: profileData.avatar_url,
-    // };
-    //   //if a file was uploaded and successfully returned, update the avatar_url
-    //   if (filepath) {
-    //     updatedProfile.avatar_url = filepath;
-    //   }
+    // if (file.name) {
+    // sendAvatarToStorage();
+    // }
+
     //now submit the update request to supabase
     try {
       const { data: returnedProfile } = await supabase
         .from("profiles")
-        .update({ username: username, full_name: fullName, avatar_url: url })
+        .update({
+          username: username,
+          full_name: fullName,
+          avatar_url: url,
+        })
         .eq("id", profileData.id)
         .select();
       toast({
-        title: "Profile updated.",
+        title: "Profile updated. Avatars may take a moment to update.",
       });
       onClose();
     } catch (error) {
