@@ -5,7 +5,7 @@ import { fetchAllRewardsAsync, deleteRewardAsync, selectRewards } from "./allRew
 import AddReward from "./AddReward";
 import DeleteAlert from "./DeleteAlert";
 import { Database } from "../../../utils/supabaseTypes";
-import { MdRedeem } from "react-icons/md";
+import { EditIcon } from "@chakra-ui/icons";
 
 
 const Rewards = () => {
@@ -56,7 +56,7 @@ const Rewards = () => {
                 <Td>
                   <IconButton
                       aria-label="Redeem"
-                      icon={<MdRedeem />}
+                      icon={<EditIcon />}
                       colorScheme="blue"
                       onClick={() => { setSelectedReward(reward); onOpen(); }}
                       m={1}

@@ -30,6 +30,29 @@ const ChallengeCard = ({ challenge, category }: ChallengeCardProps) => {
     fetchSharedUsers();
   }, [challenge.id]);
 
+  // const findBuddies = () => {
+  //   const buddyList: JSX.Element[] = [];
+  //   sharedUsers.forEach((user: any, idx: number) => {
+  //     while (idx < 5) {
+  //       buddyList.push(
+  //         <Avatar
+  //           h="35px"
+  //           w="35px"
+  //           name={`${user.profile.username}`}
+  //           src={user.profile.avatar_url}
+  //         />
+  //       );
+  //     }
+  //     if (idx >= 5) {
+  //       buddyList.push(<Text>... {sharedUsers.length - 5} more Creetures</Text>);
+  //     }
+  //   })
+  //   setBuddies(buddyList);
+  // }
+  
+  // findBuddies();
+  // console.log("buddies: ", buddies);  
+
   return (
     <>
       <Link to={`/challenges/${challenge.id}`}>

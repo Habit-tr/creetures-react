@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import { useAuth } from "../../../../context/AuthContext";
 import supabase from "../../../../utils/supabaseClient";
 import RenderMedal from "../RenderMedal";
-import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
+// import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
 import EditCommitment from "./EditCommitment";
 import PauseAlert from "./PauseAlert";
 import BuddyReactionCard from "./BuddyReactionCard";
@@ -80,6 +80,7 @@ const SingleCommitment = () => {
   const {
     badge_level,
     challenge,
+    challenge_id,
     frequency,
     goals,
     is_active,
@@ -175,11 +176,19 @@ const SingleCommitment = () => {
 
   return challenge && challenge.name ? (
     <>
-      <Flex p='40px' flexWrap="wrap" mt="-10px" mb="10px" >
-        <Flex alignItems="center" w="50%" minW="380px" >
-          <Box textAlign="center" mr={4} >
-            <Heading as="h1">{challenge.name.toUpperCase()}</Heading>
-            <Heading as="h2" size="sm" textAlign="left">
+
+      <Flex justifyContent="flex-end" flexWrap="wrap" mt="-10px" mb="10px">
+        <Flex alignItems="center" w="50%" minW="380px">
+          <Box textAlign="center" mr={4}>
+            <ChakraLink
+                as={RouterLink}
+                to={`/challenges/${challenge_id}`}
+                fontStyle="italic"
+                _hover={{ color: "green.200" }}
+              >
+              <Heading as="h1">{challenge.name.toUpperCase()}</Heading>
+            </ChakraLink>
+            <Heading as="h2" size="md" textAlign="left">
               Category:&nbsp;&nbsp;
               <ChakraLink
                 as={RouterLink}
@@ -214,7 +223,7 @@ const SingleCommitment = () => {
                   Recommit
                 </Button>
             }
-            <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} />
+            {/* <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} /> */}
           </Box>
         </Flex>
         <EditCommitment
@@ -264,7 +273,7 @@ const SingleCommitment = () => {
                 {goals ? (
                   <>
                     <Td fontWeight="bold">Reward</Td>
-                    <Td>{reward.name}</Td>
+                    <Td>{reward?.name}</Td>
                   </>
                 ) : null}
               </Tr>
@@ -291,8 +300,8 @@ const SingleCommitment = () => {
           pr='160px'
           >
           {is_up_to_date
-            ? <Text color='tomato' fontWeight="bold" mb="10px" >You are up to date on your challenge!</Text>
-            : <Text color='tomato' fontWeight="bold" mb="10px" >You behind on your challenge!!</Text>
+            ? <Text color='green' fontWeight="bold" mb="10px" >You are up to date on your challenge!</Text>
+            : <Text color='tomato' fontWeight="bold" mb="10px" >You behind on your chal
           }
           </Box>
 
