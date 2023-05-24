@@ -72,7 +72,7 @@ const BuddyProfile = () => {
       <Flex
         direction="row"
         flexWrap="wrap"
-        margin="10px"
+        margin="0px"
         justifyContent="space-evenly"
         padding="10px"
         gridGap={12}
@@ -80,7 +80,7 @@ const BuddyProfile = () => {
         <Box
           flex="1"
           justifyContent="space-evenly"
-          padding="10px"
+          padding="0px"
           alignItems="center"
         >
           <Card height="500px" padding="10px">
