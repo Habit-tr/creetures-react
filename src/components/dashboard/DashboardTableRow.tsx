@@ -1,6 +1,7 @@
-import { Button, Flex, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { Button, Flex, Td, Tooltip, Tr, Spinner } from "@chakra-ui/react";
 import { Database } from "../../utils/supabaseTypes";
 import CommitmentButton from "./CommitmentButton";
+import React, { useState, useEffect, useRef } from 'react';
 interface DashboardTableRowProps {
   commitment: Database["public"]["Tables"]["commitments"]["Row"];
   checkedCommitments: Record<string, boolean>;
@@ -16,6 +17,27 @@ const DashboardTableRow = ({
   availableRewards,
   handleRedeemReward,
 }: DashboardTableRowProps) => {
+  const isLoadingRef = useRef<Record<number, boolean>>({});
+
+  const setLoading = (id: number, state: boolean) => {
+    isLoadingRef.current[id] = state;
+  };
+
+  const isLoading = (id: number) => !!isLoadingRef.current[id];
+
+  useEffect(() => {
+    if (isLoading(commitment.id)) {
+      setLoading(commitment.id, false);
+    }
+  }, [checkedCommitments, availableRewards, commitment.id]);
+
+  const handleClick = (commitmentId: number) => {
+    setLoading(commitmentId, true);
+    handleRedeemReward(commitmentId).then(() => setLoading(commitmentId, false));
+  };
+
+
+
   return (
     <Tr key={commitment.id}>
       <Td>
@@ -43,7 +65,7 @@ const DashboardTableRow = ({
                   !checkedCommitments[commitment.id] ||
                   !availableRewards[commitment.id]
                 }
-                onClick={() => handleRedeemReward(commitment.id)}
+                onClick={() => handleClick(commitment.id)}
                 colorScheme={
                   !checkedCommitments[commitment.id] ||
                   !availableRewards[commitment.id]
@@ -56,7 +78,7 @@ const DashboardTableRow = ({
                 width="100px"
                 whiteSpace="normal"
               >
-                {commitment.reward.name.toUpperCase()}
+                {isLoading(commitment.id) ? <Spinner /> : commitment.reward.name.toUpperCase()}
               </Button>
             </Tooltip>
             {/* <IconButton

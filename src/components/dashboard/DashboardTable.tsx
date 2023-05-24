@@ -101,7 +101,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     const fetchRewards = async () => {
       await dispatch(fetchAllEarnedRewardsAsync(currentUser.id));
     };
-
     fetchRewards();
   }, [dispatch, commitmentCompleted, currentUser.id]);
 
@@ -114,11 +113,26 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       return result;
     }, {} as Record<string, boolean>);
     setAvailableRewards(foundAvailableRewards);
-  }, [earnedRewards]);
+    console.log(foundAvailableRewards);
+  }, [earnedRewards, commitmentCompleted]);
 
-  const handleCommitmentComplete = (commitmentId: number) => {
+  // const checkAvailableRewards = useCallback(() => {
+  //   const redeemableRewards = earnedRewards.filter(
+  //     (redeemableReward) => !redeemableReward.is_redeemed,
+  //   );
+  //   redeemableRewards.forEach((reward) => {
+  //     setAvailableRewards((prevState) => ({
+  //       ...prevState,
+  //       [reward.commitment_id as number] : true,
+  //     }));
+  //   });
+  // }, [earnedRewards])
+
+
+  const handleCommitmentComplete = async (commitmentId: number) => {
     // debugger;
     setCommitmentCompleted((prevState) => !prevState);
+    console.log(commitmentCompleted);
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
       [commitmentId]: true,
@@ -127,7 +141,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       (commitment) => commitment.id === commitmentId,
     );
     if (commitment && commitment.reward_id) {
-      dispatch(
+      await dispatch(
         postNewEarnedRewardAsync({
           commitment_id: commitment.id,
           reward_id: commitment.reward_id,
@@ -136,7 +150,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       );
     }
     if (commitment) {
-      dispatch(
+      await dispatch(
         editCommitmentAsync({
           id: commitmentId,
           is_clicked: true,
@@ -166,7 +180,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       // If there's at least one unredeemed reward, redeem it
       if (unredeemedRewards.length > 0) {
         const earnedReward = unredeemedRewards[0];
-        dispatch(
+        await dispatch(
           updateEarnedRewardAsync({
             id: earnedReward.id,
             is_redeemed: true,
@@ -181,6 +195,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       duration: 5000,
       isClosable: true,
     });
+    return Promise.resolve();
     //refresh availableRewards in state
   };
 
