@@ -2,37 +2,34 @@ import { EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Link as ChakraLink,
   Flex,
   Heading,
-  Link as ChakraLink,
+  Spacer,
+  Table,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Tr,
   useDisclosure,
   useToast,
-  Tbody,
-  Table,
-  Tr,
-  Td,
-  Th,
-  Spacer,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import { useAuth } from "../../../../context/AuthContext";
+import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import supabase from "../../../../utils/supabaseClient";
 import RenderMedal from "../RenderMedal";
 // import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
+import BuddyReactionCard from "./BuddyReactionCard";
 import EditCommitment from "./EditCommitment";
 import PauseAlert from "./PauseAlert";
-import BuddyReactionCard from "./BuddyReactionCard";
 import { deleteCommitmentAsync } from "./allCommitmentsSlice";
 import {
   fetchSingleCommitmentAsync,
   selectCommitment,
 } from "./singleCommitmentSlice";
-
-import Days from "../../components/Days";
-import Time from "../../components/Time";
 
 const SingleCommitment = () => {
   const dispatch = useAppDispatch();
@@ -62,7 +59,9 @@ const SingleCommitment = () => {
         if (commitment.id) {
           const { data: reactions } = await supabase
             .from("reactions")
-            .select(`*, commitments!inner (user_id), profile: profiles(avatar_url, username)`)
+            .select(
+              `*, commitments!inner (user_id), profile: profiles(avatar_url, username)`,
+            )
             .eq("commitment_id", commitment.id);
           setEarnedReactions(reactions);
         }
@@ -176,16 +175,15 @@ const SingleCommitment = () => {
 
   return challenge && challenge.name ? (
     <>
-
       <Flex justifyContent="flex-end" flexWrap="wrap" mt="-10px" mb="10px" pt='50px' pl='50px'>
         <Flex alignItems="center" w="50%" minW="380px" >
           <Box textAlign="center" mr={4}>
             <ChakraLink
-                as={RouterLink}
-                to={`/challenges/${challenge_id}`}
-                fontStyle="italic"
-                _hover={{ color: "green.200" }}
-              >
+              as={RouterLink}
+              to={`/challenges/${challenge_id}`}
+              fontStyle="italic"
+              _hover={{ color: "green.200" }}
+            >
               <Heading as="h1">{challenge.name.toUpperCase()}</Heading>
             </ChakraLink>
             <Heading as="h2" size="md" textAlign="left">
@@ -202,10 +200,13 @@ const SingleCommitment = () => {
           </Box>
           <RenderMedal level={badge_level} />
         </Flex>
-
-        <Spacer/>
-        <Flex alignItems="center" justifyContent="flex-end" justifySelf='flex-end' >
-          <Box minW="218px" p="10px" >
+        <Spacer />
+        <Flex
+          alignItems="center"
+          justifyContent="flex-end"
+          justifySelf="flex-end"
+        >
+          <Box minW="218px" p="10px">
             <Button
               bgColor="orange.200"
               isDisabled={!is_active}
@@ -213,16 +214,13 @@ const SingleCommitment = () => {
             >
               <EditIcon />
             </Button>
-            {is_active
-              ? <PauseAlert onPause={handleTogglePause} />
-              : <Button
-                  ml={3}
-                  bgColor="green.200"
-                  onClick={handleTogglePause}
-                >
-                  Recommit
-                </Button>
-            }
+            {is_active ? (
+              <PauseAlert onPause={handleTogglePause} />
+            ) : (
+              <Button ml={3} bgColor="green.200" onClick={handleTogglePause}>
+                Recommit
+              </Button>
+            )}
             {/* <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} /> */}
           </Box>
         </Flex>
@@ -232,21 +230,18 @@ const SingleCommitment = () => {
           selectedCommitment={commitment}
         />
       </Flex>
-
-
-      <Flex flexWrap="wrap" >
-
+     <Flex flexWrap="wrap" >
         <Box w="50%" minW="370px" p="20px" pt='50px' pl='40px' >
           <Table>
             <Tbody>
-              <Tr >
-                <Th >Details</Th>
+              <Tr>
+                <Th>Details</Th>
                 <Th></Th>
               </Tr>
               <Tr id="frequency">
                 {frequency ? (
                   <>
-                  {/* <Box pl='30px'><Days/></Box> */}
+                    {/* <Box pl='30px'><Days/></Box> */}
                     <Td fontWeight="bold">Days</Td>
                     <Td>{dayFrequency(frequency)}</Td>
                   </>
@@ -255,8 +250,10 @@ const SingleCommitment = () => {
               <Tr id="timeframe">
                 {timeframe ? (
                   <>
-                  {/* <Box pl='30px'><Time/></Box> */}
-                    <Td fontWeight="bold" minW="140px">Time of Day</Td>
+                    {/* <Box pl='30px'><Time/></Box> */}
+                    <Td fontWeight="bold" minW="140px">
+                      Time of Day
+                    </Td>
                     <Td>{time(timeframe)}</Td>
                   </>
                 ) : null}
@@ -280,54 +277,38 @@ const SingleCommitment = () => {
             </Tbody>
           </Table>
         </Box>
-        <Spacer/>
-
+        <Spacer />
 
         <Box
           minW="370px"
           p="40px"
-          pt='0px'
+          pt="0px"
           // pr='40px'
           w="50%"
           display="flex"
           justifyContent="flex-end"
           alignItems="flex-end"
-          flexDirection='column'
-
+          flexDirection="column"
         >
-
-          <Box
-          pr='160px'
-          >
           {is_up_to_date
-            ? <Text color='green' fontWeight="bold" mb="10px" >You are up to date on your challenge!</Text>
-            : <Text color='tomato' fontWeight="bold" mb="10px" >You behind on your challlenge!</Text>
+            ? <Text color="green" fontWeight="bold" mb="10px">You are up to date on your challenge!</Text>
+            : <Text color="tomato" fontWeight="bold" mb="10px">You are behind on your challenge</Text>
           }
-          </Box>
-
           <Box
-          w="60%"
-          id="buddy-reactions"
-          h="calc(100vh - 348px)"
-          alignItems='center'
-          justifyContent="center"
-            // p="10px"
-          border="1px solid lightgray"
-          borderRadius="4px"
-          overflow="auto"
+            id="buddy-reactions"
+            alignItems="flex-end"
+            h="calc(100vh - 348px)"
+            p="10px"
+            border="1px solid lightgray"
+            borderRadius="4px"
+            overflow="auto"
           >
-            <Box
-             w='100%'
-             h='auto'
-             p='20px'
-             >
             {earnedReactions && earnedReactions.length
               ? earnedReactions.map((reaction: any) => (
                 <BuddyReactionCard key={reaction.id} reaction={reaction} />
               ))
               : null
             }
-            </Box>
           </Box>
         </Box>
       </Flex>

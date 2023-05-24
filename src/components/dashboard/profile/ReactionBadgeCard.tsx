@@ -33,7 +33,7 @@ const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
       <Box display='flex' >
       <Center p='10px' fontSize="sm" color={badge.is_up_to_date ? `green` : `red`} >
         {/* {badge.is_up_to_date ? <UpToDate/> : <Behind/>} */}
-        {badge.is_up_to_date ? `is up todate` :`is behind`}
+        {badge.is_up_to_date ? `Up-to-date` :`Behind`}
       </Center>
       {badge.user_id !== currentUser.id && (
         <Center pl='0px'>

@@ -12,18 +12,22 @@ interface RenderMedalProps {
 
 const RenderMedal = ({ level }: RenderMedalProps) => {
   let BadgeComponent = null;
-    let badgeColor = "#ac6f33";
-    let badgeShadow = "#805020";
+    let badgeColor = "#F59272";
+    let badgeShadow = "#BF6040";
   if (level < 4) {
     BadgeComponent = Badge3;
   } else if (level > 4 && level <= 9) {
     badgeColor = "silver";
     badgeShadow = "gray";
     BadgeComponent = Badge2;
-  } else if (level > 9) {
+  } else if (level > 9 && level <= 14) {
     badgeColor = "#fbd24a";
     badgeShadow = "#dfa825";
     BadgeComponent = Badge1;
+  } else if (level > 14 && level <= 19) {
+    BadgeComponent = Badge4;
+  } else if (level > 19) {
+    BadgeComponent = Badge5;
   }
 
   return (

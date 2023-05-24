@@ -173,8 +173,6 @@ const Profile = () => {
         </Card>
         </Box>
       </Flex>
-
-
       {profileData &&
       profileData.commitments &&
       profileData.commitments.length ? (
@@ -183,9 +181,10 @@ const Profile = () => {
             <Level />
             <Heading margin="10px" marginTop='20px'>My Badges</Heading>
           </Flex>
-          <Heading pl="30px"  as="h2" m="10px" fontSize="2xl">
+          <Heading pl="30px" as="h2" m="10px" fontSize="2xl">
             My Active Commitments
           </Heading>
+          <hr />
           <Flex
             direction="row"
             wrap="wrap"
@@ -214,6 +213,7 @@ const Profile = () => {
           <Heading pl="30px" as="h2" m="10px" fontSize="2xl">
             My Paused Commitments
           </Heading>
+          <hr />
           <Flex
             direction="row"
             wrap="wrap"
