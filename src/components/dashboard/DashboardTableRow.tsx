@@ -1,7 +1,7 @@
 import { Button, Flex, Td, Tooltip, Tr, Spinner } from "@chakra-ui/react";
 import { Database } from "../../utils/supabaseTypes";
 import CommitmentButton from "./CommitmentButton";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 interface DashboardTableRowProps {
   commitment: Database["public"]["Tables"]["commitments"]["Row"];
   checkedCommitments: Record<string, boolean>;

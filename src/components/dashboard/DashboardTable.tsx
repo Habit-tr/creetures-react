@@ -129,34 +129,70 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
 
   const handleCommitmentComplete = async (commitmentId: number) => {
-    // debugger;
     setCommitmentCompleted((prevState) => !prevState);
+
+    // Optimistically update the checkedCommitments and availableRewards states before making the requests
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
       [commitmentId]: true,
     }));
+    setAvailableRewards((prevAvailable) => ({
+      ...prevAvailable,
+      [commitmentId]: true,
+    }));
+
     const commitment = commitments.find(
       (commitment) => commitment.id === commitmentId,
     );
+
     if (commitment && commitment.reward_id) {
-      await dispatch(
-        postNewEarnedRewardAsync({
-          commitment_id: commitment.id,
-          reward_id: commitment.reward_id,
-          user_id: currentUser.id,
-        }),
-      );
+      try {
+        await dispatch(
+          postNewEarnedRewardAsync({
+            commitment_id: commitment.id,
+            reward_id: commitment.reward_id,
+            user_id: currentUser.id,
+          }),
+        );
+      } catch (error) {
+        // If the request fails, rollback the UI state
+        setAvailableRewards((prevAvailable) => ({
+          ...prevAvailable,
+          [commitmentId]: false,
+        }));
+        toast({
+          title: "Failed to post new earned reward, please try again!",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     }
     if (commitment) {
-      await dispatch(
-        editCommitmentAsync({
-          id: commitmentId,
-          is_clicked: true,
-          xp_counters: commitment.xp_counters + 1,
-        }),
-      );
+      try {
+        await dispatch(
+          editCommitmentAsync({
+            id: commitmentId,
+            is_clicked: true,
+            xp_counters: commitment.xp_counters + 1,
+          }),
+        );
+      } catch (error) {
+        // If the request fails, rollback the UI state
+        setCheckedCommitments((prevChecked) => ({
+          ...prevChecked,
+          [commitmentId]: false,
+        }));
+        toast({
+          title: "Failed to edit commitment, please try again!",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     }
   };
+
 
   //set current tab based on hour to be active
   useEffect(() => {
