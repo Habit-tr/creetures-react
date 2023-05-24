@@ -27,7 +27,7 @@ const DeleteAlert = ({ onDelete }: DeleteAlertProps) => {
 
   return (
     <>
-      <Button colorScheme="red" onClick={onOpen}>
+      <Button width="40px" colorScheme="red" onClick={onOpen}>
         <DeleteIcon />
       </Button>
       <AlertDialog
