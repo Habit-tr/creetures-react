@@ -217,7 +217,7 @@ const SingleCommitment = () => {
                   Recommit
                 </Button>
             }
-            <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} />
+            {/* <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} /> */}
           </Box>
         </Flex>
         <EditCommitment
