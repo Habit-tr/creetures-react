@@ -1,4 +1,5 @@
-import { Button, Flex, Tooltip } from "@chakra-ui/react";
+import { Button, Flex, Tooltip, Spinner } from "@chakra-ui/react";
+import React, { useState } from "react";
 
 interface CommitmentButtonProps {
   commitmentId: number;
@@ -13,12 +14,22 @@ const CommitmentButton = ({
   markAsComplete,
   commitmentName,
 }: CommitmentButtonProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    if (!isCompleted) {
+      setIsLoading(true);
+      await markAsComplete(commitmentId);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Flex direction="row" justifyContent="center">
       <Tooltip label="Mark as complete" isDisabled={isCompleted}>
         <Button
           colorScheme={isCompleted ? "purple" : "pink"}
-          onClick={() => !isCompleted && markAsComplete(commitmentId)}
+          onClick={handleClick}
           isDisabled={isCompleted}
           height="100px"
           margin="10px"
@@ -26,7 +37,7 @@ const CommitmentButton = ({
           width="110px"
           whiteSpace="normal"
         >
-          {commitmentName.toUpperCase()}
+          {isLoading ? <Spinner /> : commitmentName.toUpperCase()}
         </Button>
       </Tooltip>
     </Flex>
