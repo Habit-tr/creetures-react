@@ -252,7 +252,7 @@ const SingleCommitment = () => {
                 {goals ? (
                   <>
                     <Td fontWeight="bold">Reward</Td>
-                    <Td>{reward.name}</Td>
+                    <Td>{reward?.name}</Td>
                   </>
                 ) : null}
               </Tr>
@@ -268,7 +268,7 @@ const SingleCommitment = () => {
         >
           {is_up_to_date
             ? <Text fontWeight="bold" mb="10px">You are up to date on your challenge!</Text>
-            : <Text fontWeight="bold" mb="10px">You behind on your challenge</Text>
+            : <Text fontWeight="bold" mb="10px">You are behind on your challenge</Text>
           }
           <Box
             id="buddy-reactions"

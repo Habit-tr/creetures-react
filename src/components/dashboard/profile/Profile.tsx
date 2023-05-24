@@ -161,7 +161,13 @@ const Profile = () => {
       profileData.commitments &&
       profileData.commitments.length ? (
         <>
-          <Flex direction="row" wrap="wrap" margin="30px"><Level/><Heading margin="10px" marginTop='20px'>My Badges</Heading></Flex>
+          <Flex direction="row" wrap="wrap" margin="30px">
+            <Level />
+            <Heading margin="10px" marginTop='20px'>My Badges</Heading>
+          </Flex>
+          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+            My Active Commitments
+          </Heading>
           <Flex
             direction="row"
             wrap="wrap"
@@ -193,8 +199,8 @@ const Profile = () => {
           <Flex
             direction="row"
             wrap="wrap"
-            margin="20px"
-            justifyContent="center"
+            margin="30px"
+            gap="6"
           >
             {profileData.commitments
               .filter((commitment: any) => !commitment.is_active)
