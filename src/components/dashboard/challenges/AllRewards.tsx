@@ -7,6 +7,8 @@ import {
   selectRewards,
 } from "../profile/allRewardsSlice";
 
+import MyReward from "../components/MyReward";
+
 const AllRewards = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
@@ -19,7 +21,9 @@ const AllRewards = () => {
 
   return (
     <>
-      <Heading>My Rewards</Heading>
+
+      <Heading pl='10px'>My Rewards</Heading>
+
       {rewards && rewards.length ? (
         <Flex direction="row" maxW="900px" wrap="wrap">
           {rewards.map((reward) => (

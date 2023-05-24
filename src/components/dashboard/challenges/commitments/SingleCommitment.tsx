@@ -13,6 +13,7 @@ import {
   Tr,
   Td,
   Th,
+  Spacer,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
@@ -20,7 +21,7 @@ import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import { useAuth } from "../../../../context/AuthContext";
 import supabase from "../../../../utils/supabaseClient";
 import RenderMedal from "../RenderMedal";
-import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
+// import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
 import EditCommitment from "./EditCommitment";
 import PauseAlert from "./PauseAlert";
 import BuddyReactionCard from "./BuddyReactionCard";
@@ -29,6 +30,9 @@ import {
   fetchSingleCommitmentAsync,
   selectCommitment,
 } from "./singleCommitmentSlice";
+
+import Days from "../../components/Days";
+import Time from "../../components/Time";
 
 const SingleCommitment = () => {
   const dispatch = useAppDispatch();
@@ -172,6 +176,7 @@ const SingleCommitment = () => {
 
   return challenge && challenge.name ? (
     <>
+
       <Flex justifyContent="flex-end" flexWrap="wrap" mt="-10px" mb="10px">
         <Flex alignItems="center" w="50%" minW="380px">
           <Box textAlign="center" mr={4}>
@@ -183,8 +188,7 @@ const SingleCommitment = () => {
               >
               <Heading as="h1">{challenge.name.toUpperCase()}</Heading>
             </ChakraLink>
-            
-            <Heading as="h2" size="md" textAlign="center">
+            <Heading as="h2" size="md" textAlign="left">
               Category:&nbsp;&nbsp;
               <ChakraLink
                 as={RouterLink}
@@ -198,9 +202,11 @@ const SingleCommitment = () => {
           </Box>
           <RenderMedal level={badge_level} />
         </Flex>
-        <Flex alignItems="center" justifyContent="flex-end"> {/* Adjust alignment */}
-          <Box minW="218px" p="10px">
-            <Button 
+
+        <Spacer/>
+        <Flex alignItems="center" justifyContent="flex-end" justifySelf='flex-end' >
+          <Box minW="218px" p="10px" >
+            <Button
               bgColor="orange.200"
               isDisabled={!is_active}
               onClick={onOpen}
@@ -226,16 +232,21 @@ const SingleCommitment = () => {
           selectedCommitment={commitment}
         />
       </Flex>
-      <Flex flexWrap="wrap">
-        <Box w="50%" minW="370px" p="10px">
+
+
+      <Flex flexWrap="wrap" >
+
+        <Box w="50%" minW="370px" p="20px" >
           <Table>
             <Tbody>
-              <Tr>
-                <Th>Details</Th>
+              <Tr >
+                <Th >Details</Th>
+                <Th></Th>
               </Tr>
               <Tr id="frequency">
                 {frequency ? (
                   <>
+                  {/* <Box pl='30px'><Days/></Box> */}
                     <Td fontWeight="bold">Days</Td>
                     <Td>{dayFrequency(frequency)}</Td>
                   </>
@@ -244,6 +255,7 @@ const SingleCommitment = () => {
               <Tr id="timeframe">
                 {timeframe ? (
                   <>
+                  {/* <Box pl='30px'><Time/></Box> */}
                     <Td fontWeight="bold" minW="140px">Time of Day</Td>
                     <Td>{time(timeframe)}</Td>
                   </>
@@ -268,35 +280,57 @@ const SingleCommitment = () => {
             </Tbody>
           </Table>
         </Box>
-        <Flex
-          direction="column"
-          alignItems="center"
-          w="50%"
+        <Spacer/>
+
+
+        <Box
           minW="370px"
-          p="10px"
+          p="40px"
+          pt='0px'
+          // pr='40px'
+          w="50%"
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          flexDirection='column'
+
         >
-          {is_up_to_date
-            ? <Text fontWeight="bold" mb="10px">You are up to date on your challenge!</Text>
-            : <Text fontWeight="bold" mb="10px">You are behind on your challenge</Text>
-          }
+
           <Box
-            id="buddy-reactions"
-            
-            h="calc(100vh - 348px)"
-            p="10px"
-            border="1px solid lightgray"
-            borderRadius="4px"
-            overflow="auto"
+          pr='160px'
           >
+          {is_up_to_date
+            ? <Text color='green' fontWeight="bold" mb="10px" >You are up to date on your challenge!</Text>
+            : <Text color='tomato' fontWeight="bold" mb="10px" >You behind on your chal
+          }
+          </Box>
+
+          <Box
+          w="60%"
+          id="buddy-reactions"
+          h="calc(100vh - 348px)"
+          alignItems='center'
+          justifyContent="center"
+            // p="10px"
+          border="1px solid lightgray"
+          borderRadius="4px"
+          overflow="auto"
+          >
+            <Box
+             w='100%'
+             h='auto'
+             p='20px'
+             >
             {earnedReactions && earnedReactions.length
               ? earnedReactions.map((reaction: any) => (
                 <BuddyReactionCard key={reaction.id} reaction={reaction} />
               ))
               : null
             }
+            </Box>
           </Box>
-        </Flex>
-      </Flex>     
+        </Box>
+      </Flex>
     </>
   ) : null;
 };

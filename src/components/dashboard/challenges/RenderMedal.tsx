@@ -3,6 +3,8 @@ import { Card, Flex, Text } from "@chakra-ui/react";
 import Badge1 from "../components/Badge1";
 import Badge2 from "../components/Badge2";
 import Badge3 from "../components/Badge3";
+import Badge4 from "../components/Badge4";
+import Badge5 from "../components/Badge5";
 
 interface RenderMedalProps {
   level: number;

@@ -29,9 +29,9 @@ const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
         {badge.challenge.name.toUpperCase()}
       </Center>
       <Box display='flex'>
-      <Center p='10px' pr='30px' fontSize="sm" color={badge.is_up_to_date ? `green` : `red`} >
-        {badge.is_up_to_date ? <UpToDate/> : <Behind/>}
-        {/* {badge.is_up_to_date ? `is uptodate` :`is behind`} */}
+      <Center p='10px' fontSize="sm" color={badge.is_up_to_date ? `green` : `red`} >
+        {/* {badge.is_up_to_date ? <UpToDate/> : <Behind/>} */}
+        {badge.is_up_to_date ? `is up todate` :`is behind`}
       </Center>
       {badge.user_id !== currentUser.id && (
         <Center pl='0px'>
