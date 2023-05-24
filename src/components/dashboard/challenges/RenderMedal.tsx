@@ -32,8 +32,14 @@ const RenderMedal = ({ level }: RenderMedalProps) => {
           align="center"
           justify="center"
         >
-          <Text color="white" mb="0px" pb="0px" fontSize="10px">
-            L:{level}
+          <Text
+            color="#ffde5c"
+            mb="0px"
+            pb="0px"
+            fontSize="md"
+            fontWeight="bold"
+          >
+            {level}
           </Text>
         </Card>
       </Flex>

@@ -1,4 +1,4 @@
-import { useAuth } from "../../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { Button, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 

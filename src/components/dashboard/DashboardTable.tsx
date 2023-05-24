@@ -113,7 +113,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
       return result;
     }, {} as Record<string, boolean>);
     setAvailableRewards(foundAvailableRewards);
-    console.log(foundAvailableRewards);
   }, [earnedRewards, commitmentCompleted]);
 
   // const checkAvailableRewards = useCallback(() => {
@@ -132,7 +131,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   const handleCommitmentComplete = async (commitmentId: number) => {
     // debugger;
     setCommitmentCompleted((prevState) => !prevState);
-    console.log(commitmentCompleted);
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
       [commitmentId]: true,

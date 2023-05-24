@@ -4,20 +4,26 @@ import {
   Button,
   Flex,
   Heading,
+  Link as ChakraLink,
   Text,
   useDisclosure,
   useToast,
+  Tbody,
+  Table,
+  Tr,
+  Td,
+  Th,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
 import { useAuth } from "../../../../context/AuthContext";
 import supabase from "../../../../utils/supabaseClient";
-import Reaction from "../../profile/AllReactions";
 import RenderMedal from "../RenderMedal";
 import DeleteCommitmentAlert from "./DeleteCommitmentAlert";
 import EditCommitment from "./EditCommitment";
 import PauseAlert from "./PauseAlert";
+import BuddyReactionCard from "./BuddyReactionCard";
 import { deleteCommitmentAsync } from "./allCommitmentsSlice";
 import {
   fetchSingleCommitmentAsync,
@@ -52,10 +58,9 @@ const SingleCommitment = () => {
         if (commitment.id) {
           const { data: reactions } = await supabase
             .from("reactions")
-            .select(`*, commitments!inner (user_id), profile: profiles(username)`)
+            .select(`*, commitments!inner (user_id), profile: profiles(avatar_url, username)`)
             .eq("commitment_id", commitment.id);
           setEarnedReactions(reactions);
-          console.log("reactions: ", reactions);
         }
       } catch (err) {
         console.error(err);
@@ -106,16 +111,16 @@ const SingleCommitment = () => {
       }
     });
     const allDays = days.join(", ");
-    return <Text>{`Frequency: ${allDays}`}</Text>;
+    return <Text>{allDays}</Text>;
   };
 
   const time = (timeframe: string) => {
     if (timeframe === "12") {
-      return <Text>Time of day: Morning (4am-12pm)</Text>;
+      return <Text>Morning (4am-12pm)</Text>;
     } else if (timeframe === "20") {
-      return <Text>Time of day: Afternoon (12pm-8pm)</Text>;
+      return <Text>Afternoon (12pm-8pm)</Text>;
     } else if (timeframe === "4") {
-      return <Text>Time of day: Night (8pm-4am)</Text>;
+      return <Text>Night (8pm-4am)</Text>;
     }
   };
 
@@ -145,7 +150,7 @@ const SingleCommitment = () => {
           title: "Recommitted to challenge.",
         });
       }
-      navigate("/commitments");
+      navigate("/profile");
     } catch (err) {
       console.error(err);
       toast({
@@ -161,71 +166,128 @@ const SingleCommitment = () => {
     toast({
       title: "Commitment deleted.",
     });
-    navigate("/commitments");
+    navigate("/profile");
   };
 
   return challenge && challenge.name ? (
     <>
-      <Box display="flex" alignItems="center">
-        <Heading as="h1">{challenge.name}&nbsp;&nbsp;</Heading>
-        <RenderMedal level={badge_level} />
-      </Box>
-      <Heading as="h2" size="md">
-        Category:&nbsp;&nbsp;
-        <Link to={`/challenges/categories/${challenge.category.name}`}>
-          {challenge.category.name}
-        </Link>
-      </Heading>
-      <Flex>
-        <Box>
-          {frequency && frequency.length ? dayFrequency(frequency) : null}
-          {timeframe && timeframe.length ? time(timeframe) : null}
-          {goals && goals.length ? <Text>Goals: {goals}</Text> : null}
-          {reward && reward.name ? <Text>Reward: {reward.name}</Text> : null}
-        </Box>       
-        {/* Add reactions here */}
-        <Box>
-          {is_up_to_date
-            ? <Text fontWeight="bold">You are up to date on your challenge!</Text>
-            : <Text fontWeight="bold">You behind on your challenge</Text>
-          }
-          {earnedReactions && earnedReactions.length
-            ? earnedReactions.map((reaction: any) => (
-              reaction === "highfive"
-              ? <Text key={reaction.id}>{`${reaction.profile.username} high-fived you!`}</Text>
-              : <Text key={reaction.id}>{`${reaction.profile.username} nudged you`}</Text>
-            ))
-            : null
-          }
-        </Box>
-      </Flex>
-      <Box>
-        <Button 
-          bgColor="orange.200"
-          isDisabled={!is_active}
-          onClick={onOpen}
-        >
-          <EditIcon />
-        </Button>
-        {is_active
-          ? <PauseAlert onPause={handleTogglePause} />
-          : <Button
-              ml={3}
-              bgColor="green.200"
-              onClick={handleTogglePause}
+      <Flex justifyContent="flex-end" flexWrap="wrap" mt="-10px" mb="10px">
+        <Flex alignItems="center" w="50%" minW="380px">
+          <Box textAlign="center" mr={4}>
+            <Heading as="h1">{challenge.name.toUpperCase()}</Heading>
+            <Heading as="h2" size="md" textAlign="center">
+              Category:&nbsp;&nbsp;
+              <ChakraLink
+                as={RouterLink}
+                to={`/challenges?categoryId=${challenge.category_id}`}
+                fontStyle="italic"
+                _hover={{ color: "green.200" }}
+              >
+                {challenge.category.name}
+              </ChakraLink>
+            </Heading>
+          </Box>
+          <RenderMedal level={badge_level} />
+        </Flex>
+        <Flex alignItems="center" justifyContent="flex-end"> {/* Adjust alignment */}
+          <Box minW="218px" p="10px">
+            <Button 
+              bgColor="orange.200"
+              isDisabled={!is_active}
+              onClick={onOpen}
             >
-              Recommit
+              <EditIcon />
             </Button>
-        }
-        <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} />
-      </Box>
-      {/* Should add reactions for just this commitment */}
-      <Reaction />
-      <EditCommitment
-        isOpen={isOpen}
-        onClose={onClose}
-        selectedCommitment={commitment}
-      />
+            {is_active
+              ? <PauseAlert onPause={handleTogglePause} />
+              : <Button
+                  ml={3}
+                  bgColor="green.200"
+                  onClick={handleTogglePause}
+                >
+                  Recommit
+                </Button>
+            }
+            <DeleteCommitmentAlert onDelete={() => handleDelete(commitment.id)} />
+          </Box>
+        </Flex>
+        <EditCommitment
+          isOpen={isOpen}
+          onClose={onClose}
+          selectedCommitment={commitment}
+        />
+      </Flex>
+      <Flex flexWrap="wrap">
+        <Box w="50%" minW="370px" p="10px">
+          <Table>
+            <Tbody>
+              <Tr>
+                <Th>Details</Th>
+              </Tr>
+              <Tr id="frequency">
+                {frequency ? (
+                  <>
+                    <Td fontWeight="bold">Days</Td>
+                    <Td>{dayFrequency(frequency)}</Td>
+                  </>
+                ) : null}
+              </Tr>
+              <Tr id="timeframe">
+                {timeframe ? (
+                  <>
+                    <Td fontWeight="bold" minW="140px">Time of Day</Td>
+                    <Td>{time(timeframe)}</Td>
+                  </>
+                ) : null}
+              </Tr>
+              <Tr id="goals">
+                {goals ? (
+                  <>
+                    <Td fontWeight="bold">Goals</Td>
+                    <Td>{goals}</Td>
+                  </>
+                ) : null}
+              </Tr>
+              <Tr id="reward">
+                {goals ? (
+                  <>
+                    <Td fontWeight="bold">Reward</Td>
+                    <Td>{reward.name}</Td>
+                  </>
+                ) : null}
+              </Tr>
+            </Tbody>
+          </Table>
+        </Box>
+        <Flex
+          direction="column"
+          alignItems="center"
+          w="50%"
+          minW="370px"
+          p="10px"
+        >
+          {is_up_to_date
+            ? <Text fontWeight="bold" mb="10px">You are up to date on your challenge!</Text>
+            : <Text fontWeight="bold" mb="10px">You behind on your challenge</Text>
+          }
+          <Box
+            id="buddy-reactions"
+            
+            h="calc(100vh - 348px)"
+            p="10px"
+            border="1px solid lightgray"
+            borderRadius="4px"
+            overflow="auto"
+          >
+            {earnedReactions && earnedReactions.length
+              ? earnedReactions.map((reaction: any) => (
+                <BuddyReactionCard key={reaction.id} reaction={reaction} />
+              ))
+              : null
+            }
+          </Box>
+        </Flex>
+      </Flex>     
     </>
   ) : null;
 };

@@ -17,7 +17,6 @@ export const fetchAllEarnedRewardsAsync = createAsyncThunk(
         .from("earned_rewards")
         .select("*, reward: rewards(name, description), commitment: commitments(is_clicked)")
         .eq("user_id", userId);
-        console.log(fetchedEarnedRewards);
       return fetchedEarnedRewards;
     } catch (err) {
       console.error(err);

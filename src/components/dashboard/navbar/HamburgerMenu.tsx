@@ -24,9 +24,6 @@ const HamburgerMenu = () => {
       <MenuList>
         <MenuItem onClick={() => navigate("/")}>My Dashboard</MenuItem>
         <MenuItem onClick={() => navigate("/profile")}>My Profile</MenuItem>
-        <MenuItem onClick={() => navigate("/commitments")}>
-          My Commitments
-        </MenuItem>
         <MenuItem onClick={() => navigate("/rewards")}>My Rewards</MenuItem>
         <MenuItem onClick={() => navigate("/friends")}>My Friends</MenuItem>
         <MenuItem onClick={() => navigate("/challenges")}>
