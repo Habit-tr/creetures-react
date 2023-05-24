@@ -113,7 +113,7 @@ export default function NavBar() {
               justifySelf="center"
               justifyContent="center"
               height="40px"
-              width="210px"
+              width="230px"
               paddingLeft="10px"
               paddingRight="3"
               drag="y"

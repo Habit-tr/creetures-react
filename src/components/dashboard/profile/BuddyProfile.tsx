@@ -1,4 +1,4 @@
-import { Avatar, Card, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { Avatar, Card, Center, Flex, Heading, Text, Box, Spacer } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
@@ -48,37 +48,46 @@ const BuddyProfile = () => {
 
   const profileData = useAppSelector(selectSingleProfile);
   return (
-    <div>
-      <Heading margin="20px">
+    <div style={{paddingLeft:'50px'}}>
+
+      <Heading margin="10px" paddingBottom='20px'>
         {currentUser && (
-          <Avatar name={`${buddy_id}`} src={currentUser.avatar_url} />
+          <Avatar width='80px' name={`${buddy_id}`} src={currentUser.avatar_url} />
         )}{" "}
         {profileData && profileData.username}'s Profile
       </Heading>
+
       <Flex
         direction="row"
-        wrap="wrap"
-        margin="20px"
+        flexWrap="wrap"
+        margin="10px"
         justifyContent="space-evenly"
+        gridGap={12}
       >
-        <Card direction='column' padding="20px" height="460px" width="20%" justifyContent="space-evenly" alignItems='center'>
-          <Center>
+   <Box  flex='1' justifyContent="space-evenly" alignItems='center'>
+        <Card
+         height='500px'
+         >
+          <Center marginTop='30px'>
             {earnedReactions &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "highfive",
               ).length}{" "}
             <HighFive/> <Text style={{padding: '0 15px'}}>Earned</Text>
           </Center>
+          <Spacer  />
           <Center>
             {earnedReactions &&
               earnedReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
-              ).length}{" "}
+              ).length}{''}
             <Nudge/> <Text style={{padding: '0 10px'}}>Earned</Text>
           </Center>
+          <Spacer  />
           <Center>
             {redeemedRewards && redeemedRewards.length} <Reward/> <Text style={{padding: '0 0px'}}>Redeemed</Text>
           </Center>
+          <Spacer  />
           <Center>
             {givenReactions &&
               givenReactions.filter(
@@ -86,7 +95,8 @@ const BuddyProfile = () => {
               ).length}{" "}
             <HighFive/><Text style={{padding: '0 15px'}}>Given</Text>
           </Center>
-          <Center>
+          <Spacer  />
+          <Center marginBottom='30px'>
             {givenReactions &&
               givenReactions.filter(
                 (reaction: any) => reaction.type === "nudge",
@@ -94,12 +104,24 @@ const BuddyProfile = () => {
             <Nudge/><Text style={{padding: '0 15px'}}>Given</Text>
           </Center>
         </Card>{" "}
+        </Box>
+
+        <Box flex='5' >
+          <Flex flexWrap="wrap" gap='6'>
         {profileData &&
           profileData.commitments &&
           profileData.commitments.map((badge: any, i: number) => (
-            <ReactionBadgeCard key={badge.id} badge={badge} />
+            <ReactionBadgeCard key={badge.id} badge={badge}  />
           ))}
+          </Flex>
+          </Box>
+
+
+
       </Flex>
+
+
+
     </div>
   );
 };
