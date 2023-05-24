@@ -29,8 +29,6 @@ import {
   HamburgerIcon,
 } from "@chakra-ui/icons";
 
-// import "../styles.css";
-
 // import { IconType } from 'react-icons';
 // import {
 //   FiHome,
@@ -115,7 +113,7 @@ export default function NavBar() {
               justifySelf="center"
               justifyContent="center"
               height="40px"
-              width="210px"
+              width="230px"
               paddingLeft="10px"
               paddingRight="3"
               drag="y"
@@ -125,6 +123,7 @@ export default function NavBar() {
               transition="0.5s ease-in-out"
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"Play Toon"}
+              className="creetures-logo"
               fontSize="40px"
               color={useColorModeValue("gray.800", "green.200")}
             >

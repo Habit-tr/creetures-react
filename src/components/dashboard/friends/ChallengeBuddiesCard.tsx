@@ -35,11 +35,15 @@ const ChallengeBuddiesCard = ({
   }, [challengeId, userId]);
 
   return fetchedBuddies && fetchedBuddies.length ? (
-    <Box className="challenge-buddies-card" m="0px" w="100%">
-      <Heading mb="0px" size="md">
+    <Box className="challenge-buddies-card" m="0" w="100%">
+      <Heading
+        mb="0"
+        size="md"
+        textAlign="center"
+      >
         {fetchedBuddies[0].challenge.name.toUpperCase()}
       </Heading>
-      <Flex direction="column" alignItems="center">
+      <Flex direction="column" alignItems="center" mb="15px">
         {fetchedBuddies.map((buddy: any) => (
           <BuddyStatusCard key={buddy.user_id} commitment={buddy} />
         ))}

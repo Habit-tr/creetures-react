@@ -11,22 +11,25 @@ const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
   const { currentUser } = useAuth();
   return (
     <Card
-      padding="10px"
-      margin="10px"
-      height="130px"
-      width="130px"
+      // padding="10px"
+      // margin="10px"
+      height="250px"
+      width="210px"
       key={badge.id}
       justifyContent="center"
+      alignItems="center"
     >
       <Center mb="10px">
         <RenderMedal level={badge.badge_level} />
       </Center>
-      <Center fontSize="xs">{badge.challenge.name.toUpperCase()}</Center>
-      <Center fontSize="xs" color={badge.is_up_to_date ? `green` : `red`}>
+      <Center textAlign="center" fontSize="sm" >
+        {badge.challenge.name.toUpperCase()}
+      </Center>
+      <Center fontSize="sm" color={badge.is_up_to_date ? `green` : `red`}>
         {badge.is_up_to_date ? `up to date` : `behind schedule`}
       </Center>
       {badge.user_id !== currentUser.id && (
-        <Center>
+        <Center pl='20px'>
           <ReactionsToggle commitId={badge.id} status={badge.is_up_to_date} />
         </Center>
       )}
