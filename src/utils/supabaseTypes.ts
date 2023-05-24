@@ -211,6 +211,9 @@ export interface Database {
             name: string
             description: string | null
           }
+          commitment: {
+            is_clicked: boolean
+          }
         }
         Insert: {
           commitment_id?: number | null
