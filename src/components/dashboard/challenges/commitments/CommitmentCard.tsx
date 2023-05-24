@@ -18,6 +18,8 @@ const CommitmentCard = ({ commitment }: CommitmentCardProps) => {
         h="150px"
         bgColor="orange.200"
         justify="center"
+        transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+      _hover={{ transform: "scale(1.05)", boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)" }}
       >
         <Text fontSize="20px" align="center">
           {challenge?.name}

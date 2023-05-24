@@ -49,16 +49,19 @@ const ChallengeCard = ({ challenge, category }: ChallengeCardProps) => {
   //   })
   //   setBuddies(buddyList);
   // }
-  
+
   // findBuddies();
-  // console.log("buddies: ", buddies);  
+  // console.log("buddies: ", buddies);
 
   return (
     <>
       <Link to={`/challenges/${challenge.id}`}>
         <Wrap>
           <WrapItem>
-        <Card w="350px" m="10px" p="10px" bgColor="purple.200" color="black" overflow='hidden'>
+        <Card w="350px" m="10px" p="10px" bgColor="purple.200" color="black" overflow='hidden'
+        transition="transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out"
+        _hover={{ transform: "scale(1.05)", boxShadow: "6px 6px 6px rgba(144, 238, 144, 0.9)" }}
+        >
           <CardBody fontSize="sm">
             <Heading mb="0px" size="md">
               {challenge.name?.toUpperCase()}
