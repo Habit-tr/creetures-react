@@ -10,12 +10,17 @@ interface RenderMedalProps {
 
 const RenderMedal = ({ level }: RenderMedalProps) => {
   let BadgeComponent = null;
-
+    let badgeColor = "#ac6f33";
+    let badgeShadow = "#805020";
   if (level < 4) {
     BadgeComponent = Badge3;
   } else if (level > 4 && level <= 9) {
+    badgeColor = "silver";
+    badgeShadow = "gray";
     BadgeComponent = Badge2;
   } else if (level > 9) {
+    badgeColor = "#fbd24a";
+    badgeShadow = "#dfa825";
     BadgeComponent = Badge1;
   }
 
@@ -24,7 +29,8 @@ const RenderMedal = ({ level }: RenderMedalProps) => {
       <Flex>
       {BadgeComponent && <BadgeComponent />}
         <Card
-          border="2px #ffde5c solid"
+          bgColor={badgeColor}
+          border={`2px ${badgeShadow} solid`}
           height="30px"
           width="30px"
           rounded="100%"
@@ -33,7 +39,8 @@ const RenderMedal = ({ level }: RenderMedalProps) => {
           justify="center"
         >
           <Text
-            color="#ffde5c"
+            color="white"
+            textShadow={`1px 1px ${badgeShadow}`}
             mb="0px"
             pb="0px"
             fontSize="md"
