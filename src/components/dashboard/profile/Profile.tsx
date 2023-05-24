@@ -70,7 +70,8 @@ const Profile = () => {
   return (
     <div>
       <Heading margin="20px">
-        <Avatar name={`${currentUser.id}`} src={currentUserUrl} />{" "}
+        {/* <Avatar name={`${currentUser.id}`} src={currentUserUrl} />{" "} */}
+        <Avatar name={`${currentUser.id}`} src={profileData.avatar_url} />{" "}
         {profileData.username}'s Profile
       </Heading>
       <Flex
