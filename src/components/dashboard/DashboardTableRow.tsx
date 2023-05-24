@@ -1,7 +1,7 @@
 import { Button, Flex, Td, Tooltip, Tr, Spinner } from "@chakra-ui/react";
 import { Database } from "../../utils/supabaseTypes";
 import CommitmentButton from "./CommitmentButton";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 interface DashboardTableRowProps {
   commitment: Database["public"]["Tables"]["commitments"]["Row"];
   checkedCommitments: Record<string, boolean>;
@@ -31,9 +31,10 @@ const DashboardTableRow = ({
     }
   }, [checkedCommitments, availableRewards, commitment.id]);
 
-  const handleClick = (commitmentId: number) => {
+  const handleClick = async (commitmentId: number) => {
     setLoading(commitmentId, true);
-    handleRedeemReward(commitmentId).then(() => setLoading(commitmentId, false));
+    await handleRedeemReward(commitmentId)
+    .then(() => setLoading(commitmentId, false));
   };
 
 

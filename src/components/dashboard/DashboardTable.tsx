@@ -129,8 +129,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
 
   const handleCommitmentComplete = async (commitmentId: number) => {
-    // debugger;
-    setCommitmentCompleted((prevState) => !prevState);
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
       [commitmentId]: true,
@@ -146,6 +144,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
           user_id: currentUser.id,
         }),
       );
+      setCommitmentCompleted((prevState) => !prevState);
     }
     if (commitment) {
       await dispatch(

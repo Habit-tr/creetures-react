@@ -1,11 +1,12 @@
-import { Button, Heading, Table, Thead, Tbody, Tr, Th, Td, useToast, useDisclosure } from "@chakra-ui/react";
+import { IconButton, Button, Heading, Table, Thead, Tbody, Tr, Th, Td, useToast, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
 import { fetchAllRewardsAsync, deleteRewardAsync, selectRewards } from "./allRewardsSlice";
 import AddReward from "./AddReward";
 import DeleteAlert from "./DeleteAlert";
 import { Database } from "../../../utils/supabaseTypes";
-import Trash from "../components/Trash";
+import { EditIcon } from "@chakra-ui/icons";
+
 
 const Rewards = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,7 +54,13 @@ const Rewards = () => {
                 <Td>{reward.name}</Td>
                 <Td>{reward.description}</Td>
                 <Td>
-                  <Button onClick={() => { setSelectedReward(reward); onOpen(); }}>Edit</Button>
+                  <IconButton
+                      aria-label="Redeem"
+                      icon={<EditIcon />}
+                      colorScheme="blue"
+                      onClick={() => { setSelectedReward(reward); onOpen(); }}
+                      m={1}
+                  />
                   <DeleteAlert onDelete={() => handleDelete(reward.id)}/>
 
                 </Td>
