@@ -24,16 +24,15 @@ import {
   fetchAllRewardsAsync,
   selectRewards,
 } from "../../profile/allRewardsSlice";
-// import { postSharedUsersAsync } from "../../profile/friends/sharedUsersSlice";
 import supabase from "../../../../utils/supabaseClient";
 import { postNewCommitmentAsync } from "./allCommitmentsSlice";
 
-interface newRewardProps {
-  rewardName: string;
-  description: string;
-  user_id: string;
-  id: number;
-}
+// interface newRewardProps {
+//   rewardName: string;
+//   description: string;
+//   user_id: string;
+//   id: number;
+// }
 
 interface AddCommitmentProps {
   isOpen: boolean;
@@ -180,7 +179,7 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
       // Show an error toast or perform any necessary actions
     }
     onClose();
-    navigate("/commitments");
+    navigate("/profile");
   };
 
   return (

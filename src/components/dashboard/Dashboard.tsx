@@ -1,6 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
 import supabase from "../../utils/supabaseClient";
@@ -12,7 +11,6 @@ import {
 import FriendsSidebar from "./friends/FriendsSidebar";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { currentUser } = useAuth();
   const [username, setUsername] = useState<any>("USERNAME");
