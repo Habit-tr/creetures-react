@@ -1,4 +1,4 @@
-import { Card, Center, Box } from "@chakra-ui/react";
+import { Card, Center, Box, } from "@chakra-ui/react";
 import { useAuth } from "../../../context/AuthContext";
 import RenderMedal from "../challenges/RenderMedal";
 import ReactionsToggle from "../friends/ReactionsToggle";
@@ -21,6 +21,8 @@ const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
       key={badge.id}
       justifyContent="center"
       alignItems="center"
+      transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+      _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
     >
       <Center mb="10px">
         <RenderMedal level={badge.badge_level} />
@@ -28,10 +30,10 @@ const ReactionBadgeCard = ({ badge }: ReactionBadgeCardProps) => {
       <Center textAlign="center" fontSize="sm" >
         {badge.challenge.name.toUpperCase()}
       </Center>
-      <Box display='flex'>
-      <Center p='10px' pr='30px' fontSize="sm" color={badge.is_up_to_date ? `green` : `red`} >
-        {badge.is_up_to_date ? <UpToDate/> : <Behind/>}
-        {/* {badge.is_up_to_date ? `is uptodate` :`is behind`} */}
+      <Box display='flex' >
+      <Center p='10px' fontSize="sm" color={badge.is_up_to_date ? `green` : `red`} >
+        {/* {badge.is_up_to_date ? <UpToDate/> : <Behind/>} */}
+        {badge.is_up_to_date ? `is up todate` :`is behind`}
       </Center>
       {badge.user_id !== currentUser.id && (
         <Center pl='0px'>

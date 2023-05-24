@@ -13,6 +13,8 @@ const BuddyStatusCard = ({ commitment }: any) => {
       width="325px"
       margin="5px"
       padding="5px"
+      transition="transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out"
+      _hover={{ transform: "scale(1.07)", boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)" }}
     >
       <Flex width="20%" justifyContent="baseline" alignItems="center" pl="30px">
         <Link to={`/profile/${commitment.profile.id}`}>

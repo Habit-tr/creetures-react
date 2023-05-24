@@ -23,6 +23,8 @@ import {
   selectCategories,
 } from "./categories/allCategoriesSlice";
 
+import Goals from "../components/Goals";
+
 const AllChallenges = ({ categoryId }: { categoryId: number }) => {
   const [selectedCategoryId, setSelectedCategoryId] =
     useState<number>(categoryId);
@@ -74,7 +76,8 @@ const AllChallenges = ({ categoryId }: { categoryId: number }) => {
 
   return (
     <>
-      <Heading margin="10px">Browse Challenges</Heading>
+    <Flex><Goals/><Heading margin="10px" marginTop='20px'>Browse Challenges</Heading></Flex>
+
       <Flex
         margin="10px"
         justifyContent="space-between"

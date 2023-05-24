@@ -86,7 +86,7 @@ const Profile = () => {
 
       <Flex
         direction="row"
-        wrap="wrap"
+        flexWrap="wrap"
         margin="20px"
         justifyContent="space-evenly"
         padding="10px"
@@ -95,50 +95,68 @@ const Profile = () => {
         <Box
           flex="2.5"
           justifyContent="space-evenly"
+          minW="370px"
           padding="0px"
           alignItems="center"
         >
-        <Card height='200px' padding="20px" justifyContent="center" direction="row">
-          <Center>
-            {earnedReactions &&
-              earnedReactions.length &&
-              earnedReactions.filter(
-                (reaction: any) => reaction.type === "highfive",
-              ).length}{" "}
-            <HighFive /> <Text fontWeight="bold" style={{ padding: "0 15px" }}>Earned</Text>
-          </Center>
-          <Spacer />
-          <Center>
-            {earnedReactions &&
-              earnedReactions.length &&
-              earnedReactions.filter(
-                (reaction: any) => reaction.type === "nudge",
-              ).length}{" "}
-            <Nudge /> <Text fontWeight="bold" style={{ padding: "0 10px" }}>Earned</Text>
-          </Center>
-          <Spacer />
-          <Center>{redeemedRewards.length} <Reward />{" "}
-              <Text fontWeight="bold" style={{ padding: "0 0px" }}>Redeemed</Text>
-          </Center>
-          <Spacer />
-          <Center>
-            {givenReactions &&
-              givenReactions.length &&
-              givenReactions.filter(
-                (reaction: any) => reaction.type === "highfive",
-              ).length}{" "}
-            <HighFive /><Text fontWeight="bold" style={{ padding: "0 15px" }}>Given</Text>
-          </Center>
-          <Spacer />
-          <Center>
-            {givenReactions &&
-              givenReactions.length &&
-              givenReactions.filter(
-                (reaction: any) => reaction.type === "nudge",
-              ).length}{" "}
-            <Nudge /><Text fontWeight="bold" style={{ padding: "0 15px" }}>Given</Text>
-          </Center>
-        </Card>{" "}
+          <Card
+            height='200px'
+            padding="20px"
+            direction="row"
+            justifyContent="space-around"
+            flexWrap="wrap"
+          >
+            <Center transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+             _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}>
+              {earnedReactions &&
+                earnedReactions.length &&
+                earnedReactions.filter(
+                  (reaction: any) => reaction.type === "highfive",
+                ).length}{" "}
+              <HighFive /> <Text fontWeight="bold" style={{ padding: "0 15px" }}>Earned</Text>
+            </Center>
+            <Spacer />
+            <Center transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+              _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}>
+              {earnedReactions &&
+                earnedReactions.length &&
+                earnedReactions.filter(
+                  (reaction: any) => reaction.type === "nudge",
+                ).length}{" "}
+              <Nudge /> <Text fontWeight="bold" style={{ padding: "0 10px" }}>Earned</Text>
+            </Center>
+            <Spacer />
+            <Center
+            transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+            _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
+            >{redeemedRewards.length} <Reward />{" "}
+                <Text fontWeight="bold" style={{ padding: "0 0px" }}>Redeemed</Text>
+            </Center>
+            <Spacer />
+            <Center
+            transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+            _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
+            >
+              {givenReactions &&
+                givenReactions.length &&
+                givenReactions.filter(
+                  (reaction: any) => reaction.type === "highfive",
+                ).length}{" "}
+              <HighFive /><Text fontWeight="bold" style={{ padding: "0 15px" }}>Given</Text>
+            </Center>
+            <Spacer />
+            <Center
+            transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+            _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
+            >
+              {givenReactions &&
+                givenReactions.length &&
+                givenReactions.filter(
+                  (reaction: any) => reaction.type === "nudge",
+                ).length}{" "}
+              <Nudge /><Text fontWeight="bold" style={{ padding: "0 15px" }}>Given</Text>
+            </Center>
+          </Card>{" "}
         </Box>
 
         <Box flex='1'>
@@ -165,7 +183,7 @@ const Profile = () => {
             <Level />
             <Heading margin="10px" marginTop='20px'>My Badges</Heading>
           </Flex>
-          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+          <Heading pl="30px"  as="h2" m="10px" fontSize="2xl">
             My Active Commitments
           </Heading>
           <Flex
@@ -193,7 +211,7 @@ const Profile = () => {
       profileData.commitments.filter((commitment: any) => !commitment.is_active)
         .length > 0 ? (
         <>
-          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+          <Heading pl="30px" as="h2" m="10px" fontSize="2xl">
             My Paused Commitments
           </Heading>
           <Flex

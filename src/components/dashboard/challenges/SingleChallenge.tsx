@@ -8,6 +8,8 @@ import {
   Text,
   useDisclosure,
   useToast,
+  Box,
+  Spacer,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -25,6 +27,7 @@ import {
   fetchSingleChallengeAsync,
   selectChallenge,
 } from "./singleChallengeSlice";
+import Challenge from "../components/Challenge";
 
 const SingleChallenge = () => {
   const dispatch = useAppDispatch();
@@ -104,20 +107,48 @@ const SingleChallenge = () => {
   };
 
   return (
+
     challenge &&
     challenge.id && (
       <>
-        <Heading>Challenge: {challenge.name.toUpperCase()}</Heading>
-        <Text>
-          Category:{" "}
-          <Link to={`/challenges?categoryId=${challenge.category_id}`}>
-            {challenge.category.name}
-          </Link>
-        </Text>
-        {challenge.description && (
-          <Flex>Description: {challenge.description}</Flex>
-        )}
-        <Text>Creetures of this Challenge:</Text>
+      <Flex
+      direction="column"
+      flexWrap="wrap"
+      margin="30px"
+      justifyContent="space-evenly"
+      padding="10px"
+      gridGap={12}
+      gap={20}
+      >
+        <Box display="flex" flexDirection='column'>
+          <Box display="flex">
+            <Challenge/>
+            <Heading pt='30px'>CHALLENGE ::::: {challenge.name.toUpperCase()}</Heading>
+          </Box>
+           <Box pl='100px' display="flex" >
+            <Text fontSize={"xl"} as='b'> Category:{" "}</Text>
+             <Text pl='3' pt='1' fontWeight='500'  fontSize={"lg"}>
+                   <Link to={`/challenges?categoryId=${challenge.category_id}`}>
+                    {challenge.category.name}
+                   </Link>
+              </Text>
+              </Box>
+
+              <Box pl='100px' display="flex" pt='10px'>
+        <Text as='b' fontSize={"xl"}> Description:{" "}</Text>
+             {challenge.description && (
+             <Flex pl='3'  fontWeight='500'  fontSize={"lg"}> {challenge.description}</Flex>
+             )}
+        </Box>
+        </Box>
+
+
+
+
+        <Box pl='100px'>
+           <Box pb='10px' >
+             <Text fontSize={"2xl"} fontWeight='bold'>Creetures of this Challenge:</Text>
+           </Box>
         <Flex>
           {sharedUsers && sharedUsers.length ? (
             sharedUsers.map((user: any) => (
@@ -130,6 +161,8 @@ const SingleChallenge = () => {
                   m="5px"
                   alignItems="center"
                   justifyContent="center"
+                  transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+                   _hover={{ transform: "scale(1.07)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
                 >
                   {user.profile.avatar_url ? (
                     <Avatar
@@ -147,6 +180,9 @@ const SingleChallenge = () => {
             <Text>No one has committed to this challenge.</Text>
           )}
         </Flex>
+        </Box>
+
+        <Box pl='100px'>
         <Button
           m="10px"
           ml="0"
@@ -156,11 +192,18 @@ const SingleChallenge = () => {
         >
           Commit
         </Button>
+        </Box>
+
+
         {currentUser.id === challenge.created_by ? (
           <>
+          <Box>
             <Button margin="10px" colorScheme="orange" onClick={onEditOpen}>
               <EditIcon />
             </Button>
+          </Box>
+
+          <Box>
             <Button
               margin="10px"
               colorScheme="red"
@@ -168,21 +211,26 @@ const SingleChallenge = () => {
             >
               <DeleteIcon />
             </Button>
+          </Box>
           </>
         ) : null}
+      <Box>
         <AddCommitment
           isOpen={isCommitOpen}
           onClose={onCommitClose}
           challenge={challenge}
         />
+      </Box>
+      <Box>
         <EditChallenge
           isOpen={isEditOpen}
           onClose={onEditClose}
           challenge={challenge}
           handleDelete={handleDelete}
-          setChallenge={setChallenge} //passing setter down to refresh state when edited challenge comes back
-        />
-      </>
+          setChallenge={setChallenge}/>
+      </Box>
+  </Flex>
+  </>
     )
   );
 };
