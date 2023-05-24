@@ -162,7 +162,7 @@ const SingleChallenge = () => {
                   alignItems="center"
                   justifyContent="center"
                   transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
-                   _hover={{ transform: "scale(1.07)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
+                   _hover={{ transform: "scale(1.07)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.3)" }}
                 >
                   {user.profile.avatar_url ? (
                     <Avatar
