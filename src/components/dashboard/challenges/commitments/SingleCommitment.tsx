@@ -76,6 +76,7 @@ const SingleCommitment = () => {
   const {
     badge_level,
     challenge,
+    challenge_id,
     frequency,
     goals,
     is_active,
@@ -174,7 +175,15 @@ const SingleCommitment = () => {
       <Flex justifyContent="flex-end" flexWrap="wrap" mt="-10px" mb="10px">
         <Flex alignItems="center" w="50%" minW="380px">
           <Box textAlign="center" mr={4}>
-            <Heading as="h1">{challenge.name.toUpperCase()}</Heading>
+            <ChakraLink
+                as={RouterLink}
+                to={`/challenges/${challenge_id}`}
+                fontStyle="italic"
+                _hover={{ color: "green.200" }}
+              >
+              <Heading as="h1">{challenge.name.toUpperCase()}</Heading>
+            </ChakraLink>
+            
             <Heading as="h2" size="md" textAlign="center">
               Category:&nbsp;&nbsp;
               <ChakraLink
