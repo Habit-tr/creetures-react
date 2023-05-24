@@ -37,6 +37,8 @@ const BuddyReactionCard = ({ reaction }: { reaction: BuddyReactionProps }) => {
       pb="5px"
       pl="10px"
       pr="10px"
+      transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out" 
+      _hover={{ transform: "scale(1.05)", boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)" }}
     >
         <Link to={`/profile/${user_id}`}>
           <Avatar

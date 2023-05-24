@@ -125,7 +125,7 @@ export default function NavBar() {
               fontFamily={"Play Toon"}
               className="creetures-logo"
               fontSize="40px"
-              color={useColorModeValue("gray.800", "green.200")}
+              color={useColorModeValue("#003600", "green.200")}
             >
               Creetures
             </Box>
@@ -159,7 +159,7 @@ export default function NavBar() {
             fontSize={"md"}
             fontWeight={600}
             variant={"link"}
-            color={useColorModeValue("gray.800", "green.200")}
+            color={useColorModeValue("#003600", "green.200")}
             onClick={handleLogout}
           >
             Logout

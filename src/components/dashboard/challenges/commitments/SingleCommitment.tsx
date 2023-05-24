@@ -177,8 +177,8 @@ const SingleCommitment = () => {
   return challenge && challenge.name ? (
     <>
 
-      <Flex justifyContent="flex-end" flexWrap="wrap" mt="-10px" mb="10px">
-        <Flex alignItems="center" w="50%" minW="380px">
+      <Flex justifyContent="flex-end" flexWrap="wrap" mt="-10px" mb="10px" pt='50px' pl='50px'>
+        <Flex alignItems="center" w="50%" minW="380px" >
           <Box textAlign="center" mr={4}>
             <ChakraLink
                 as={RouterLink}
@@ -236,7 +236,7 @@ const SingleCommitment = () => {
 
       <Flex flexWrap="wrap" >
 
-        <Box w="50%" minW="370px" p="20px" >
+        <Box w="50%" minW="370px" p="20px" pt='50px' pl='40px' >
           <Table>
             <Tbody>
               <Tr >
@@ -301,7 +301,7 @@ const SingleCommitment = () => {
           >
           {is_up_to_date
             ? <Text color='green' fontWeight="bold" mb="10px" >You are up to date on your challenge!</Text>
-            : <Text color='tomato' fontWeight="bold" mb="10px" >You behind on your chal
+            : <Text color='tomato' fontWeight="bold" mb="10px" >You behind on your challlenge!</Text>
           }
           </Box>
 

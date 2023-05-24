@@ -35,7 +35,7 @@ const ChallengeBuddiesCard = ({
   }, [challengeId, userId]);
 
   return fetchedBuddies && fetchedBuddies.length ? (
-    <Box className="challenge-buddies-card" m="0" w="100%">
+    <Box className="challenge-buddies-card" m="0" w="100%" >
       <Heading
         mb="0"
         size="md"

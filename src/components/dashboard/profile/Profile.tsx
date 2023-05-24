@@ -106,7 +106,8 @@ const Profile = () => {
             justifyContent="space-around"
             flexWrap="wrap"
           >
-            <Center>
+            <Center transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+             _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}>
               {earnedReactions &&
                 earnedReactions.length &&
                 earnedReactions.filter(
@@ -115,7 +116,8 @@ const Profile = () => {
               <HighFive /> <Text fontWeight="bold" style={{ padding: "0 15px" }}>Earned</Text>
             </Center>
             <Spacer />
-            <Center>
+            <Center transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+              _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}>
               {earnedReactions &&
                 earnedReactions.length &&
                 earnedReactions.filter(
@@ -124,11 +126,17 @@ const Profile = () => {
               <Nudge /> <Text fontWeight="bold" style={{ padding: "0 10px" }}>Earned</Text>
             </Center>
             <Spacer />
-            <Center>{redeemedRewards.length} <Reward />{" "}
+            <Center
+            transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+            _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
+            >{redeemedRewards.length} <Reward />{" "}
                 <Text fontWeight="bold" style={{ padding: "0 0px" }}>Redeemed</Text>
             </Center>
             <Spacer />
-            <Center>
+            <Center
+            transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+            _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
+            >
               {givenReactions &&
                 givenReactions.length &&
                 givenReactions.filter(
@@ -137,7 +145,10 @@ const Profile = () => {
               <HighFive /><Text fontWeight="bold" style={{ padding: "0 15px" }}>Given</Text>
             </Center>
             <Spacer />
-            <Center>
+            <Center
+            transition="transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out"
+            _hover={{ transform: "scale(1.09)", boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.2)" }}
+            >
               {givenReactions &&
                 givenReactions.length &&
                 givenReactions.filter(
@@ -172,7 +183,7 @@ const Profile = () => {
             <Level />
             <Heading margin="10px" marginTop='20px'>My Badges</Heading>
           </Flex>
-          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+          <Heading pl="30px"  as="h2" m="10px" fontSize="2xl">
             My Active Commitments
           </Heading>
           <Flex
@@ -200,7 +211,7 @@ const Profile = () => {
       profileData.commitments.filter((commitment: any) => !commitment.is_active)
         .length > 0 ? (
         <>
-          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+          <Heading pl="30px" as="h2" m="10px" fontSize="2xl">
             My Paused Commitments
           </Heading>
           <Flex
