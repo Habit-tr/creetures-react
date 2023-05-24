@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import supabase from "../../../utils/supabaseClient";
 
-// import { HighfiveColor, HighfiveOutline, NudgeColor, NudgeOutline } from "../components/icons";
+
 import Nudge from "../components/Nudge";
 import HighFive from "../components/Highfive";
 import HighFiveOutline from "../components/HighFiveOutline";

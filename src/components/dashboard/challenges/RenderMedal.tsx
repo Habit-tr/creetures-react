@@ -1,35 +1,39 @@
 import { Card, Flex, Text } from "@chakra-ui/react";
 
+import Badge1 from "../components/Badge1";
+import Badge2 from "../components/Badge2";
+import Badge3 from "../components/Badge3";
+
 interface RenderMedalProps {
   level: number;
 }
 
 const RenderMedal = ({ level }: RenderMedalProps) => {
-  let color = "tan";
-  let gradientColor = "brown";
-  if (level > 4) {
-    color = "silver";
-    gradientColor = "gray";
-  }
-  if (level > 9) {
-    color = "yellow";
-    gradientColor = "orange";
+  let BadgeComponent = null;
+
+  if (level < 4) {
+    BadgeComponent = Badge3;
+  } else if (level > 4 && level <= 9) {
+    BadgeComponent = Badge2;
+  } else if (level > 9) {
+    BadgeComponent = Badge1;
   }
 
   return (
     <>
       <Flex>
+      {BadgeComponent && <BadgeComponent />}
         <Card
-          border="2px white solid"
-          height="40px"
-          width="40px"
+          border="2px #ffde5c solid"
+          height="30px"
+          width="30px"
           rounded="100%"
-          bgGradient={`linear(to-br, ${color}, ${gradientColor})`}
+          // bgGradient={`linear(to-br, ${color}, ${gradientColor})`}
           align="center"
           justify="center"
         >
-          <Text color="black" mb="0px" pb="0px" fontSize="20px">
-            {level}
+          <Text color="white" mb="0px" pb="0px" fontSize="10px">
+            L:{level}
           </Text>
         </Card>
       </Flex>

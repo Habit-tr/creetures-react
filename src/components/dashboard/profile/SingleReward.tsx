@@ -15,6 +15,7 @@ import EditReward from "./EditReward";
 import DeleteAlert from "./DeleteAlert";
 import RedeemButton from "./RedeemButton";
 
+
 const SingleReward = () => {
   const [reward, setReward] = useState<any>({});
   const { isOpen, onOpen, onClose } = useDisclosure();

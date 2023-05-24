@@ -13,8 +13,7 @@ import {
 
   import Nudge from "../components/Nudge";
   import HighFive from "../components/Highfive";
-  import HighFiveOutline from "../components/HighFiveOutline";
-  import NudgeOutline from "../components/NudgeOutline";
+
 
 
 const Reaction: React.FC = () => {

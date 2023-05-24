@@ -3,6 +3,7 @@ import Rewards from "./Rewards";
 import EarnedRewardsTable from "./EarnedRewardsTable";
 import RedeemedRewards from "./RedeemedRewards";
 
+
 const RewardsPage = () => {
   return (
     <Tabs isFitted variant="enclosed">

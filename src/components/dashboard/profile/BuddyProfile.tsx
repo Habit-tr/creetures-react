@@ -1,4 +1,13 @@
-import { Avatar, Card, Center, Flex, Heading } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Card,
+  Center,
+  Flex,
+  Heading,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../utils/reduxHooks";
@@ -8,6 +17,10 @@ import {
   fetchSingleProfileAsync,
   selectSingleProfile,
 } from "./Single-All-ProfilesSlice";
+
+import HighFive from "../components/Highfive";
+import Nudge from "../components/Nudge";
+import Reward from "../components/Reward";
 
 const BuddyProfile = () => {
   const { buddy_id } = useParams();
@@ -44,57 +57,86 @@ const BuddyProfile = () => {
 
   const profileData = useAppSelector(selectSingleProfile);
   return (
-    <div>
-      <Heading margin="20px">
+    <div style={{ paddingLeft: "50px" }}>
+      <Heading margin="10px" paddingBottom="20px">
         {currentUser && (
-          <Avatar name={`${buddy_id}`} src={currentUser.avatar_url} />
+          <Avatar
+            width="80px"
+            name={`${buddy_id}`}
+            src={currentUser.avatar_url}
+          />
         )}{" "}
         {profileData && profileData.username}'s Profile
       </Heading>
+
       <Flex
         direction="row"
-        wrap="wrap"
-        margin="20px"
+        flexWrap="wrap"
+        margin="10px"
         justifyContent="space-evenly"
+        padding="10px"
+        gridGap={12}
       >
-        <Card padding="10px" height="160px" width="30%" justifyContent="center">
-          <Center>
-            {earnedReactions &&
-              earnedReactions.filter(
-                (reaction: any) => reaction.type === "highfive",
-              ).length}{" "}
-            🙌 Earned
-          </Center>
-          <Center>
-            {earnedReactions &&
-              earnedReactions.filter(
-                (reaction: any) => reaction.type === "nudge",
-              ).length}{" "}
-            👉 Earned
-          </Center>
-          <Center>
-            {redeemedRewards && redeemedRewards.length} 🎁 Redeemed
-          </Center>
-          <Center>
-            {givenReactions &&
-              givenReactions.filter(
-                (reaction: any) => reaction.type === "highfive",
-              ).length}{" "}
-            🙌 Given
-          </Center>
-          <Center>
-            {givenReactions &&
-              givenReactions.filter(
-                (reaction: any) => reaction.type === "nudge",
-              ).length}{" "}
-            👉 Given
-          </Center>
-        </Card>{" "}
-        {profileData &&
-          profileData.commitments &&
-          profileData.commitments.map((badge: any, i: number) => (
-            <ReactionBadgeCard key={badge.id} badge={badge} />
-          ))}
+        <Box
+          flex="1"
+          justifyContent="space-evenly"
+          padding="10px"
+          alignItems="center"
+        >
+          <Card height="500px" padding="10px">
+            <Center marginTop="30px" padding="10px">
+              {earnedReactions &&
+                earnedReactions.filter(
+                  (reaction: any) => reaction.type === "highfive",
+                ).length}{" "}
+              <HighFive /> <Text style={{ padding: "0 15px" }}>Earned</Text>
+            </Center>
+            <Spacer />
+            <Center>
+              {earnedReactions &&
+                earnedReactions.filter(
+                  (reaction: any) => reaction.type === "nudge",
+                ).length}
+              {""}
+              <Nudge /> <Text style={{ padding: "0 10px" }}>Earned</Text>
+            </Center>
+            <Spacer />
+            <Center>
+              {redeemedRewards && redeemedRewards.length} <Reward />{" "}
+              <Text style={{ padding: "0 0px" }}>Redeemed</Text>
+            </Center>
+            <Spacer />
+            <Center>
+              {givenReactions &&
+                givenReactions.filter(
+                  (reaction: any) => reaction.type === "highfive",
+                ).length}{" "}
+              <HighFive />
+              <Text style={{ padding: "0 15px" }}>Given</Text>
+            </Center>
+            <Spacer />
+            <Center marginBottom="30px">
+              {givenReactions &&
+                givenReactions.filter(
+                  (reaction: any) => reaction.type === "nudge",
+                ).length}{" "}
+              <Nudge />
+              <Text style={{ padding: "0 15px" }}>Given</Text>
+            </Center>
+          </Card>{" "}
+        </Box>
+
+        <Box flex="5">
+          <Flex flexWrap="wrap" gap="6">
+            {profileData &&
+              profileData.commitments &&
+              profileData.commitments
+                .filter((commitment: any) => commitment.is_active) //add a sort to rank badges from highest to lowest
+                .map((badge: any, i: number) => (
+                  <ReactionBadgeCard key={badge.id} badge={badge} />
+                ))}
+          </Flex>
+        </Box>
       </Flex>
     </div>
   );
