@@ -172,9 +172,11 @@ const Profile = () => {
             <Level />
             <Heading margin="10px" marginTop='20px'>My Badges</Heading>
           </Flex>
-          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+          <hr />
+          <Heading as="h2" m="30px" fontSize="2xl">
             My Active Commitments
           </Heading>
+          <hr />
           <Flex
             direction="row"
             wrap="wrap"
@@ -200,9 +202,11 @@ const Profile = () => {
       profileData.commitments.filter((commitment: any) => !commitment.is_active)
         .length > 0 ? (
         <>
-          <Heading textAlign="center" as="h2" m="10px" fontSize="2xl">
+          <hr />
+          <Heading as="h2" m="30px" fontSize="2xl">
             My Paused Commitments
           </Heading>
+          <hr />
           <Flex
             direction="row"
             wrap="wrap"
