@@ -1,9 +1,9 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
-import { fetchAllCommitmentsAsync, selectCommitments } from "./allCommitmentsSlice";
-import CommitmentCard from "./CommitmentCard";
-import { useAuth } from "../../../../context/AuthContext";
+import { useAppDispatch, useAppSelector } from "../../utils/reduxHooks";
+import { fetchAllCommitmentsAsync, selectCommitments } from "../dashboard/challenges/commitments/allCommitmentsSlice";
+import CommitmentCard from "../dashboard/challenges/commitments/CommitmentCard";
+import { useAuth } from "../../context/AuthContext";
 
 const AllCommitments = () => {
   const dispatch = useAppDispatch();
