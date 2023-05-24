@@ -22,7 +22,8 @@ export const fetchAllRewardsAsync: any = createAsyncThunk(
     try {
       const { data: fetchedRewards } = await supabase
       .from('rewards')
-      .select('id, name, description, times_redeemed, date_last_redeemed');
+      .select('id, name, description, times_redeemed, date_last_redeemed')
+      .order('id', { ascending: true });
       return fetchedRewards;
     } catch (err) {
       console.error(err);
