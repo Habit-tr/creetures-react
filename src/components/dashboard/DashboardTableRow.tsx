@@ -31,9 +31,10 @@ const DashboardTableRow = ({
     }
   }, [checkedCommitments, availableRewards, commitment.id]);
 
-  const handleClick = (commitmentId: number) => {
+  const handleClick = async (commitmentId: number) => {
     setLoading(commitmentId, true);
-    handleRedeemReward(commitmentId).then(() => setLoading(commitmentId, false));
+    await handleRedeemReward(commitmentId)
+    .then(() => setLoading(commitmentId, false));
   };
 
 
