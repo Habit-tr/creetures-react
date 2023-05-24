@@ -36,12 +36,12 @@ const BuddyStatusCard = ({ commitment }: any) => {
             {commitment.profile.username.toUpperCase()}
           </Heading>
         </Link>
-        <Text fontSize="2xs">
+        <Text fontSize="sm">
           {commitment.is_up_to_date ? `up to date` : `behind schedule`}{" "}
         </Text>
       </Flex>
       <Flex width="20%" justifyContent="end">
-        <Box border="none" p="0px" m="2px" display="inline-block">
+        <Box border="none" p="0px" m="sm" display="inline-block">
           <ReactionsToggle
             commitId={commitment.id}
             status={commitment.is_up_to_date}
