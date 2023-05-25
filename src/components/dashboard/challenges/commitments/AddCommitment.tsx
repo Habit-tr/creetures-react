@@ -19,13 +19,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../../../utils/reduxHooks";
+import supabase from "../../../../utils/supabaseClient";
 import { Database } from "../../../../utils/supabaseTypes";
 import {
   fetchAllRewardsAsync,
   selectRewards,
 } from "../../profile/allRewardsSlice";
-import supabase from "../../../../utils/supabaseClient";
-import { postNewCommitmentAsync } from "./allCommitmentsSlice";
+import {
+  fetchAllCommitmentsAsync,
+  postNewCommitmentAsync,
+} from "./allCommitmentsSlice";
 
 // interface newRewardProps {
 //   rewardName: string;
@@ -130,13 +133,12 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
           .from("rewards")
           .insert({ name: newRewardName })
           .select();
-
         await dispatch(
           postNewCommitmentAsync({
             challenge_id: challenge.id,
             frequency: days,
             goals,
-            reward_id: newReward.id,
+            reward_id: newReward[0].id,
             timeframe,
             user_id: user.id,
           }),
@@ -173,6 +175,7 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
       setTimeframe("");
       setGoals("");
       setReward(nullReward);
+      await dispatch(fetchAllCommitmentsAsync(user.id));
     } catch (error) {
       // Handle the error here
       console.error(error);
@@ -245,7 +248,7 @@ const AddCommitment = ({ isOpen, onClose, challenge }: AddCommitmentProps) => {
 
               <option value={"new"}>Create New Reward...</option>
             </Select>
-            {showNewRewardInput ? (
+            {showNewRewardInput || rewards.length === 0 ? (
               <>
                 {"Name your Reward"}
                 <Input

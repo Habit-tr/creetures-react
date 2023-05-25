@@ -46,7 +46,7 @@ const Dashboard = () => {
     <>
       <Flex direction="row" flexWrap="wrap">
         <Box w="50%" minW="370px" p="10px">
-          <Heading size="md" mb="20px" color="black">
+          <Heading size="md" mb="20px">
             {welcomeString.toUpperCase()}
           </Heading>
           <Flex justifyContent="center" alignItems="center"></Flex>
