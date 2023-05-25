@@ -165,6 +165,9 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   }, [hour]);
 
   const handleRedeemReward = async (commitmentId: number) => {
+    let date = new Date();
+    let options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    let formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
     const commitment = commitments.find(
       (commitment) => commitment.id === commitmentId,
     );
@@ -182,7 +185,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             id: earnedReward.id,
             is_redeemed: true,
             user_id: currentUser.id,
-            date_redeemed: new Date().toISOString(),
+            date_redeemed: formattedDate,
           }),
         );
       }

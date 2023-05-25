@@ -44,6 +44,9 @@ const EarnedRewardsTable = () => {
 
   const redeemReward = async (rewardId: number) => {
     setRedeeming({ ...redeeming, [rewardId]: true });
+    let date = new Date();
+    let options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    let formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
     try {
       // dispatch action to update the earned reward as redeemed
       await dispatch(
@@ -51,7 +54,7 @@ const EarnedRewardsTable = () => {
           id: rewardId,
           is_redeemed: true,
           user_id: currentUser.id,
-          date_redeemed: new Date().toISOString(),
+          date_redeemed: formattedDate,
         }),
       );
 
