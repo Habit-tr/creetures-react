@@ -83,13 +83,17 @@ interface UpdateEarnedRewardProps {
 export const updateEarnedRewardAsync = createAsyncThunk(
   "updateEarnedRewardAsync",
   async ({ id, is_redeemed, user_id, date_redeemed }: UpdateEarnedRewardProps) => {
+    let date = new Date();
+    let options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    let formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+    console.log(formattedDate);
     try {
       const { error: updateError } = await supabase
         .from("earned_rewards")
         .update({
           is_redeemed: is_redeemed,
           user_id: user_id,
-          date_redeemed: is_redeemed ? new Date().toISOString() : null,
+          date_redeemed: is_redeemed ? formattedDate : null,
         })
         .eq("id", id);
 

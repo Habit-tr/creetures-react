@@ -21,7 +21,7 @@ import {
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { motion } from "framer-motion";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
-
+import "./styles.css";
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -79,6 +79,10 @@ export default function NavBar() {
     }
   }
 
+  function handleHome() {
+    navigate("/");
+  }
+
   return (
     <Box>
       <Flex
@@ -87,10 +91,9 @@ export default function NavBar() {
         minH={"60px"}
         py={{ base: 2 }}
         px={{ base: 4 }}
-        borderBottom={10}
+        borderBottom={3}
         borderStyle={"solid "}
         borderColor={useColorModeValue("green.200", "green.200")}
-        align={"center"}
       >
         <Flex
           flex={{ base: 1, md: "auto" }}
@@ -106,30 +109,23 @@ export default function NavBar() {
             aria-label={"Toggle Navigation"}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Link href="/">
+        <Flex flex={{ base: 1 }} justify={{ md: "start" }}>
+          <Button
+            onClick={handleHome}
+            colorScheme={"black"}
+            _hover={{ bg: "green.200" }}
+          >
             <Box
-              as={motion.div}
-              justifySelf="center"
-              justifyContent="center"
               height="40px"
               width="230px"
-              paddingLeft="10px"
-              paddingRight="3"
-              drag="y"
-              dragConstraints={{ left: -100, right: 200 }}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              transition="0.5s ease-in-out"
-              textAlign={useBreakpointValue({ base: "center", md: "left" })}
-              fontFamily={"Play Toon"}
+              fontFamily={"PlayToon"}
               className="creetures-logo"
               fontSize="40px"
               color={useColorModeValue("#003600", "green.200")}
             >
               Creetures
             </Box>
-          </Link>
+          </Button>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
@@ -164,14 +160,12 @@ export default function NavBar() {
           >
             Logout
           </Button>
-          <Button rounded={"full"} variant={"link"} cursor={"pointer"} minW={0}>
-            <Avatar
-              size={"lg"}
-              src={
-                "https://gravatar.com/avatar/f5fafa6c888f5875a5fc75609d69b6ef?s=400&d=robohash&r=x"
-              }
-            />
-          </Button>
+          <Button
+            rounded={"full"}
+            variant={"link"}
+            cursor={"pointer"}
+            minW={0}
+          ></Button>
         </Stack>
       </Flex>
 
@@ -201,8 +195,7 @@ const DesktopNav = () => {
                 color={linkColor}
                 _hover={{
                   cursor: "pointer",
-                  fontSize: "1.5em",
-                  transition: " .8s ease-in-out",
+                  fontSize: "1.05em",
                 }}
               >
                 {navItem.label}
