@@ -1,6 +1,4 @@
 @font-face {
-    font-family: 'Play Toon';
-    src:url('/Users/spak/Desktop/creetures-react/public/PlayToon-PersonalUse.otf') format('opentype')
+  font-family: "PlayToon";
+  src: url("/public/PlayToon-PersonalUse.otf") format("opentype");
 }
-
-
