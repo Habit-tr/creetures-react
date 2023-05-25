@@ -21,7 +21,7 @@ import {
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { motion } from "framer-motion";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
-
+import "./styles.css";
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -122,7 +122,7 @@ export default function NavBar() {
               whileTap={{ scale: 0.9 }}
               transition="0.5s ease-in-out"
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
-              fontFamily={"Play Toon"}
+              fontFamily={"PlayToon"}
               className="creetures-logo"
               fontSize="40px"
               color={useColorModeValue("#003600", "green.200")}
