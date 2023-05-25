@@ -86,7 +86,6 @@ export const updateEarnedRewardAsync = createAsyncThunk(
     let date = new Date();
     let options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     let formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-    console.log(formattedDate);
     try {
       const { error: updateError } = await supabase
         .from("earned_rewards")

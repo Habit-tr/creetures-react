@@ -127,7 +127,6 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
   //   });
   // }, [earnedRewards])
 
-
   const handleCommitmentComplete = async (commitmentId: number) => {
     setCheckedCommitments((prevChecked) => ({
       ...prevChecked,
@@ -166,8 +165,12 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
 
   const handleRedeemReward = async (commitmentId: number) => {
     let date = new Date();
-    let options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    let formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+    let options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    let formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
     const commitment = commitments.find(
       (commitment) => commitment.id === commitmentId,
     );
@@ -208,11 +211,13 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
     commitment: Database["public"]["Tables"]["commitments"]["Row"],
   ) => {
     const today = getCurrentDay();
-    if (commitment.frequency.includes(today)) {
-      return true;
-    } else {
-      return false;
-    }
+    if (commitment && commitment.frequency) {
+      if (commitment.frequency.includes(today)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else return false;
   };
 
   const commitmentCategories: Record<"12" | "20" | "4", JSX.Element[]> = {
@@ -300,7 +305,7 @@ const DashboardTable = ({ commitments }: DashboardTableProps) => {
             textAlign="center"
             margin="10px"
             padding="10px"
-            bgColor="orange.100"
+            colorScheme="orange"
           >
             <Link to="/challenges">
               You have no commitments scheduled for today. Browse the available

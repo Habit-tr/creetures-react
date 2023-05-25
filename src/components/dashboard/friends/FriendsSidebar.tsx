@@ -53,7 +53,7 @@ const FriendsSidebar = () => {
           textAlign="center"
           margin="10px"
           padding="10px"
-          bgColor="orange.100"
+          colorScheme="orange"
         >
           <Link to="/challenges">
             You don't have any buddies yet. Commit to some challenges and
