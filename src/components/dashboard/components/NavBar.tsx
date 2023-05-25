@@ -201,8 +201,7 @@ const DesktopNav = () => {
                 color={linkColor}
                 _hover={{
                   cursor: "pointer",
-                  fontSize: "1.5em",
-                  transition: " .8s ease-in-out",
+                  fontSize: "1.05em",
                 }}
               >
                 {navItem.label}
