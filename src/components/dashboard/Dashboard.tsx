@@ -17,6 +17,10 @@ const Dashboard = () => {
 
   const commitments = useAppSelector(selectCommitments);
 
+  const activeCommitments = commitments.filter(
+    (commitment) => commitment.is_active,
+  );
+
   useEffect(() => {
     dispatch(fetchAllCommitmentsAsync(currentUser.id));
     const fetchUsername = async () => {
@@ -50,7 +54,7 @@ const Dashboard = () => {
             {welcomeString.toUpperCase()}
           </Heading>
           <Flex justifyContent="center" alignItems="center"></Flex>
-          <DashboardTable commitments={commitments} />
+          <DashboardTable commitments={activeCommitments} />
           {/* <Table>
             <Thead>
               <Tr>
