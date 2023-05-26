@@ -34,6 +34,7 @@ const DashboardRoutes = () => {
           />
           <Route path="/challenges/:urlId" element={<SingleChallenge />} />
           <Route path="/challenges/categories" element={<AllCategories />} />
+          <Route path="/*" element={<Dashboard />} />
         </Routes>
       </Box>
       <Footer />
