@@ -34,9 +34,11 @@ const BuddyStatusCard = ({ commitment }: any) => {
         justifyContent="center"
       >
         <Link to={`/profile/${commitment.profile.id}`}>
-          <Heading fontSize="xl">
-            {commitment.profile.username.toUpperCase()}
-          </Heading>
+          {commitment.profile.username
+          ? <Heading fontSize="xl">
+              {commitment.profile.username.toUpperCase()}
+            </Heading>
+          : <Heading fontSize="xl">Unnamed User</Heading>}
         </Link>
         <Text fontSize="sm">
           {commitment.is_up_to_date ? `up to date` : `behind schedule`}{" "}
