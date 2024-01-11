@@ -6,6 +6,7 @@ import { AuthProvider } from "../context/AuthContext";
 import store from "../utils/store";
 import theme from "../utils/theme";
 import AppRoutes from "./AppRoutes";
+
 function App() {
   return (
     <>
